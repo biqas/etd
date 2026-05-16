@@ -22,10 +22,10 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
 app.UseAntiforgery();
+app.MapStaticAssets();
 
 app.MapDefaultEndpoints();
-app.MapRazorComponents<App>();
+app.MapRazorComponents<App>().WithStaticAssets();
 
 app.Run();

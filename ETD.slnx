@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ETD.AppHost/ETD.AppHost.csproj" />
+    <Project Path="src/ETD.ServiceDefaults/ETD.ServiceDefaults.csproj" />
+    <Project Path="src/ETD.Web/ETD.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ETD.E2E/ETD.E2E.csproj" />
+    <Project Path="tests/ETD.Web.Tests/ETD.Web.Tests.csproj" />
+  </Folder>
+</Solution>

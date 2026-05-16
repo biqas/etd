@@ -1,0 +1,96 @@
+name: deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}/etd-web
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    outputs:
+      image-tag: ${{ steps.meta.outputs.tags }}
+      image-digest: ${{ steps.build.outputs.digest }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha,prefix=
+            type=ref,event=branch
+      - id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  publish-manifests:
+    needs: build-push
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+      - run: dotnet tool restore
+      - name: Generate Aspire manifest
+        working-directory: src/ETD.AppHost
+        run: dotnet run -- --publisher manifest --output-path ../../manifest.json
+      - name: Generate K8s manifests via Aspirate
+        run: |
+          rm -rf deploy/kubernetes-out
+          mkdir -p deploy/kubernetes-out
+          dotnet aspirate generate \
+            --aspire-manifest manifest.json \
+            --output-path deploy/kubernetes-out \
+            --non-interactive --skip-build --include-dashboard false
+          cp deploy/kubernetes/ingress.yaml deploy/kubernetes-out/ingress.yaml
+          cp deploy/kubernetes/namespace.yaml deploy/kubernetes-out/namespace.yaml || true
+      - name: Substitute image tag
+        run: |
+          IMAGE_TAG=$(echo "${{ needs.build-push.outputs.image-tag }}" | head -n1)
+          find deploy/kubernetes-out -name '*.yml' -o -name '*.yaml' | while read f; do
+            sed -i "s|image: .*etd-web.*|image: $IMAGE_TAG|g" "$f"
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: k8s-manifests
+          path: deploy/kubernetes-out
+
+  apply:
+    needs: publish-manifests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: k8s-manifests
+          path: deploy/kubernetes-out
+      - uses: azure/setup-kubectl@v4
+      - name: Write kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.CIVO_KUBECONFIG }}" | base64 -d > ~/.kube/config
+          chmod 600 ~/.kube/config
+      - name: Apply manifests
+        run: kubectl apply -k deploy/kubernetes-out
+      - name: Wait for rollout
+        run: kubectl rollout status deployment/etd-web -n etd --timeout=180s

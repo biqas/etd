@@ -168,6 +168,170 @@ input[type=range].range::-moz-range-thumb {
 .checkbox-row input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--red); }
 
 /* ============= KNX Rich Content ============= */
+
+/* Emotional opener with 3 room scenes */
+.knx-emotional-opener {
+    padding: 72px 0 80px;
+    background: linear-gradient(180deg, #FAFAFA 0%, #fff 100%);
+}
+.knx-emotional-opener h2 {
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    margin: 8px 0 18px;
+    max-width: 760px;
+}
+.knx-lead {
+    font-size: 1.125rem;
+    color: var(--ink-2);
+    max-width: 720px;
+    line-height: 1.55;
+    margin-bottom: 40px;
+}
+.knx-room-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 22px;
+}
+.knx-room-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 250ms var(--ease-out), box-shadow 250ms var(--ease-out);
+}
+.knx-room-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
+}
+.knx-room-illu {
+    aspect-ratio: 200 / 140;
+    background: #FAF6F0;
+    overflow: hidden;
+}
+.knx-room-illu svg { width: 100%; height: 100%; display: block; }
+.knx-room-body { padding: 20px 22px 22px; }
+.knx-room-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--red);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+.knx-room-body h3 {
+    font-size: 19px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+}
+.knx-room-body p {
+    font-size: 14px;
+    color: var(--ink-2);
+    line-height: 1.55;
+}
+
+/* Persona cards */
+.knx-personas-section { padding: 72px 0; background: var(--white); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.knx-persona-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+.knx-persona {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex; flex-direction: column;
+    transition: transform 250ms var(--ease-out), border-color 250ms var(--ease-out);
+}
+.knx-persona:hover {
+    transform: translateY(-3px);
+    border-color: var(--red);
+    box-shadow: 0 12px 28px rgba(220, 31, 38, 0.08);
+}
+.knx-persona-illu {
+    width: 96px; height: 96px;
+    background: var(--red-soft);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+}
+.knx-persona-illu svg { width: 72%; height: 72%; }
+.knx-persona-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--red);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+.knx-persona-body h3 {
+    font-size: 17px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+}
+.knx-persona-body p {
+    font-size: 14px;
+    color: var(--ink-2);
+    line-height: 1.55;
+    margin-bottom: 16px;
+    flex: 1;
+}
+.knx-persona-cta {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--red);
+    text-decoration: none;
+    transition: color 200ms var(--ease-out);
+}
+.knx-persona-cta:hover { color: var(--red-dark); }
+
+/* Investment chart section */
+.knx-investment { padding: 72px 0; }
+.knx-investment-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 56px;
+    align-items: center;
+}
+@media (max-width: 900px) { .knx-investment-grid { grid-template-columns: 1fr; } }
+.knx-investment-chart {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+.knx-investment-chart svg { width: 100%; height: auto; }
+
+.knx-roi-list {
+    list-style: none; padding: 0; margin: 18px 0 0;
+    display: grid; gap: 14px;
+}
+.knx-roi-list li {
+    display: flex; align-items: baseline; gap: 14px;
+    padding: 14px 18px;
+    background: var(--red-soft);
+    border-radius: 10px;
+    border-left: 3px solid var(--red);
+}
+.knx-roi-num {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--red);
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+    min-width: 100px;
+}
+.knx-roi-list li span:last-child {
+    font-size: 14px;
+    color: var(--ink-2);
+    line-height: 1.5;
+}
+
 .knx-hero-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
 @media (max-width: 900px) { .knx-hero-grid { grid-template-columns: 1fr; } }
 .knx-house-illustration { background: var(--white); border: 1px solid var(--line); border-radius: 16px; padding: 24px; box-shadow: 0 8px 28px rgba(15, 23, 42, 0.06); }

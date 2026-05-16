@@ -168,7 +168,6 @@ etd/
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Aspire.Hosting.AppHost" Version="13.3.0" />
-    <PackageVersion Include="Aspire.Hosting.Kubernetes" Version="13.3.0" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="13.3.0" />
     <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="9.0.0" />
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.10.0" />
@@ -347,7 +346,7 @@ git commit -m "feat: scaffold Blazor static SSR web project"
 
 Run: `dotnet new aspire-apphost -n ETD.AppHost -o src/ETD.AppHost`
 
-- [ ] **Step 2: Add the Web project + Kubernetes hosting package references**
+- [ ] **Step 2: Add the Web project reference**
 
 Edit `src/ETD.AppHost/ETD.AppHost.csproj`:
 
@@ -355,10 +354,9 @@ Edit `src/ETD.AppHost/ETD.AppHost.csproj`:
 <ItemGroup>
   <ProjectReference Include="..\ETD.Web\ETD.Web.csproj" />
 </ItemGroup>
-<ItemGroup>
-  <PackageReference Include="Aspire.Hosting.Kubernetes" />
-</ItemGroup>
 ```
+
+> **K8s manifest generation:** Aspire 13.x does NOT ship a first-party Kubernetes publisher. We use the community tool **Aspirate (aspir8)** in Task 4.2, installed as a global .NET tool. It consumes Aspire's `aspire-manifest.json` and emits plain K8s YAML (Deployment + Service + Ingress).
 
 - [ ] **Step 3: Replace `AppHost.cs` with the orchestration model**
 
@@ -386,18 +384,10 @@ if (smtp is not null)
        .WithEnvironment("Smtp__Port", smtp.GetEndpoint("smtp").Property(EndpointProperty.Port));
 }
 
-// Kubernetes publishing target — used by `aspire publish --publisher kubernetes`
-builder.AddKubernetesEnvironment("k8s")
-    .WithProperties(env =>
-    {
-        env.DefaultImagePullPolicy = "IfNotPresent";
-        env.DefaultImageRegistry = "ghcr.io";
-    });
-
 builder.Build().Run();
 ```
 
-> **Note for the executor:** Aspire 13.3 ships the Kubernetes publishing API in `Aspire.Hosting.Kubernetes`. If `AddKubernetesEnvironment` is not found at this exact version, check the Aspire 13.3 release notes for the equivalent extension method (the publisher API has been iterated through 9.x → 13.x). The intent is: declare a Kubernetes publishing environment so `aspire publish` writes K8s YAML to disk.
+K8s publishing is handled by Aspirate later (Task 4.2); the AppHost itself stays vanilla Aspire.
 
 - [ ] **Step 4: Build and run**
 
@@ -3144,54 +3134,129 @@ git commit -m "feat: Dockerfile + health endpoints"
 
 ---
 
-### Task 4.2: Aspire publish target & generated manifests
+### Task 4.2: Aspirate — generate K8s manifests from Aspire model
 
 **Files:**
-- Modify: `src/ETD.AppHost/AppHost.cs` (image name + ingress hostname)
+- Create: `.config/dotnet-tools.json` (Aspirate as a repo-local tool)
 - Create: `deploy/kubernetes/.gitkeep`
+- Create: `aspirate.json` (Aspirate config at repo root)
+- Create: `deploy/kubernetes/ingress.yaml` (hand-written, since Aspirate doesn't emit Ingress)
+- Modify: `src/ETD.AppHost/AppHost.cs` (add `.WithReplicas(2)`, container image name)
 
-- [ ] **Step 1: Configure the Web project for K8s publishing**
+Aspire 13.x has no first-party Kubernetes publisher. The community tool **Aspirate** (https://github.com/prom3theu5/aspirational-manifests) reads Aspire's manifest output and emits plain K8s YAML. We pin it as a local tool so CI/CD gets the same version everyone uses locally.
 
-Update `AppHost.cs` `AddProject<Projects.ETD_Web>("etd-web")` call to:
+- [ ] **Step 1: Pin Aspirate as a local tool**
+
+```bash
+dotnet new tool-manifest 2>/dev/null || true
+dotnet tool install aspirate --version 9.1.0
+```
+
+This creates `.config/dotnet-tools.json` referencing aspirate 9.1.0.
+
+- [ ] **Step 2: Configure container metadata in AppHost**
+
+Update the `AddProject<Projects.ETD_Web>("etd-web")` call in `src/ETD.AppHost/AppHost.cs` to:
 
 ```csharp
 var web = builder.AddProject<Projects.ETD_Web>("etd-web")
     .WithEnvironment("Smtp__From", "anfrage@elektrotechnikdesch.de")
     .WithEnvironment("Smtp__To", "mail@ElektroTechnikDesch.de")
     .WithExternalHttpEndpoints()
-    .PublishAsContainer()
-    .WithImageName("etd-web")           // ghcr.io/<owner>/etd-web (registry from env config)
     .WithReplicas(2);
 ```
 
-Plus an annotation that the Kubernetes target picks up for ingress:
+`.WithReplicas(2)` is an Aspirate-recognized hint that becomes `replicas: 2` in the Deployment.
 
-```csharp
-web.PublishAsKubernetesService(svc =>
+- [ ] **Step 3: Create `aspirate.json` at repo root**
+
+```json
 {
-    svc.Ingress(ingress =>
-    {
-        ingress.Host("www.elektrotechnikdesch.de");
-        ingress.WithTls("etd-web-tls", clusterIssuer: "letsencrypt-prod");
-    });
-});
+  "containerRegistry": "ghcr.io",
+  "containerRepositoryPrefix": "biqas/etd",
+  "containerImageTag": ["latest"],
+  "containerBuilder": "docker",
+  "templatePath": null,
+  "imagePullPolicy": "IfNotPresent",
+  "namespace": "etd"
+}
 ```
 
-> **Note:** Exact API names may differ between Aspire 13.x minors. The executor should consult `Aspire.Hosting.Kubernetes` 13.3 API docs and adjust — the *intent* is: tell Aspire's K8s publisher to produce Deployment/Service/Ingress YAML with TLS via cert-manager.
+(Adjust `containerRepositoryPrefix` to the actual GitHub owner/repo.)
 
-- [ ] **Step 2: Run `aspire publish` locally**
+- [ ] **Step 4: Generate manifests once locally**
 
 ```bash
-dotnet run --project src/ETD.AppHost -- --publisher kubernetes --output-path deploy/kubernetes
+dotnet aspirate generate \
+  --aspire-manifest src/ETD.AppHost \
+  --output-path deploy/kubernetes \
+  --non-interactive \
+  --skip-build \
+  --include-dashboard false
 ```
 
-Expected: YAML files appear under `deploy/kubernetes/`. Validate with `kubeval` or `kubectl apply --dry-run=client -f deploy/kubernetes/`.
+Expected output: `deploy/kubernetes/etd-web/{deployment.yml,service.yml,configmap.yml}` plus a `kustomization.yml`.
 
-- [ ] **Step 3: Commit the output for transparency**
+Verify with: `kubectl apply --dry-run=client -k deploy/kubernetes`. Expected: no errors.
+
+- [ ] **Step 5: Hand-write the Ingress (Aspirate doesn't emit ingress)**
+
+`deploy/kubernetes/ingress.yaml`:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: etd-web
+  namespace: etd
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - www.elektrotechnikdesch.de
+        - elektrotechnikdesch.de
+      secretName: etd-web-tls
+  rules:
+    - host: www.elektrotechnikdesch.de
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: etd-web
+                port:
+                  number: 8080
+    - host: elektrotechnikdesch.de
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: etd-web
+                port:
+                  number: 8080
+```
+
+Reference it from the existing `deploy/kubernetes/kustomization.yml` by appending it to the `resources:` list:
+
+```yaml
+resources:
+  - etd-web/deployment.yml
+  - etd-web/service.yml
+  - etd-web/configmap.yml
+  - ingress.yaml
+```
+
+- [ ] **Step 6: Commit**
 
 ```bash
-git add deploy/kubernetes/ src/ETD.AppHost/AppHost.cs
-git commit -m "feat: aspire publish target generates K8s manifests with ingress + TLS"
+git add .config/dotnet-tools.json aspirate.json deploy/kubernetes/ src/ETD.AppHost/AppHost.cs
+git commit -m "feat: aspirate K8s manifests + ingress with cert-manager"
 ```
 
 ---
@@ -3310,11 +3375,17 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.x'
-      - run: dotnet workload install aspire
-      - run: dotnet run --project src/ETD.AppHost -- --publisher kubernetes --output-path deploy/kubernetes-out
+      - run: dotnet tool restore
+      - run: |
+          dotnet aspirate generate \
+            --aspire-manifest src/ETD.AppHost \
+            --output-path deploy/kubernetes-out \
+            --non-interactive --skip-build --include-dashboard false
+          cp deploy/kubernetes/ingress.yaml deploy/kubernetes-out/ingress.yaml
       - name: Substitute image tag
         run: |
-          sed -i "s|image: etd-web.*|image: ${{ needs.build-push.outputs.image-tag }}|g" deploy/kubernetes-out/*.yaml
+          IMAGE_TAG=$(echo "${{ needs.build-push.outputs.image-tag }}" | head -n1)
+          find deploy/kubernetes-out -name '*.yml' -o -name '*.yaml' | xargs sed -i "s|image: .*etd-web.*|image: $IMAGE_TAG|g"
       - uses: actions/upload-artifact@v4
         with:
           name: k8s-manifests

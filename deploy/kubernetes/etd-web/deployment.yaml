@@ -1,0 +1,84 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: etd-web
+  labels:
+    app: etd-web
+spec:
+  minReadySeconds: 60
+  replicas: 2
+  selector:
+    matchLabels:
+      app: etd-web
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: etd-web
+    spec:
+      containers:
+      - name: etd-web
+        image: ghcr.io/biqas/etd/etd-web:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8080
+        envFrom:
+        - configMapRef:
+            name: etd-web-env
+        env:
+        - name: Smtp__Host
+          valueFrom:
+            secretKeyRef:
+              name: etd-smtp
+              key: host
+              optional: true
+        - name: Smtp__Port
+          valueFrom:
+            secretKeyRef:
+              name: etd-smtp
+              key: port
+              optional: true
+        - name: Smtp__User
+          valueFrom:
+            secretKeyRef:
+              name: etd-smtp
+              key: user
+              optional: true
+        - name: Smtp__Pass
+          valueFrom:
+            secretKeyRef:
+              name: etd-smtp
+              key: pass
+              optional: true
+        - name: Smtp__UseTls
+          valueFrom:
+            secretKeyRef:
+              name: etd-smtp
+              key: use-tls
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /alive
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+      terminationGracePeriodSeconds: 180

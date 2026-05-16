@@ -1,0 +1,21 @@
+resources:
+- deployment.yaml
+- service.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+- name: etd-web-env
+  literals:
+    - OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY=in_memory
+    - ASPNETCORE_FORWARDEDHEADERS_ENABLED=true
+    - HTTP_PORTS=8080
+    - Smtp__From=anfrage@elektrotechnikdesch.de
+    - Smtp__To=mail@ElektroTechnikDesch.de
+    - MAILPIT_SMTP=mailpit:1025
+    - services__mailpit__smtp__0=mailpit:1025
+    - Smtp__Host=mailpit
+    - Smtp__Port=1025
+    - ASPNETCORE_URLS=http://+:8080;
+

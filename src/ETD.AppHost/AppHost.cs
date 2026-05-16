@@ -12,7 +12,8 @@ var smtp = string.IsNullOrEmpty(smtpHost)
 var web = builder.AddProject<Projects.ETD_Web>("etd-web")
     .WithEnvironment("Smtp__From", "anfrage@elektrotechnikdesch.de")
     .WithEnvironment("Smtp__To", "mail@ElektroTechnikDesch.de")
-    .WithExternalHttpEndpoints();
+    .WithExternalHttpEndpoints()
+    .WithReplicas(2);
 
 if (smtp is not null)
 {

@@ -1,0 +1,9 @@
+{
+  "containerRegistry": "ghcr.io",
+  "containerRepositoryPrefix": "biqas/etd",
+  "containerImageTag": ["latest"],
+  "containerBuilder": "docker",
+  "templatePath": null,
+  "imagePullPolicy": "IfNotPresent",
+  "namespace": "etd"
+}

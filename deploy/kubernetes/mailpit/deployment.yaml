@@ -1,0 +1,30 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mailpit
+  labels:
+    app: mailpit
+spec:
+  minReadySeconds: 60
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mailpit
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mailpit
+    spec:
+      containers:
+      - name: mailpit
+        image: axllent/mailpit:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: ui
+          containerPort: 8025
+        - name: smtp
+          containerPort: 1025
+      terminationGracePeriodSeconds: 180

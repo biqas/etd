@@ -1,0 +1,12 @@
+namespace: etd
+
+resources:
+- namespace.yaml
+- mailpit
+- etd-web
+- ingress.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+

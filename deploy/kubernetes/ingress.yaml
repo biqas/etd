@@ -1,0 +1,36 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: etd-web
+  namespace: etd
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - www.elektrotechnikdesch.de
+        - elektrotechnikdesch.de
+      secretName: etd-web-tls
+  rules:
+    - host: www.elektrotechnikdesch.de
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: etd-web
+                port:
+                  number: 8080
+    - host: elektrotechnikdesch.de
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: etd-web
+                port:
+                  number: 8080

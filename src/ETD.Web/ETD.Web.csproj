@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MailKit" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ETD.ServiceDefaults\ETD.ServiceDefaults.csproj" />
   </ItemGroup>
 

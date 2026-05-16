@@ -1,0 +1,11 @@
+**/bin
+**/obj
+**/.vs
+**/.git
+.gitignore
+.dockerignore
+Dockerfile
+deploy/
+tests/
+docs/
+.superpowers/

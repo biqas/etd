@@ -1,0 +1,104 @@
+@page "/angebot/preisrahmen"
+@using ETD.Web.Models
+@using ETD.Web.Services
+@inject WizardStateProtector Protector
+@inject NavigationManager Nav
+
+<PageTitle>Angebot anfragen — Schritt 2 — ETD</PageTitle>
+
+<section class="wizard fade-in">
+    <div class="stepper">
+        <div class="done"></div><div class="active"></div><div></div><div></div>
+    </div>
+    <div class="step-meta"><span>Schritt 2 von 4</span><span>Preisrahmen (unverbindlich)</span></div>
+
+    @if (currentModel is null)
+    {
+        <p>Bitte mit <a href="/angebot">Schritt 1</a> beginnen.</p>
+    }
+    else
+    {
+        <h1 style="margin-bottom:8px">Erste Kostenschätzung</h1>
+        <p style="color:var(--muted);margin-bottom:18px">Nur ein Richtwert. Verbindlich nach Vor-Ort-Termin.</p>
+
+        <EditForm Model="currentModel" OnValidSubmit="HandleNext" FormName="step2" Enhance>
+            <input type="hidden" name="s" value="@token" />
+
+            @if (currentModel.Services.Contains("wallbox"))
+            {
+                var wb = PriceEstimator.EstimateWallbox(currentModel.WallboxKw ?? 11, currentModel.WallboxDistanceMeters ?? 5);
+                <label>Wallbox-Leistung: @(currentModel.WallboxKw ?? 11) kW</label>
+                <InputNumber @bind-Value="currentModel.WallboxKw" min="4" max="22" step="1" />
+
+                <label>Entfernung zum Zählerschrank: @(currentModel.WallboxDistanceMeters ?? 5) m</label>
+                <InputNumber @bind-Value="currentModel.WallboxDistanceMeters" min="1" max="50" step="1" />
+
+                <div style="margin:14px 0;padding:14px 18px;background:var(--red-soft);border-left:4px solid var(--red);border-radius:8px">
+                    <div style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:0.08em;text-transform:uppercase">Wallbox · Richtwert (zzgl. MwSt.)</div>
+                    <div style="font-size:24px;font-weight:900;color:var(--red);margin-top:4px;letter-spacing:-0.02em">~ @($"{wb.LowEuro:N0} – {wb.HighEuro:N0}") €</div>
+                </div>
+            }
+
+            @if (currentModel.Services.Contains("photovoltaik"))
+            {
+                var pv = PriceEstimator.EstimatePv(currentModel.PvAreaSqm ?? 30, currentModel.PvWithStorage ?? false);
+                <label>Geschätzte Dachfläche: @(currentModel.PvAreaSqm ?? 30) m²</label>
+                <InputNumber @bind-Value="currentModel.PvAreaSqm" min="10" max="200" step="5" />
+
+                <label>Mit Batteriespeicher?</label>
+                <div class="chips">
+                    <label class="chip">
+                        <input type="radio" name="currentModel.PvWithStorage" value="false" checked="@(currentModel.PvWithStorage != true)" />
+                        Nein
+                    </label>
+                    <label class="chip">
+                        <input type="radio" name="currentModel.PvWithStorage" value="true" checked="@(currentModel.PvWithStorage == true)" />
+                        Ja
+                    </label>
+                </div>
+
+                <div style="margin:14px 0;padding:14px 18px;background:var(--red-soft);border-left:4px solid var(--red);border-radius:8px">
+                    <div style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:0.08em;text-transform:uppercase">Photovoltaik · Richtwert (zzgl. MwSt.)</div>
+                    <div style="font-size:24px;font-weight:900;color:var(--red);margin-top:4px;letter-spacing:-0.02em">~ @($"{pv.LowEuro:N0} – {pv.HighEuro:N0}") €</div>
+                </div>
+            }
+
+            <p style="font-size:12px;color:var(--muted);margin-top:8px">Diese Schätzung ersetzt kein Angebot. Verbindlich erst nach Vor-Ort-Termin.</p>
+
+            <div class="nav-btns">
+                <button type="button" class="btn btn-ghost" @onclick="HandleBack">← Zurück</button>
+                <button type="submit" class="btn btn-primary">Weiter →</button>
+            </div>
+        </EditForm>
+    }
+</section>
+
+@code {
+    [SupplyParameterFromQuery(Name = "s")] private string? token { get; set; }
+    [SupplyParameterFromForm(FormName = "step2")] private QuoteRequest? model { get; set; }
+
+    private QuoteRequest? currentModel;
+
+    protected override void OnParametersSet()
+    {
+        if (model is not null)
+            currentModel = model;
+        else
+            currentModel = Protector.Unprotect(token);
+
+        if (currentModel is not null)
+        {
+            currentModel.WallboxKw ??= 11;
+            currentModel.WallboxDistanceMeters ??= 5;
+            currentModel.PvAreaSqm ??= 30;
+            currentModel.PvWithStorage ??= false;
+        }
+    }
+
+    private void HandleNext()
+    {
+        Nav.NavigateTo($"/angebot/zeit-ort?s={Uri.EscapeDataString(Protector.Protect(currentModel!))}");
+    }
+
+    private void HandleBack() => Nav.NavigateTo("/angebot");
+}

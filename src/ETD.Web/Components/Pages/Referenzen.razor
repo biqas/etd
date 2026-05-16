@@ -1,0 +1,28 @@
+@page "/referenzen"
+@using ETD.Web.Components.Shared
+
+<PageTitle>Referenzen — ETD</PageTitle>
+
+<ServiceDetailHero Eyebrow="Projekte" Title="Referenzen." Sub="Ein Auszug aus unseren Kundenanlagen — vom Einfamilienhaus bis zum Holzhaus in Blockbohlenbauweise." />
+
+<section class="container fade-in" style="padding:64px 0">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:24px">
+        <article class="card" style="overflow:hidden;padding:0">
+            <div style="aspect-ratio:4/3;background:linear-gradient(135deg, #1a1f2a, #0e1116);display:flex;align-items:center;justify-content:center;color:#fca5a5;font-size:64px">🏡</div>
+            <div style="padding:20px">
+                <div class="eyebrow">Featured Case</div>
+                <h3>Holzhaus in Blockbohlenbauweise</h3>
+                <p style="color:var(--muted);font-size:14px;margin-top:8px">Komplette Elektroinstallation in einem Holzhaus mit besonderen Anforderungen an Leitungsführung und Brandschutz.</p>
+            </div>
+        </article>
+        @for (int i = 0; i < 5; i++)
+        {
+            <article class="card" style="overflow:hidden;padding:0">
+                <div style="aspect-ratio:4/3;background:linear-gradient(135deg, #f3f4f6, #e5e7eb);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px">Weitere Projekte folgen</div>
+                <div style="padding:20px">
+                    <h3 style="font-size:1rem;color:var(--muted)">Projekt-Slot @(i + 2)</h3>
+                </div>
+            </article>
+        }
+    </div>
+</section>

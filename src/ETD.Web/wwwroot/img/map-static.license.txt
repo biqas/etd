@@ -1,0 +1,3 @@
+Source: OpenStreetMap / staticmap.openstreetmap.de
+Map data: © OpenStreetMap contributors (https://www.openstreetmap.org/copyright)
+License: ODbL — Open Database License (https://opendatacommons.org/licenses/odbl/)

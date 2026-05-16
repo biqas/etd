@@ -1,0 +1,33 @@
+@page "/kontakt"
+@using ETD.Web.Components.Shared
+
+<PageTitle>Kontakt — ETD</PageTitle>
+
+<ServiceDetailHero Eyebrow="Kontakt" Title="So erreichen Sie uns." Sub="Direkter Draht zum Meisterbetrieb — Anruf, E-Mail oder Angebotsanfrage." />
+
+<section class="container fade-in" style="padding:64px 0">
+    <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:48px">
+        <div>
+            <div class="eyebrow">Adresse</div>
+            <h2 style="margin-bottom:18px">Elektrotechnik Desch</h2>
+            <p style="font-size:1.0625rem;line-height:1.8">
+                Von-Cancrin-Straße 22<br/>
+                63599 Biebergemünd<br/>
+                Hessen, Deutschland
+            </p>
+            <div style="margin-top:32px;display:grid;gap:16px">
+                <a href="tel:+4960509062874" class="btn btn-primary" style="justify-content:flex-start">📞 06050 9062874</a>
+                <a href="mailto:mail@ElektroTechnikDesch.de" class="btn btn-ghost" style="justify-content:flex-start">✉ mail@ElektroTechnikDesch.de</a>
+                <a href="/angebot" class="btn btn-ghost" style="justify-content:flex-start">📝 Angebot anfragen</a>
+            </div>
+        </div>
+        <div>
+            <div class="card" style="padding:0;overflow:hidden">
+                <a href="https://www.openstreetmap.org/?mlat=50.1583&amp;mlon=9.3556#map=15/50.1583/9.3556" target="_blank" rel="noopener" style="display:block">
+                    <img src="img/map-static.png" alt="Karte Biebergemünd" style="width:100%;display:block" loading="lazy" />
+                </a>
+                <div style="padding:16px;font-size:13px;color:var(--muted);text-align:center">Klick öffnet OpenStreetMap in neuem Tab</div>
+            </div>
+        </div>
+    </div>
+</section>

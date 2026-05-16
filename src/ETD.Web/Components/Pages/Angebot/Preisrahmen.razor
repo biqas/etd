@@ -24,6 +24,159 @@
         <EditForm Model="currentModel" OnValidSubmit="HandleNext" FormName="step2" Enhance>
             <input type="hidden" name="s" value="@token" />
 
+            @if (currentModel.Services.Contains("elektroinstallation"))
+            {
+                var el = PriceEstimator.EstimateElektroinstallation(
+                    currentModel.ElektroRoomCount ?? 5,
+                    (currentModel.ElektroProjektart ?? "sanierung") == "neubau",
+                    currentModel.ElektroZaehlerschrankNeu ?? false);
+                <div class="param-block">
+                    <h3 class="param-block-title">Elektroinstallation</h3>
+                    <label class="slider-label">Projektart</label>
+                    <div class="chips">
+                        <label class="chip">
+                            <input type="radio" name="ElektroProjektart" value="neubau" checked="@((currentModel.ElektroProjektart ?? "sanierung") == "neubau")" oninput="window.etdPrice && etdPrice.update()" />
+                            Neubau
+                        </label>
+                        <label class="chip">
+                            <input type="radio" name="ElektroProjektart" value="sanierung" checked="@((currentModel.ElektroProjektart ?? "sanierung") == "sanierung")" oninput="window.etdPrice && etdPrice.update()" />
+                            Sanierung
+                        </label>
+                    </div>
+
+                    <div class="slider-block">
+                        <label class="slider-label">
+                            Anzahl Räume
+                            <span class="slider-value"><span data-out="el-rooms">@(currentModel.ElektroRoomCount ?? 5)</span></span>
+                        </label>
+                        <input class="range" type="range" name="ElektroRoomCount" min="1" max="12" step="1"
+                               value="@(currentModel.ElektroRoomCount ?? 5)" oninput="window.etdPrice && etdPrice.update()" />
+                        <div class="range-scale"><span>1</span><span>6</span><span>12</span></div>
+                    </div>
+
+                    <label class="checkbox-row">
+                        <input type="checkbox" name="ElektroZaehlerschrankNeu" value="true" checked="@(currentModel.ElektroZaehlerschrankNeu == true)" oninput="window.etdPrice && etdPrice.update()" />
+                        <span>Zählerschrank ebenfalls erneuern</span>
+                    </label>
+
+                    <div class="estimate-card">
+                        <div class="estimate-label">Elektroinstallation · Richtwert (zzgl. MwSt.)</div>
+                        <div class="estimate-amount" data-out="el-est">~ @($"{el.LowEuro:N0} – {el.HighEuro:N0}") €</div>
+                    </div>
+                </div>
+            }
+
+            @if (currentModel.Services.Contains("smart-home-knx"))
+            {
+                var knxFuncs = (currentModel.KnxFunctions ?? "light|blinds").Split('|', StringSplitOptions.RemoveEmptyEntries).ToHashSet();
+                var knxEst = PriceEstimator.EstimateKnx(currentModel.KnxRoomCount ?? 5, knxFuncs.Count);
+                <div class="param-block">
+                    <h3 class="param-block-title">Smart Home / KNX</h3>
+
+                    <div class="slider-block">
+                        <label class="slider-label">
+                            Anzahl Räume mit Smart Home
+                            <span class="slider-value"><span data-out="knx-rooms">@(currentModel.KnxRoomCount ?? 5)</span></span>
+                        </label>
+                        <input class="range" type="range" name="KnxRoomCount" min="1" max="12" step="1"
+                               value="@(currentModel.KnxRoomCount ?? 5)" oninput="window.etdPrice && etdPrice.update()" />
+                        <div class="range-scale"><span>1</span><span>6</span><span>12</span></div>
+                    </div>
+
+                    <label class="slider-label" style="margin-top:20px">Welche Funktionen?</label>
+                    <input type="hidden" name="KnxFunctions" value="@(currentModel.KnxFunctions ?? "light|blinds")" id="knx-functions-raw" />
+                    <div class="chips chips-wrap" id="knx-functions-group">
+                        @foreach (var (slug, label) in new[]{ ("light","Lichtsteuerung"), ("blinds","Jalousien"), ("heating","Heizung"), ("scenes","Szenen"), ("security","Sicherheit"), ("voice","Sprachsteuerung") })
+                        {
+                            <label class="chip">
+                                <input type="checkbox" data-knx-func="@slug" checked="@(knxFuncs.Contains(slug))" oninput="window.etdPrice && etdPrice.update()" />
+                                @label
+                            </label>
+                        }
+                    </div>
+
+                    <div class="estimate-card">
+                        <div class="estimate-label">KNX · Richtwert (zzgl. MwSt., je nach Funktionsumfang)</div>
+                        <div class="estimate-amount" data-out="knx-est">~ @($"{knxEst.LowEuro:N0} – {knxEst.HighEuro:N0}") €</div>
+                    </div>
+                </div>
+            }
+
+            @if (currentModel.Services.Contains("klimatechnik"))
+            {
+                var klima = PriceEstimator.EstimateKlima(currentModel.KlimaRoomCount ?? 1, currentModel.KlimaSystem ?? "single");
+                <div class="param-block">
+                    <h3 class="param-block-title">Klima- & Kältetechnik</h3>
+
+                    <div class="slider-block">
+                        <label class="slider-label">
+                            Anzahl Räume
+                            <span class="slider-value"><span data-out="klima-rooms">@(currentModel.KlimaRoomCount ?? 1)</span></span>
+                        </label>
+                        <input class="range" type="range" name="KlimaRoomCount" min="1" max="8" step="1"
+                               value="@(currentModel.KlimaRoomCount ?? 1)" oninput="window.etdPrice && etdPrice.update()" />
+                        <div class="range-scale"><span>1</span><span>4</span><span>8</span></div>
+                    </div>
+
+                    <label class="slider-label" style="margin-top:20px">System</label>
+                    <div class="chips chips-wrap">
+                        <label class="chip">
+                            <input type="radio" name="KlimaSystem" value="single" checked="@((currentModel.KlimaSystem ?? "single") == "single")" oninput="window.etdPrice && etdPrice.update()" />
+                            Single-Split (1×)
+                        </label>
+                        <label class="chip">
+                            <input type="radio" name="KlimaSystem" value="multi" checked="@(currentModel.KlimaSystem == "multi")" oninput="window.etdPrice && etdPrice.update()" />
+                            Multi-Split (mehrere Räume)
+                        </label>
+                        <label class="chip">
+                            <input type="radio" name="KlimaSystem" value="vrf" checked="@(currentModel.KlimaSystem == "vrf")" oninput="window.etdPrice && etdPrice.update()" />
+                            VRF (Gewerbe)
+                        </label>
+                    </div>
+
+                    <div class="estimate-card">
+                        <div class="estimate-label">Klimatechnik · Richtwert (zzgl. MwSt.)</div>
+                        <div class="estimate-amount" data-out="klima-est">~ @($"{klima.LowEuro:N0} – {klima.HighEuro:N0}") €</div>
+                    </div>
+                </div>
+            }
+
+            @if (currentModel.Services.Contains("sicherheit"))
+            {
+                var secComps = (currentModel.SecurityComponents ?? "alarm").Split('|', StringSplitOptions.RemoveEmptyEntries).ToHashSet();
+                var secEst = PriceEstimator.EstimateSecurity(secComps.Count, currentModel.SecuritySensorCount ?? 6);
+                <div class="param-block">
+                    <h3 class="param-block-title">Sicherheitstechnik</h3>
+
+                    <label class="slider-label">Komponenten</label>
+                    <input type="hidden" name="SecurityComponents" value="@(currentModel.SecurityComponents ?? "alarm")" id="sec-components-raw" />
+                    <div class="chips chips-wrap" id="sec-components-group">
+                        @foreach (var (slug, label) in new[]{ ("alarm","Alarm"), ("video","Videoüberwachung"), ("brandmelder","Brandmelder"), ("zutritt","Zutrittskontrolle") })
+                        {
+                            <label class="chip">
+                                <input type="checkbox" data-sec-comp="@slug" checked="@(secComps.Contains(slug))" oninput="window.etdPrice && etdPrice.update()" />
+                                @label
+                            </label>
+                        }
+                    </div>
+
+                    <div class="slider-block">
+                        <label class="slider-label">
+                            Geschätzte Anzahl Sensoren / Kameras
+                            <span class="slider-value"><span data-out="sec-units">@(currentModel.SecuritySensorCount ?? 6)</span></span>
+                        </label>
+                        <input class="range" type="range" name="SecuritySensorCount" min="1" max="30" step="1"
+                               value="@(currentModel.SecuritySensorCount ?? 6)" oninput="window.etdPrice && etdPrice.update()" />
+                        <div class="range-scale"><span>1</span><span>15</span><span>30</span></div>
+                    </div>
+
+                    <div class="estimate-card">
+                        <div class="estimate-label">Sicherheitstechnik · Richtwert (zzgl. MwSt.)</div>
+                        <div class="estimate-amount" data-out="sec-est">~ @($"{secEst.LowEuro:N0} – {secEst.HighEuro:N0}") €</div>
+                    </div>
+                </div>
+            }
+
             @if (currentModel.Services.Contains("wallbox"))
             {
                 var wb = PriceEstimator.EstimateWallbox(currentModel.WallboxKw ?? 11, currentModel.WallboxDistanceMeters ?? 5);
@@ -123,6 +276,15 @@
             currentModel.WallboxDistanceMeters ??= 5;
             currentModel.PvAreaSqm ??= 30;
             currentModel.PvStorageKwh ??= 0;
+            currentModel.ElektroProjektart ??= "sanierung";
+            currentModel.ElektroRoomCount ??= 5;
+            currentModel.ElektroZaehlerschrankNeu ??= false;
+            currentModel.KnxRoomCount ??= 5;
+            currentModel.KnxFunctions ??= "light|blinds";
+            currentModel.KlimaRoomCount ??= 1;
+            currentModel.KlimaSystem ??= "single";
+            currentModel.SecurityComponents ??= "alarm";
+            currentModel.SecuritySensorCount ??= 6;
         }
     }
 

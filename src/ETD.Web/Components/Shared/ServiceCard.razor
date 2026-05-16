@@ -3,13 +3,20 @@
     [Parameter, EditorRequired] public string Title { get; set; } = "";
     [Parameter, EditorRequired] public string Description { get; set; } = "";
     [Parameter, EditorRequired] public string Href { get; set; } = "";
+    [Parameter] public string? InfoHref { get; set; }
 }
 
-<a href="@Href" class="card service-card fade-in">
-    <div class="service-icon">
-        <ServiceIcon Name="@Icon" Size="28" />
-    </div>
-    <h3>@Title</h3>
-    <p style="font-size:14px;color:var(--muted);margin-top:6px">@Description</p>
-    <div style="font-size:13px;color:var(--red);margin-top:16px;font-weight:700">Mehr erfahren →</div>
-</a>
+<article class="card service-card fade-in">
+    <a href="@Href" class="service-card-main">
+        <div class="service-icon">
+            <ServiceIcon Name="@Icon" Size="28" />
+        </div>
+        <h3>@Title</h3>
+        <p style="font-size:14px;color:var(--muted);margin-top:6px">@Description</p>
+        <span class="primary-cta">Angebot anfragen →</span>
+    </a>
+    @if (!string.IsNullOrEmpty(InfoHref))
+    {
+        <a href="@InfoHref" class="info-cta">Mehr Infos →</a>
+    }
+</article>

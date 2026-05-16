@@ -74,6 +74,9 @@
         set { if (value is not null) _model = value; }
     }
 
+    // Optional pre-selected service from the URL (?for=slug). When set we auto-skip Step 1.
+    [SupplyParameterFromQuery(Name = "for")] private string? PrefilledService { get; set; }
+
     private string? servicesError;
 
     protected override void OnParametersSet()
@@ -87,6 +90,19 @@
                 .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
                 .ToList();
         }
+
+        // Fast-track: a tile click passed ?for=slug → skip step 1 entirely.
+        if (!string.IsNullOrWhiteSpace(PrefilledService) && _model.Services.Count == 0)
+        {
+            var match = ServiceCatalog.FindBySlug(PrefilledService);
+            if (match is not null)
+            {
+                _model.Services = new List<string> { match.Slug };
+                var hasParams = ServiceParams.HasParamsFor(match.Slug);
+                var next = hasParams ? "/angebot/preisrahmen" : "/angebot/zeit-ort";
+                Nav.NavigateTo($"{next}?s={Uri.EscapeDataString(Protector.Protect(_model))}", replace: true);
+            }
+        }
     }
 
     private void HandleSubmit()
@@ -98,8 +114,8 @@
             return;
         }
 
-        var hasPrice = _model.Services.Contains("wallbox") || _model.Services.Contains("photovoltaik");
-        var next = hasPrice ? "/angebot/preisrahmen" : "/angebot/zeit-ort";
+        var hasParams = ServiceParams.HasParamsForAny(_model.Services);
+        var next = hasParams ? "/angebot/preisrahmen" : "/angebot/zeit-ort";
         Nav.NavigateTo($"{next}?s={Uri.EscapeDataString(Protector.Protect(_model))}");
     }
 }

@@ -132,8 +132,8 @@
 
     private void HandleBack()
     {
-        var hasPrice = currentModel!.Services.Contains("wallbox") || currentModel.Services.Contains("photovoltaik");
-        Nav.NavigateTo(hasPrice ? "/angebot/preisrahmen" : "/angebot");
+        var hasParams = ServiceParams.HasParamsForAny(currentModel!.Services);
+        Nav.NavigateTo(hasParams ? "/angebot/preisrahmen" : "/angebot");
     }
 }
 

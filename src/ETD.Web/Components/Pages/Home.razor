@@ -29,7 +29,7 @@
     <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:18px;margin-top:36px">
         @foreach (var s in ServiceCatalog.TopServices)
         {
-            <ServiceCard Icon="@s.Icon" Title="@s.Title" Description="@s.ShortDescription" Href="@($"/leistungen/{s.Slug}")" />
+            <ServiceCard Icon="@s.Icon" Title="@s.Title" Description="@s.ShortDescription" Href="@($"/angebot?for={s.Slug}")" InfoHref="@($"/leistungen/{s.Slug}")" />
         }
     </div>
 </section>

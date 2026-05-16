@@ -35,14 +35,90 @@
         high += storageKwh * 900;
         return { low, high };
     }
+    function estElektro(rooms, isNeubau, zsNeu) {
+        rooms = Math.max(1, Math.min(12, rooms));
+        const per = isNeubau ? { low: 1800, high: 2800 } : { low: 900, high: 1700 };
+        let low = rooms * per.low, high = rooms * per.high;
+        if (zsNeu) { low += 1200; high += 2200; }
+        return { low, high };
+    }
+    function estKnx(rooms, funcCount) {
+        rooms = Math.max(1, Math.min(12, rooms));
+        funcCount = Math.max(1, Math.min(6, funcCount));
+        const mult = 1 + (funcCount - 1) * 0.20;
+        return {
+            low: Math.round(rooms * 800 * mult) + 1500,
+            high: Math.round(rooms * 1400 * mult) + 2800
+        };
+    }
+    function estKlima(rooms, system) {
+        rooms = Math.max(1, Math.min(8, rooms));
+        if (system === 'vrf')   return { low: rooms * 3200, high: rooms * 4800 };
+        if (system === 'multi') return { low: rooms * 1800, high: rooms * 2900 };
+        return { low: rooms * 1500, high: rooms * 2400 };
+    }
+    function estSecurity(comps, units) {
+        comps = Math.max(1, Math.min(4, comps));
+        units = Math.max(1, Math.min(30, units));
+        return {
+            low: comps * 600 + units * 220,
+            high: comps * 1000 + units * 380
+        };
+    }
     function readNum(name) {
         const el = document.querySelector('[name="' + name + '"]');
         return el ? +el.value : 0;
+    }
+    function readRadio(name) {
+        const el = document.querySelector('[name="' + name + '"]:checked');
+        return el ? el.value : '';
+    }
+    function readCheckbox(name) {
+        const el = document.querySelector('[name="' + name + '"]');
+        return el ? el.checked : false;
+    }
+    function syncChipGroupToHidden(groupId, hiddenId, attr) {
+        const group = document.getElementById(groupId);
+        const hidden = document.getElementById(hiddenId);
+        if (!group || !hidden) return [];
+        const slugs = Array.from(group.querySelectorAll('input[type=checkbox][' + attr + ']:checked'))
+            .map(el => el.getAttribute(attr));
+        hidden.value = slugs.join('|');
+        return slugs;
     }
     function setOut(key, value) {
         document.querySelectorAll('[data-out="' + key + '"]').forEach(e => e.textContent = value);
     }
     function updatePrice() {
+        if (document.querySelector('[name="ElektroRoomCount"]')) {
+            const rooms = readNum('ElektroRoomCount');
+            const isNeubau = readRadio('ElektroProjektart') === 'neubau';
+            const zsNeu = readCheckbox('ElektroZaehlerschrankNeu');
+            setOut('el-rooms', rooms);
+            const e = estElektro(rooms, isNeubau, zsNeu);
+            setOut('el-est', `~ ${fmt(e.low)} – ${fmt(e.high)} €`);
+        }
+        if (document.querySelector('[name="KnxRoomCount"]')) {
+            const rooms = readNum('KnxRoomCount');
+            const funcs = syncChipGroupToHidden('knx-functions-group', 'knx-functions-raw', 'data-knx-func');
+            setOut('knx-rooms', rooms);
+            const e = estKnx(rooms, Math.max(funcs.length, 1));
+            setOut('knx-est', `~ ${fmt(e.low)} – ${fmt(e.high)} €`);
+        }
+        if (document.querySelector('[name="KlimaRoomCount"]')) {
+            const rooms = readNum('KlimaRoomCount');
+            const sys = readRadio('KlimaSystem') || 'single';
+            setOut('klima-rooms', rooms);
+            const e = estKlima(rooms, sys);
+            setOut('klima-est', `~ ${fmt(e.low)} – ${fmt(e.high)} €`);
+        }
+        if (document.querySelector('[name="SecuritySensorCount"]')) {
+            const units = readNum('SecuritySensorCount');
+            const comps = syncChipGroupToHidden('sec-components-group', 'sec-components-raw', 'data-sec-comp');
+            setOut('sec-units', units);
+            const e = estSecurity(Math.max(comps.length, 1), units);
+            setOut('sec-est', `~ ${fmt(e.low)} – ${fmt(e.high)} €`);
+        }
         if (document.querySelector('[name="WallboxKw"]')) {
             const kw = readNum('WallboxKw');
             const dist = readNum('WallboxDistanceMeters');

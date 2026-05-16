@@ -1,4 +1,6 @@
 .superpowers/
+.playwright-mcp/
+.serena/
 bin/
 obj/
 .vs/

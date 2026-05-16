@@ -1,7 +1,0 @@
-[      64ms] ReferenceError: Blazor is not defined
-    at http://localhost:5000/js/animations.js:16:5
-    at http://localhost:5000/js/animations.js:17:3
-[     170ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:5000/favicon.svg:0
-[ 3892034ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ chrome-error://chromewebdata/:0
-[ 3896408ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ chrome-error://chromewebdata/:0
-[ 3898708ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ chrome-error://chromewebdata/:0

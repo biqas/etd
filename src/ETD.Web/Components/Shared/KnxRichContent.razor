@@ -1,0 +1,218 @@
+@* KNX-specific deep-dive content for /leistungen/smart-home-knx *@
+
+<!-- ============== HOUSE ILLUSTRATION + EXPLAINER ============== -->
+<section class="container fade-in" style="padding:48px 0 32px">
+    <div class="knx-hero-grid">
+        <div>
+            <div class="eyebrow">So funktioniert KNX</div>
+            <h2 style="margin-bottom:14px">Ein Bus. <em style="color:var(--red);font-style:normal">Alles vernetzt.</em></h2>
+            <p style="font-size:1.0625rem;color:var(--ink-2);margin-bottom:14px">KNX ist der weltweite Standard für Gebäude­automation — ein zweiadriges Buskabel verbindet alle Sensoren und Aktoren in Ihrem Haus. <strong>Keine Cloud. Kein Hersteller-Lock-in. Volle Kontrolle.</strong></p>
+            <p style="font-size:1.0625rem;color:var(--ink-2)">Jedes Gerät — vom Licht­schalter über den Thermostat bis zur Wallbox — kann mit jedem anderen reden. Sie definieren Szenen und Logiken, die zu Ihrem Alltag passen. Das System läuft <strong>auch ohne Internet</strong> und bleibt <strong>30+ Jahre erweiterbar</strong>.</p>
+        </div>
+        <div class="knx-house-illustration" aria-hidden="true">
+            @* Inline SVG: simplified house cross-section with KNX bus + devices *@
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="busGlow" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#dc1f26" stop-opacity="0.0"/>
+                        <stop offset="50%" stop-color="#dc1f26" stop-opacity="0.9"/>
+                        <stop offset="100%" stop-color="#dc1f26" stop-opacity="0.0"/>
+                    </linearGradient>
+                </defs>
+
+                @* Roof *@
+                <path d="M30 110 L200 30 L370 110 L370 115 L200 35 L30 115 Z" fill="#0e1116"/>
+
+                @* House outline *@
+                <rect x="40" y="110" width="320" height="180" rx="4" fill="none" stroke="#0e1116" stroke-width="2"/>
+                @* Floor divider *@
+                <line x1="40" y1="200" x2="360" y2="200" stroke="#0e1116" stroke-width="1.5" opacity="0.4"/>
+                @* Room dividers — upper floor *@
+                <line x1="160" y1="110" x2="160" y2="200" stroke="#0e1116" stroke-width="1.5" opacity="0.4"/>
+                <line x1="260" y1="110" x2="260" y2="200" stroke="#0e1116" stroke-width="1.5" opacity="0.4"/>
+                @* Room dividers — lower floor *@
+                <line x1="200" y1="200" x2="200" y2="290" stroke="#0e1116" stroke-width="1.5" opacity="0.4"/>
+
+                @* KNX bus line (pulsing red) *@
+                <path d="M20 245 L40 245 L60 245 L60 155 L160 155 L260 155 L340 155 L340 245 L360 245 L380 245"
+                      fill="none" stroke="#dc1f26" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 4">
+                    <animate attributeName="stroke-dashoffset" values="0;-8" dur="0.8s" repeatCount="indefinite"/>
+                </path>
+
+                @* Bus line label *@
+                <text x="100" y="148" font-family="Inter, sans-serif" font-size="9" font-weight="700" fill="#dc1f26" letter-spacing="0.8">KNX-BUS</text>
+
+                @* Upper-floor devices *@
+                <g transform="translate(95 165)">
+                    @* Light bulb *@
+                    <circle cx="0" cy="0" r="13" fill="#fff" stroke="#0e1116" stroke-width="1.5"/>
+                    <path d="M-5 -2 a5 5 0 0 1 10 0 c0 2 -1.5 3 -2 4 v2 h-6 v-2 c-.5 -1 -2 -2 -2 -4 z" fill="#dc1f26" opacity="0.85"/>
+                    <line x1="-3" y1="6" x2="3" y2="6" stroke="#0e1116" stroke-width="1.2"/>
+                </g>
+                <g transform="translate(210 165)">
+                    @* Blinds *@
+                    <rect x="-12" y="-10" width="24" height="20" rx="1" fill="#fff" stroke="#0e1116" stroke-width="1.5"/>
+                    <line x1="-10" y1="-5" x2="10" y2="-5" stroke="#0e1116" stroke-width="1"/>
+                    <line x1="-10" y1="0" x2="10" y2="0" stroke="#0e1116" stroke-width="1"/>
+                    <line x1="-10" y1="5" x2="10" y2="5" stroke="#0e1116" stroke-width="1"/>
+                </g>
+                <g transform="translate(310 165)">
+                    @* Thermostat *@
+                    <circle cx="0" cy="0" r="13" fill="#fff" stroke="#0e1116" stroke-width="1.5"/>
+                    <text x="0" y="3" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="800" fill="#dc1f26">21°</text>
+                </g>
+
+                @* Lower-floor devices *@
+                <g transform="translate(115 255)">
+                    @* Wallbox icon *@
+                    <rect x="-10" y="-12" width="20" height="24" rx="3" fill="#fff" stroke="#0e1116" stroke-width="1.5"/>
+                    <circle cx="0" cy="-4" r="2.5" fill="#dc1f26"/>
+                    <path d="M-3 4 L3 4" stroke="#0e1116" stroke-width="1.5" stroke-linecap="round"/>
+                </g>
+                <g transform="translate(280 255)">
+                    @* Switch / control *@
+                    <rect x="-12" y="-10" width="24" height="20" rx="2" fill="#fff" stroke="#0e1116" stroke-width="1.5"/>
+                    <circle cx="0" cy="0" r="3" fill="#0e1116"/>
+                </g>
+
+                @* Bus drops to devices *@
+                <line x1="95" y1="155" x2="95" y2="155" stroke="#dc1f26" stroke-width="1.5"/>
+                <line x1="210" y1="155" x2="210" y2="155" stroke="#dc1f26" stroke-width="1.5"/>
+                <line x1="310" y1="155" x2="310" y2="155" stroke="#dc1f26" stroke-width="1.5"/>
+                <line x1="115" y1="245" x2="115" y2="245" stroke="#dc1f26" stroke-width="1.5"/>
+                <line x1="280" y1="245" x2="280" y2="245" stroke="#dc1f26" stroke-width="1.5"/>
+
+                @* Smartphone, top right, connected via wifi *@
+                <g transform="translate(360 60)">
+                    <rect x="-12" y="-22" width="24" height="44" rx="4" fill="#0e1116"/>
+                    <rect x="-9" y="-19" width="18" height="34" rx="1.5" fill="#dc1f26" opacity="0.95"/>
+                    <line x1="-3" y1="-13" x2="3" y2="-13" stroke="#fff" stroke-width="1.5"/>
+                    <line x1="-3" y1="-8" x2="3" y2="-8" stroke="#fff" stroke-width="1.5" opacity="0.7"/>
+                    <circle cx="0" cy="18" r="1.5" fill="#fff"/>
+                </g>
+                @* Wifi arcs from phone to bus *@
+                <g transform="translate(330 90)" fill="none" stroke="#dc1f26" stroke-width="1.5" stroke-linecap="round" opacity="0.7">
+                    <path d="M-8 -8 a10 10 0 0 1 16 0"/>
+                    <path d="M-12 -4 a14 14 0 0 1 24 0"/>
+                </g>
+
+                @* Bottom annotation: a glowing pulse along the bus *@
+                <line x1="20" y1="245" x2="380" y2="245" stroke="url(#busGlow)" stroke-width="3" opacity="0.8">
+                    <animate attributeName="opacity" values="0;0.8;0" dur="2.5s" repeatCount="indefinite"/>
+                </line>
+            </svg>
+        </div>
+    </div>
+</section>
+
+<!-- ============== USE-CASE GRID ============== -->
+<section style="background:var(--white);padding:64px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+    <div class="container fade-in">
+        <div class="eyebrow">Was KNX für Sie tut</div>
+        <h2 style="margin-bottom:8px">Sechs typische <em style="color:var(--red);font-style:normal">Alltags­szenen.</em></h2>
+        <p style="color:var(--muted);max-width:680px;margin-bottom:36px">Das sind die häufigsten Anwendungen — wir setzen so viele davon ein, wie Sie möchten. Erweitern Sie später nach Bedarf.</p>
+
+        <div class="knx-usecase-grid">
+            <article class="card knx-uc">
+                <div class="knx-uc-icon"><ServiceIcon Name="lightbulb" Size="28" /></div>
+                <h3>Licht­szenen</h3>
+                <p>„Filmabend", „Frühstück", „Putzlicht" — auf Knopfdruck oder per Zeitplan. Tunable White passt die Lichtfarbe an die Tageszeit an.</p>
+            </article>
+            <article class="card knx-uc">
+                <div class="knx-uc-icon"><ServiceIcon Name="home" Size="28" /></div>
+                <h3>Jalousien & Sonnen­schutz</h3>
+                <p>Fahren automatisch hoch beim Sonnenaufgang, runter wenn die Sonne zu stark einfällt. Bei Wind fahren sie sicherheits­halber ein.</p>
+            </article>
+            <article class="card knx-uc">
+                <div class="knx-uc-icon"><ServiceIcon Name="snowflake" Size="28" /></div>
+                <h3>Einzelraum­regelung</h3>
+                <p>Jeder Raum hat seine eigene Wohlfühl­temperatur. Bei Abwesenheit wird automatisch abgesenkt. Spart bis zu 30 % Heizkosten.</p>
+            </article>
+            <article class="card knx-uc">
+                <div class="knx-uc-icon"><ServiceIcon Name="shield" Size="28" /></div>
+                <h3>Anwesenheits-Simulation</h3>
+                <p>Im Urlaub schaltet sich abends das Wohnzimmer­licht ein, Jalousien fahren wie gewohnt. Sieht aus, als wären Sie zu Hause.</p>
+            </article>
+            <article class="card knx-uc">
+                <div class="knx-uc-icon"><ServiceIcon Name="sun" Size="28" /></div>
+                <h3>PV-Eigen­verbrauch</h3>
+                <p>Wallbox lädt das E-Auto, wenn die Sonne scheint. Wärmepumpe heizt vor. Kein Strom geht ungenutzt ins Netz.</p>
+            </article>
+            <article class="card knx-uc">
+                <div class="knx-uc-icon"><ServiceIcon Name="phone" Size="28" /></div>
+                <h3>Sprach­steuerung (optional)</h3>
+                <p>„Alexa, Filmabend." Via Bridge anbindbar — aber nur als Komfort, nicht als Voraussetzung. KNX läuft auch wenn die Cloud aus ist.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<!-- ============== KNX VS. CLOUD ============== -->
+<section class="container fade-in" style="padding:64px 0">
+    <div class="eyebrow">Vergleich</div>
+    <h2 style="margin-bottom:12px">KNX vs. <em style="color:var(--red);font-style:normal">Cloud-Smart-Home</em></h2>
+    <p style="color:var(--muted);max-width:680px;margin-bottom:32px">Tuya, Hue, Apple Home, Matter — alle haben ihre Berechtigung. Aber wenn das Haus dauerhaft smart sein soll, ist KNX die solidere Investition.</p>
+
+    <div class="knx-compare">
+        <table>
+            <thead>
+                <tr><th>Aspekt</th><th>KNX</th><th>Cloud-Lösung</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Funktioniert offline</td><td class="yes">Ja</td><td class="no">Nein — benötigt Internet & Hersteller-Cloud</td></tr>
+                <tr><td>Hersteller-unabhängig</td><td class="yes">Ja — 500+ Hersteller, alle kompatibel</td><td class="no">An einen Anbieter gebunden</td></tr>
+                <tr><td>Lebensdauer</td><td class="yes">30+ Jahre</td><td class="no">Typisch 3-7 Jahre (Cloud wird abgeschaltet)</td></tr>
+                <tr><td>Wertsteigerung Immobilie</td><td class="yes">Ja — gilt als hochwertige Ausstattung</td><td class="neutral">Marginal</td></tr>
+                <tr><td>Datenschutz</td><td class="yes">Daten bleiben im Haus</td><td class="no">Daten gehen in die Hersteller-Cloud</td></tr>
+                <tr><td>Einstiegs­kosten</td><td class="neutral">Höher (Planung & Bus-Kabel)</td><td class="yes">Niedriger</td></tr>
+                <tr><td>Erweiterbar</td><td class="yes">Beliebig, Schritt für Schritt</td><td class="neutral">Limitiert auf das Ökosystem</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ============== ABLAUF ============== -->
+<section style="background:var(--ink);color:#fff;padding:72px 0">
+    <div class="container fade-in">
+        <div class="eyebrow">Ablauf</div>
+        <h2 style="color:#fff;margin-bottom:36px">Von der Idee zur fertigen Anlage <em style="color:var(--red);font-style:normal">in 5 Schritten.</em></h2>
+
+        <ol class="knx-steps">
+            <li>
+                <div class="knx-step-num">1</div>
+                <div>
+                    <h3>Erstberatung vor Ort</h3>
+                    <p>Kostenlos. Wir hören zu, schauen uns die Räume an, klären welche Funktionen für Sie wirklich Sinn machen.</p>
+                </div>
+            </li>
+            <li>
+                <div class="knx-step-num">2</div>
+                <div>
+                    <h3>Planung & Festpreis-Angebot</h3>
+                    <p>Funktionsumfang, Geräteliste, Aufwand. Sie wissen vor Beginn genau, was es kostet.</p>
+                </div>
+            </li>
+            <li>
+                <div class="knx-step-num">3</div>
+                <div>
+                    <h3>Installation</h3>
+                    <p>Bus-Kabel, Schaltschrank, Sensoren & Aktoren — wenn möglich staubarm im bewohnten Bestand.</p>
+                </div>
+            </li>
+            <li>
+                <div class="knx-step-num">4</div>
+                <div>
+                    <h3>Programmierung</h3>
+                    <p>Wir richten Ihre Szenen und Logiken ein, testen jeden Schalter, jede Steckdose, jede Jalousie.</p>
+                </div>
+            </li>
+            <li>
+                <div class="knx-step-num">5</div>
+                <div>
+                    <h3>Schulung & Übergabe</h3>
+                    <p>Sie bekommen eine Doku und können selber bedienen. Kleine Änderungen können Sie später selbst, größere übernehmen wir auf Zuruf.</p>
+                </div>
+            </li>
+        </ol>
+    </div>
+</section>

@@ -52,4 +52,9 @@ else
             </aside>
         </div>
     </section>
+
+    @if (service.Slug == "smart-home-knx")
+    {
+        <KnxRichContent />
+    }
 }

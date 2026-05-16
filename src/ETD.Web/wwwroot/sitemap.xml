@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://www.elektrotechnikdesch.de/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://www.elektrotechnikdesch.de/leistungen</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.elektrotechnikdesch.de/leistungen/elektroinstallation</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.elektrotechnikdesch.de/leistungen/smart-home-knx</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.elektrotechnikdesch.de/leistungen/photovoltaik</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.elektrotechnikdesch.de/leistungen/wallbox</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.elektrotechnikdesch.de/leistungen/klimatechnik</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.elektrotechnikdesch.de/leistungen/e-check</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.elektrotechnikdesch.de/leistungen/sicherheit</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.elektrotechnikdesch.de/gewerbe</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.elektrotechnikdesch.de/notdienst</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.elektrotechnikdesch.de/referenzen</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.elektrotechnikdesch.de/ueber-uns</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.elektrotechnikdesch.de/angebot</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://www.elektrotechnikdesch.de/kontakt</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+</urlset>

@@ -8,6 +8,18 @@ public sealed class QuoteRequest
     [MinLength(1, ErrorMessage = "Bitte mindestens eine Leistung auswählen.")]
     public List<string> Services { get; set; } = new();
 
+    /// <summary>
+    /// Comma-separated service slugs submitted via an InputText hidden field on step 1.
+    /// Parsed into <see cref="Services"/> in <c>Was.razor</c> before validation runs.
+    /// </summary>
+    public string? ServicesRaw { get; set; }
+
+    /// <summary>
+    /// Timeframe value submitted via an InputText hidden field on step 3.
+    /// Synced from the selected radio chip by JavaScript; copied into <see cref="Timeframe"/>.
+    /// </summary>
+    public string? TimeframeRaw { get; set; }
+
     [Required, RegularExpression("^(privat|gewerbe)$", ErrorMessage = "Bitte Privat oder Gewerbe wählen.")]
     public string Audience { get; set; } = "privat";
 

@@ -15,35 +15,44 @@
     <h1 style="margin-bottom:8px">Was brauchen Sie?</h1>
     <p style="color:var(--muted);margin-bottom:24px">Mehrfach-Auswahl möglich. Wenn unsicher: zur nächsten Frage springen — wir klären das im Telefon­gespräch.</p>
 
-    <EditForm Model="@currentModel" OnValidSubmit="HandleNext" FormName="step1" Enhance>
-        <DataAnnotationsValidator />
+    @* Step 1 only validates Services — use OnSubmit to avoid full-model validation *@
+    <EditForm Model="@FormModel" OnSubmit="HandleSubmit" FormName="step1" Enhance>
 
-        <div class="service-tiles">
+        <div class="service-tiles" id="service-tiles">
             @foreach (var s in ServiceCatalog.All)
             {
                 <label class="tile">
-                    <input type="checkbox" name="currentModel.Services" value="@s.Slug" checked="@currentModel.Services.Contains(s.Slug)" />
+                    @* Visual-only checkbox; the real selection is tracked via the
+                       hidden InputText below, which Blazor's form binder can bind. *@
+                    <input type="checkbox" data-service="@s.Slug" value="@s.Slug"
+                           checked="@(currentModel!.Services.Contains(s.Slug))" />
                     <span class="tile-icon">@s.Icon</span>
                     <span>@s.Title</span>
                 </label>
             }
         </div>
-        <ValidationMessage For="() => currentModel.Services" class="field-error" />
+        @* Hidden bound field — Blazor's InputText registers with the EditForm
+           so SupplyParameterFromForm can bind ServicesRaw correctly. *@
+        <InputText id="services-raw" type="hidden" @bind-Value="currentModel!.ServicesRaw" />
+        @if (servicesError is not null)
+        {
+            <div class="field-error">@servicesError</div>
+        }
 
         <label style="margin-top:24px">Für wen?</label>
         <div class="chips">
             <label class="chip">
-                <input type="radio" name="currentModel.Audience" value="privat" checked="@(currentModel.Audience == "privat")" />
+                <input type="radio" name="currentModel.Audience" value="privat" checked="@(currentModel!.Audience == "privat")" />
                 Privat
             </label>
             <label class="chip">
-                <input type="radio" name="currentModel.Audience" value="gewerbe" checked="@(currentModel.Audience == "gewerbe")" />
+                <input type="radio" name="currentModel.Audience" value="gewerbe" checked="@(currentModel!.Audience == "gewerbe")" />
                 Gewerbe
             </label>
         </div>
 
         <label style="margin-top:24px">Weitere Hinweise (optional)</label>
-        <InputTextArea @bind-Value="currentModel.Notes" placeholder="Was sollen wir noch wissen? (Termin, Anzahl Räume, Sondersituationen ...)" />
+        <InputTextArea @bind-Value="currentModel!.Notes" placeholder="Was sollen wir noch wissen? (Termin, Anzahl Räume, Sondersituationen ...)" />
 
         <div class="nav-btns">
             <button type="submit" class="btn btn-primary">Weiter →</button>
@@ -52,19 +61,75 @@
 </section>
 
 @code {
-    [SupplyParameterFromForm(FormName = "step1")] private QuoteRequest? model { get; set; }
+    // Property name must match the Razor expression used in form fields (currentModel.*)
+    // so that Blazor's SupplyParameterFromForm binder maps currentModel.X → currentModel.X.
+    [SupplyParameterFromForm(FormName = "step1")] private QuoteRequest? currentModel { get; set; }
 
-    private QuoteRequest currentModel => model ??= new QuoteRequest { Audience = "privat" };
+    // Non-nullable accessor for EditForm Model — safe because OnParametersSet guarantees
+    // currentModel is non-null before rendering begins.
+    private QuoteRequest FormModel => currentModel!;
+
+    private string? servicesError;
 
     protected override void OnInitialized()
     {
-        model ??= new QuoteRequest { Audience = "privat" };
+        currentModel ??= new QuoteRequest { Audience = "privat" };
     }
 
-    private void HandleNext()
+    protected override void OnParametersSet()
     {
+        currentModel ??= new QuoteRequest { Audience = "privat" };
+
+        // ServicesRaw is bound by Blazor's InputText binder on form submit.
+        // Populate Services from it so the step-1 validation works correctly.
+        if (!string.IsNullOrWhiteSpace(currentModel.ServicesRaw))
+        {
+            currentModel.Services = currentModel.ServicesRaw
+                .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                .ToList();
+        }
+    }
+
+    private void HandleSubmit()
+    {
+        servicesError = null;
+        if (currentModel!.Services.Count == 0)
+        {
+            servicesError = "Bitte mindestens eine Leistung auswählen.";
+            return;
+        }
+
         var hasPrice = currentModel.Services.Contains("wallbox") || currentModel.Services.Contains("photovoltaik");
         var next = hasPrice ? "/angebot/preisrahmen" : "/angebot/zeit-ort";
         Nav.NavigateTo($"{next}?s={Uri.EscapeDataString(Protector.Protect(currentModel))}");
     }
 }
+
+<script>
+(function () {
+    function syncServices() {
+        var tiles = document.getElementById('service-tiles');
+        var raw = document.getElementById('services-raw');
+        if (!tiles || !raw) return;
+        var slugs = [];
+        tiles.querySelectorAll('input[data-service]:checked').forEach(function (cb) {
+            slugs.push(cb.value);
+        });
+        raw.value = slugs.join(',');
+    }
+
+    function init() {
+        var tiles = document.getElementById('service-tiles');
+        if (!tiles) return;
+        syncServices();
+        tiles.addEventListener('change', syncServices);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+    document.addEventListener('enhancedload', init);
+})();
+</script>

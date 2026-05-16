@@ -24,20 +24,21 @@
     else
     {
         <h1 style="margin-bottom:24px">Ihre Kontaktdaten</h1>
-        <EditForm Model="currentModel" OnValidSubmit="HandleSubmit" FormName="step4" Enhance>
-            <DataAnnotationsValidator />
+        @* Only validate step-4 fields; carry previous state via prevToken hidden field. *@
+        <EditForm Model="currentModel" OnSubmit="HandleSubmit" FormName="step4" Enhance>
+            <input type="hidden" name="prevToken" value="@token" />
 
             <label>Name</label>
             <InputText @bind-Value="currentModel.Name" placeholder="Max Muster" />
-            <ValidationMessage For="() => currentModel.Name" class="field-error" />
+            @if (nameError is not null) { <div class="field-error">@nameError</div> }
 
             <label style="margin-top:16px">E-Mail</label>
             <InputText @bind-Value="currentModel.Email" type="email" placeholder="max@example.de" />
-            <ValidationMessage For="() => currentModel.Email" class="field-error" />
+            @if (emailError is not null) { <div class="field-error">@emailError</div> }
 
             <label style="margin-top:16px">Telefon</label>
             <InputText @bind-Value="currentModel.Phone" type="tel" placeholder="06050 9062874" />
-            <ValidationMessage For="() => currentModel.Phone" class="field-error" />
+            @if (phoneError is not null) { <div class="field-error">@phoneError</div> }
 
             <!-- Honeypot -->
             <div class="honeypot" aria-hidden="true">
@@ -49,7 +50,7 @@
                 <InputCheckbox @bind-Value="currentModel.ConsentPrivacy" />
                 <span style="font-size:13px;color:var(--ink-2)">Ich habe die <a href="/datenschutz" target="_blank">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage zu.</span>
             </label>
-            <ValidationMessage For="() => currentModel.ConsentPrivacy" class="field-error" />
+            @if (consentError is not null) { <div class="field-error">@consentError</div> }
 
             @if (errorMessage is not null)
             {
@@ -68,26 +69,83 @@
 
 @code {
     [SupplyParameterFromQuery(Name = "s")] private string? token { get; set; }
-    [SupplyParameterFromForm(FormName = "step4")] private QuoteRequest? model { get; set; }
+    // Property name matches Razor expression prefix (currentModel.*) so the binder maps correctly.
+    [SupplyParameterFromForm(FormName = "step4")] private QuoteRequest? currentModel { get; set; }
+    // Previous step's encoded state carried as a hidden form field.
+    [SupplyParameterFromForm(FormName = "step4")] private string? prevToken { get; set; }
 
-    private QuoteRequest? currentModel;
     private bool submitting;
     private string? errorMessage;
+    private string? nameError;
+    private string? emailError;
+    private string? phoneError;
+    private string? consentError;
 
     protected override void OnParametersSet()
     {
-        if (model is not null)
-            currentModel = model;
+        if (currentModel is not null)
+        {
+            // Form was submitted: restore steps 1-3 data from the previous token.
+            if (prevToken is not null)
+            {
+                var prev = Protector.Unprotect(prevToken);
+                if (prev is not null)
+                {
+                    currentModel.Services = prev.Services;
+                    currentModel.Audience = prev.Audience;
+                    currentModel.Notes = prev.Notes;
+                    currentModel.Timeframe = prev.Timeframe;
+                    currentModel.Plz = prev.Plz;
+                    currentModel.City = prev.City;
+                    currentModel.WallboxKw ??= prev.WallboxKw;
+                    currentModel.WallboxDistanceMeters ??= prev.WallboxDistanceMeters;
+                    currentModel.PvAreaSqm ??= prev.PvAreaSqm;
+                    currentModel.PvWithStorage ??= prev.PvWithStorage;
+                }
+            }
+        }
         else
+        {
+            // GET: load from query token.
             currentModel = Protector.Unprotect(token);
-
-        currentModel ??= new QuoteRequest();
+            currentModel ??= new QuoteRequest();
+        }
     }
 
     private async Task HandleSubmit()
     {
-        // Honeypot — silently succeed without sending
-        if (!string.IsNullOrWhiteSpace(currentModel!.CompanyName2))
+        nameError = emailError = phoneError = consentError = null;
+        bool valid = true;
+
+        if (string.IsNullOrWhiteSpace(currentModel!.Name) || currentModel.Name.Length < 2)
+        {
+            nameError = "Bitte Vor- und Nachname eingeben.";
+            valid = false;
+        }
+
+        if (string.IsNullOrWhiteSpace(currentModel.Email) ||
+            !System.Text.RegularExpressions.Regex.IsMatch(currentModel.Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+        {
+            emailError = "Bitte gültige E-Mail-Adresse eingeben.";
+            valid = false;
+        }
+
+        if (string.IsNullOrWhiteSpace(currentModel.Phone))
+        {
+            phoneError = "Telefonnummer ist erforderlich.";
+            valid = false;
+        }
+
+        if (!currentModel.ConsentPrivacy)
+        {
+            consentError = "Bitte Datenschutzhinweis bestätigen.";
+            valid = false;
+        }
+
+        if (!valid) return;
+
+        // Honeypot — silently succeed without sending.
+        if (!string.IsNullOrWhiteSpace(currentModel.CompanyName2))
         {
             Log.LogWarning("Honeypot triggered on quote submission");
             Nav.NavigateTo("/angebot/erfolg");
@@ -107,7 +165,7 @@
         submitting = true;
         try
         {
-            await Mailer.SendAsync(currentModel!);
+            await Mailer.SendAsync(currentModel);
             Nav.NavigateTo("/angebot/erfolg");
         }
         catch (Exception ex)

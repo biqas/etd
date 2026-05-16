@@ -64,8 +64,31 @@
 .wizard .chip { padding: 8px 16px; border: 1px solid var(--line); background: #fff; border-radius: 999px; font-size: 13px; cursor: pointer; }
 .wizard .chip:has(input:checked) { background: var(--red); color: #fff; border-color: var(--red); }
 .wizard .chip input { display: none; }
-.wizard input[type="text"], .wizard input[type="email"], .wizard input[type="tel"], .wizard textarea, .wizard select { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 14px; font-family: inherit; background: #fff; }
-.wizard input:focus, .wizard textarea:focus, .wizard select:focus { outline: none; border-color: var(--red); box-shadow: 0 0 0 3px rgba(220,31,38,0.1); }
+/* Style ALL wizard inputs except sliders/checkboxes/radios/hidden — Blazor's
+   InputText sometimes omits the explicit type attribute, so [type=text] alone
+   wouldn't catch it. We allow-list types we DO want and exclude the rest. */
+.wizard input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=hidden]),
+.wizard textarea,
+.wizard select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--ink);
+    background: #fff;
+    transition: border-color var(--motion-fast), box-shadow var(--motion-fast);
+}
+.wizard input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=hidden]):focus,
+.wizard textarea:focus,
+.wizard select:focus {
+    outline: none;
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px rgba(220,31,38,0.12);
+}
+.wizard input::placeholder,
+.wizard textarea::placeholder { color: var(--muted); opacity: 0.7; }
 .wizard textarea { resize: vertical; min-height: 90px; }
 .wizard .nav-btns { display: flex; gap: 10px; margin-top: 28px; }
 .wizard .nav-btns .btn { flex: 1; justify-content: center; }

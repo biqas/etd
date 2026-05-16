@@ -203,8 +203,9 @@ input[type=range].range::-moz-range-thumb {
     box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
 }
 .knx-room-illu {
-    aspect-ratio: 200 / 140;
-    background: #FAF6F0;
+    aspect-ratio: 280 / 180;
+    background: #FAFAFA;
+    padding: 8px;
     overflow: hidden;
 }
 .knx-room-illu svg { width: 100%; height: 100%; display: block; }
@@ -250,13 +251,16 @@ input[type=range].range::-moz-range-thumb {
     box-shadow: 0 12px 28px rgba(220, 31, 38, 0.08);
 }
 .knx-persona-illu {
-    width: 96px; height: 96px;
-    background: var(--red-soft);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
+    aspect-ratio: 1 / 1;
+    background: #FAFAFA;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px;
     margin-bottom: 16px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
 }
-.knx-persona-illu svg { width: 72%; height: 72%; }
+.knx-persona-illu svg { width: 100%; height: 100%; display: block; }
 .knx-persona-label {
     font-size: 11px;
     font-weight: 700;

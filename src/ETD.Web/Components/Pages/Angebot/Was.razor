@@ -1,0 +1,70 @@
+@page "/angebot"
+@using System.ComponentModel.DataAnnotations
+@using ETD.Web.Models
+@using ETD.Web.Services
+@inject WizardStateProtector Protector
+@inject NavigationManager Nav
+
+<PageTitle>Angebot anfragen — Schritt 1 — ETD</PageTitle>
+
+<section class="wizard fade-in">
+    <div class="stepper">
+        <div class="active"></div><div></div><div></div><div></div>
+    </div>
+    <div class="step-meta"><span>Schritt 1 von 4</span><span>Was brauchen Sie?</span></div>
+    <h1 style="margin-bottom:8px">Was brauchen Sie?</h1>
+    <p style="color:var(--muted);margin-bottom:24px">Mehrfach-Auswahl möglich. Wenn unsicher: zur nächsten Frage springen — wir klären das im Telefon­gespräch.</p>
+
+    <EditForm Model="@currentModel" OnValidSubmit="HandleNext" FormName="step1" Enhance>
+        <DataAnnotationsValidator />
+
+        <div class="service-tiles">
+            @foreach (var s in ServiceCatalog.All)
+            {
+                <label class="tile">
+                    <input type="checkbox" name="currentModel.Services" value="@s.Slug" checked="@currentModel.Services.Contains(s.Slug)" />
+                    <span class="tile-icon">@s.Icon</span>
+                    <span>@s.Title</span>
+                </label>
+            }
+        </div>
+        <ValidationMessage For="() => currentModel.Services" class="field-error" />
+
+        <label style="margin-top:24px">Für wen?</label>
+        <div class="chips">
+            <label class="chip">
+                <input type="radio" name="currentModel.Audience" value="privat" checked="@(currentModel.Audience == "privat")" />
+                Privat
+            </label>
+            <label class="chip">
+                <input type="radio" name="currentModel.Audience" value="gewerbe" checked="@(currentModel.Audience == "gewerbe")" />
+                Gewerbe
+            </label>
+        </div>
+
+        <label style="margin-top:24px">Weitere Hinweise (optional)</label>
+        <InputTextArea @bind-Value="currentModel.Notes" placeholder="Was sollen wir noch wissen? (Termin, Anzahl Räume, Sondersituationen ...)" />
+
+        <div class="nav-btns">
+            <button type="submit" class="btn btn-primary">Weiter →</button>
+        </div>
+    </EditForm>
+</section>
+
+@code {
+    [SupplyParameterFromForm(FormName = "step1")] private QuoteRequest? model { get; set; }
+
+    private QuoteRequest currentModel => model ??= new QuoteRequest { Audience = "privat" };
+
+    protected override void OnInitialized()
+    {
+        model ??= new QuoteRequest { Audience = "privat" };
+    }
+
+    private void HandleNext()
+    {
+        var hasPrice = currentModel.Services.Contains("wallbox") || currentModel.Services.Contains("photovoltaik");
+        var next = hasPrice ? "/angebot/preisrahmen" : "/angebot/zeit-ort";
+        Nav.NavigateTo($"{next}?s={Uri.EscapeDataString(Protector.Protect(currentModel))}");
+    }
+}

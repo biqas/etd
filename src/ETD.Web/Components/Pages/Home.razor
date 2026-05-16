@@ -1,7 +1,48 @@
 ﻿@page "/"
+@using ETD.Web.Services
+@using ETD.Web.Components.Shared
 
-<PageTitle>Home</PageTitle>
+<PageTitle>ETD — Elektrotechnik Desch · Meisterbetrieb Biebergemünd</PageTitle>
+<HeadContent>
+    <meta name="description" content="Elektroinstallation, Smart Home, Photovoltaik, Wallbox und Klimatechnik aus einem Meisterbetrieb in Biebergemünd. Für Privat und Gewerbe." />
+</HeadContent>
 
-<h1>Hello, world!</h1>
+<HeroFullBleed
+    Eyebrow="Meisterbetrieb · Biebergemünd"
+    Title="Strom, der einfach"
+    TitleAccent="läuft."
+    Sub="Elektroinstallation, Smart Home, Klimatechnik und mehr — für Privat und Gewerbe. Sauber gemacht, beim ersten Mal."
+    PrimaryCtaText="Angebot anfragen"
+    PrimaryCtaHref="/angebot"
+    SecondaryCtaText="Leistungen ansehen"
+    SecondaryCtaHref="/leistungen"
+    ImageSrc="img/hero/home-hero.webp"
+    ImageAlt="Elektriker bei der Arbeit an einer Unterverteilung">
+    <TrustStrip><TrustBar /></TrustStrip>
+</HeroFullBleed>
 
-Welcome to your new app.
+<section class="container fade-in" style="padding:72px 0">
+    <div class="eyebrow">Was wir machen</div>
+    <h2 style="max-width:680px">Vom Lichtschalter bis zum Smart-Home — <em style="color:var(--red);font-style:normal">alles aus einer Hand.</em></h2>
+    <p style="color:var(--muted);max-width:680px;margin-top:12px">Sieben Top-Leistungen für Privat- und Gewerbekunden. Plus Sat, Beleuchtung, Netzwerk und Türsprechanlagen.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:18px;margin-top:36px">
+        @foreach (var s in ServiceCatalog.TopServices)
+        {
+            <ServiceCard Icon="@s.Icon" Title="@s.Title" Description="@s.ShortDescription" Href="@($"/leistungen/{s.Slug}")" />
+        }
+    </div>
+</section>
+
+<section style="background:var(--white);padding:72px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+    <div class="container fade-in">
+        <div class="eyebrow">Warum ETD</div>
+        <h2>Meisterbetrieb. <em style="color:var(--red);font-style:normal">Innung.</em> Zertifiziert.</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:24px;margin-top:36px">
+            <div class="card"><strong style="color:var(--red);font-size:24px;display:block">15+ Jahre</strong><span style="color:var(--muted);font-size:14px">Erfahrung in Elektro- und Kältetechnik</span></div>
+            <div class="card"><strong style="color:var(--red);font-size:24px;display:block">Innung</strong><span style="color:var(--muted);font-size:14px">Mitglied der regionalen Innung</span></div>
+            <div class="card"><strong style="color:var(--red);font-size:24px;display:block">Sachkunde A1</strong><span style="color:var(--muted);font-size:14px">+ Betriebszertifizierung §6 ChemKlimaschutzV</span></div>
+            <div class="card"><strong style="color:var(--red);font-size:24px;display:block">Region MKK</strong><span style="color:var(--muted);font-size:14px">Biebergemünd & Umgebung</span></div>
+        </div>
+    </div>
+</section>

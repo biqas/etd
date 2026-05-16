@@ -1,0 +1,20 @@
+@page "/angebot/erfolg"
+
+<PageTitle>Anfrage gesendet — ETD</PageTitle>
+
+<section class="container fade-in" style="padding:96px 0;text-align:center;max-width:680px;margin:0 auto">
+    <div style="width:80px;height:80px;background:var(--red);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 24px;box-shadow:var(--shadow-red)">✓</div>
+    <div class="eyebrow">Anfrage gesendet</div>
+    <h1 style="margin-bottom:14px">Vielen Dank!</h1>
+    <p style="font-size:1.0625rem;color:var(--ink-2)">Ihre Anfrage ist bei uns angekommen. Wir melden uns innerhalb von 24 Stunden bei Ihnen — sehr wahrscheinlich deutlich schneller.</p>
+    <p style="color:var(--muted);margin-top:16px">Wenn es eilt, rufen Sie uns direkt an: <a href="tel:+4960509062874" style="font-weight:700">06050 9062874</a></p>
+
+    <div style="margin-top:32px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <a href="/" class="btn btn-ghost">Zur Startseite</a>
+        <a href="/leistungen" class="btn btn-primary">Weitere Leistungen</a>
+    </div>
+</section>
+
+<script>
+    try { localStorage.removeItem('etd.wizard.v1'); } catch (e) { }
+</script>

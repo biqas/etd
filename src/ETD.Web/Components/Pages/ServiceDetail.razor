@@ -1,0 +1,55 @@
+@page "/leistungen/{Slug}"
+@using ETD.Web.Models
+@using ETD.Web.Services
+@using ETD.Web.Components.Shared
+
+@code {
+    [Parameter] public string Slug { get; set; } = "";
+    private ServiceItem? service;
+
+    protected override void OnParametersSet()
+    {
+        service = ServiceCatalog.FindBySlug(Slug);
+    }
+}
+
+@if (service is null)
+{
+    <section class="container" style="padding:96px 0">
+        <h1>Seite nicht gefunden</h1>
+        <p style="margin-top:12px"><a href="/leistungen">Zurück zur Übersicht</a></p>
+    </section>
+}
+else
+{
+    <PageTitle>@service.Title — ETD Elektrotechnik Desch</PageTitle>
+    <HeadContent>
+        <meta name="description" content="@service.ShortDescription" />
+    </HeadContent>
+
+    <ServiceDetailHero Eyebrow="Leistung" Title="@service.Title" Sub="@service.LongDescription" />
+
+    <section class="container fade-in" style="padding:64px 0">
+        <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:48px;align-items:start">
+            <div>
+                <div class="eyebrow">Was Sie bekommen</div>
+                <h2 style="margin-bottom:18px">Inkl. <em style="color:var(--red);font-style:normal">aller Schritte</em>, ohne Wenn und Aber.</h2>
+                <ul style="font-size:1.0625rem;list-style:none;padding:0">
+                    @foreach (var b in service.Bullets)
+                    {
+                        <li style="padding:10px 0 10px 28px;position:relative;border-top:1px solid var(--line)">
+                            <span style="position:absolute;left:0;top:11px;color:var(--red);font-weight:800;font-size:1.25rem">✓</span>@b
+                        </li>
+                    }
+                </ul>
+            </div>
+            <aside class="card" style="position:sticky;top:88px">
+                <div class="eyebrow">So geht's weiter</div>
+                <h3 style="margin-bottom:12px">Kostenfreies Angebot anfragen</h3>
+                <p style="color:var(--muted);font-size:14px;margin-bottom:18px">Beschreiben Sie uns Ihr Projekt — Sie hören innerhalb 24 h von uns.</p>
+                <a href="/angebot" class="btn btn-primary" style="width:100%;justify-content:center">Angebot anfragen →</a>
+                <p style="margin-top:14px;font-size:13px;color:var(--muted);text-align:center">oder anrufen: <a href="tel:+4960509062874" style="font-weight:700">06050 9062874</a></p>
+            </aside>
+        </div>
+    </section>
+}

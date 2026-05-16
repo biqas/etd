@@ -1,0 +1,38 @@
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/inter-400.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 600; font-display: swap; src: url('/fonts/inter-600.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 700; font-display: swap; src: url('/fonts/inter-700.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 800; font-display: swap; src: url('/fonts/inter-800.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 900; font-display: swap; src: url('/fonts/inter-900.woff2') format('woff2'); }
+
+:root {
+    --red: #DC1F26;
+    --red-dark: #A8161C;
+    --red-soft: #FEF2F2;
+
+    --ink: #0E1116;
+    --ink-2: #2C333D;
+    --muted: #6B7280;
+
+    --line: #E5E7EB;
+    --bg: #FAFAFA;
+    --white: #FFFFFF;
+
+    --hero-dark: #0E1116;
+    --hero-dark-2: #1A1F2A;
+
+    --radius-btn: 6px;
+    --radius-card: 12px;
+    --radius-hero: 16px;
+
+    --shadow-card: 0 4px 14px rgba(15, 23, 42, 0.06);
+    --shadow-card-hover: 0 12px 30px rgba(15, 23, 42, 0.08);
+    --shadow-red: 0 8px 24px rgba(220, 31, 38, 0.35);
+
+    --ease-out: cubic-bezier(.2, .8, .2, 1);
+    --motion-fast: 200ms var(--ease-out);
+    --motion: 250ms var(--ease-out);
+    --motion-slow: 500ms var(--ease-out);
+
+    --container: 1280px;
+    --gutter: 32px;
+}

@@ -1,0 +1,122 @@
+@page "/angebot/kontakt"
+@using System.ComponentModel.DataAnnotations
+@using ETD.Web.Models
+@using ETD.Web.Services
+@inject WizardStateProtector Protector
+@inject NavigationManager Nav
+@inject IQuoteMailer Mailer
+@inject SubmissionRateLimiter Limiter
+@inject IHttpContextAccessor Http
+@inject ILogger<Kontakt> Log
+
+<PageTitle>Angebot anfragen — Schritt 4 — ETD</PageTitle>
+
+<section class="wizard fade-in">
+    <div class="stepper">
+        <div class="done"></div><div class="done"></div><div class="done"></div><div class="active"></div>
+    </div>
+    <div class="step-meta"><span>Schritt 4 von 4</span><span>Kontakt</span></div>
+
+    @if (currentModel is null)
+    {
+        <p>Bitte mit <a href="/angebot">Schritt 1</a> beginnen.</p>
+    }
+    else
+    {
+        <h1 style="margin-bottom:24px">Ihre Kontaktdaten</h1>
+        <EditForm Model="currentModel" OnValidSubmit="HandleSubmit" FormName="step4" Enhance>
+            <DataAnnotationsValidator />
+
+            <label>Name</label>
+            <InputText @bind-Value="currentModel.Name" placeholder="Max Muster" />
+            <ValidationMessage For="() => currentModel.Name" class="field-error" />
+
+            <label style="margin-top:16px">E-Mail</label>
+            <InputText @bind-Value="currentModel.Email" type="email" placeholder="max@example.de" />
+            <ValidationMessage For="() => currentModel.Email" class="field-error" />
+
+            <label style="margin-top:16px">Telefon</label>
+            <InputText @bind-Value="currentModel.Phone" type="tel" placeholder="06050 9062874" />
+            <ValidationMessage For="() => currentModel.Phone" class="field-error" />
+
+            <!-- Honeypot -->
+            <div class="honeypot" aria-hidden="true">
+                <label>Firma (bitte leer lassen)</label>
+                <InputText @bind-Value="currentModel.CompanyName2" tabindex="-1" autocomplete="off" />
+            </div>
+
+            <label style="display:flex;gap:10px;align-items:flex-start;margin-top:18px">
+                <InputCheckbox @bind-Value="currentModel.ConsentPrivacy" />
+                <span style="font-size:13px;color:var(--ink-2)">Ich habe die <a href="/datenschutz" target="_blank">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage zu.</span>
+            </label>
+            <ValidationMessage For="() => currentModel.ConsentPrivacy" class="field-error" />
+
+            @if (errorMessage is not null)
+            {
+                <p class="field-error" style="margin-top:12px">@errorMessage</p>
+            }
+
+            <div class="nav-btns">
+                <button type="button" class="btn btn-ghost" @onclick="HandleBack">← Zurück</button>
+                <button type="submit" class="btn btn-primary" disabled="@submitting">Anfrage absenden →</button>
+            </div>
+
+            <p style="font-size:12px;color:var(--muted);margin-top:14px;text-align:center">Verschlüsselte Übertragung · keine Weitergabe an Dritte</p>
+        </EditForm>
+    }
+</section>
+
+@code {
+    [SupplyParameterFromQuery(Name = "s")] private string? token { get; set; }
+    [SupplyParameterFromForm(FormName = "step4")] private QuoteRequest? model { get; set; }
+
+    private QuoteRequest? currentModel;
+    private bool submitting;
+    private string? errorMessage;
+
+    protected override void OnParametersSet()
+    {
+        if (model is not null)
+            currentModel = model;
+        else
+            currentModel = Protector.Unprotect(token);
+
+        currentModel ??= new QuoteRequest();
+    }
+
+    private async Task HandleSubmit()
+    {
+        // Honeypot — silently succeed without sending
+        if (!string.IsNullOrWhiteSpace(currentModel!.CompanyName2))
+        {
+            Log.LogWarning("Honeypot triggered on quote submission");
+            Nav.NavigateTo("/angebot/erfolg");
+            return;
+        }
+
+        var ip = Http.HttpContext?.Connection.RemoteIpAddress?.ToString()
+                 ?? Http.HttpContext?.Request.Headers["X-Forwarded-For"].ToString()
+                 ?? "unknown";
+
+        if (!Limiter.TryConsume(ip))
+        {
+            errorMessage = "Zu viele Anfragen in kurzer Zeit. Bitte versuchen Sie es in einer Stunde erneut oder rufen Sie uns an.";
+            return;
+        }
+
+        submitting = true;
+        try
+        {
+            await Mailer.SendAsync(currentModel!);
+            Nav.NavigateTo("/angebot/erfolg");
+        }
+        catch (Exception ex)
+        {
+            Log.LogError(ex, "Mailer failed");
+            errorMessage = "Der Versand ist fehlgeschlagen. Bitte rufen Sie uns direkt an: 06050 9062874.";
+            submitting = false;
+        }
+    }
+
+    private void HandleBack() => Nav.NavigateTo("/angebot/zeit-ort");
+}

@@ -9,6 +9,7 @@ builder.Services.AddSingleton<ETD.Web.Services.WizardStateProtector>();
 builder.Services.AddSingleton(new ETD.Web.Services.SubmissionRateLimiter(maxPerHour: 5));
 builder.Services.Configure<ETD.Web.Services.SmtpOptions>(builder.Configuration.GetSection("Smtp"));
 builder.Services.AddSingleton<ETD.Web.Services.IQuoteMailer, ETD.Web.Services.SmtpQuoteMailer>();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddRazorComponents();   // no AddInteractiveServerComponents — static SSR only
 

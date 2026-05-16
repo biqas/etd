@@ -1,0 +1,38 @@
+@code {
+    [Parameter, EditorRequired] public string Eyebrow { get; set; } = "";
+    [Parameter, EditorRequired] public string Title { get; set; } = "";
+    [Parameter] public string? TitleAccent { get; set; }
+    [Parameter, EditorRequired] public string Sub { get; set; } = "";
+    [Parameter] public string PrimaryCtaText { get; set; } = "Angebot anfragen";
+    [Parameter] public string PrimaryCtaHref { get; set; } = "/angebot";
+    [Parameter] public string? SecondaryCtaText { get; set; }
+    [Parameter] public string? SecondaryCtaHref { get; set; }
+    [Parameter] public string? ImageSrc { get; set; }
+    [Parameter] public string ImageAlt { get; set; } = "";
+    [Parameter] public RenderFragment? TrustStrip { get; set; }
+}
+
+<section class="hero">
+    @if (!string.IsNullOrEmpty(ImageSrc))
+    {
+        <img class="hero-img" src="@ImageSrc" alt="@ImageAlt" fetchpriority="high" />
+    }
+    <div class="container">
+        <div class="hero-content fade-in">
+            <div class="eyebrow" style="color:var(--red)">@Eyebrow</div>
+            <h1>@Title @if (TitleAccent is not null) { <em>@TitleAccent</em> }</h1>
+            <p style="font-size:1.125rem;color:#D1D5DB;margin:16px 0 28px;max-width:540px">@Sub</p>
+            <div style="display:flex;gap:12px;flex-wrap:wrap">
+                <a href="@PrimaryCtaHref" class="btn btn-primary">@PrimaryCtaText →</a>
+                @if (SecondaryCtaText is not null && SecondaryCtaHref is not null)
+                {
+                    <a href="@SecondaryCtaHref" class="btn btn-ghost-dark">@SecondaryCtaText</a>
+                }
+            </div>
+        </div>
+    </div>
+    @if (TrustStrip is not null)
+    {
+        <div class="container"><div class="trust-bar">@TrustStrip</div></div>
+    }
+</section>

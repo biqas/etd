@@ -59,7 +59,8 @@
 
             @if (currentModel.Services.Contains("photovoltaik"))
             {
-                var pv = PriceEstimator.EstimatePv(currentModel.PvAreaSqm ?? 30, currentModel.PvWithStorage ?? false);
+                var pv = PriceEstimator.EstimatePv(currentModel.PvAreaSqm ?? 30, currentModel.PvStorageKwh ?? 0);
+                var pvStorage = currentModel.PvStorageKwh ?? 0;
                 <div class="slider-block" data-calc="pv">
                     <label class="slider-label">
                         Geschätzte Dachfläche
@@ -72,16 +73,19 @@
                     <div class="range-scale"><span>10 m²</span><span>100 m²</span><span>200 m²</span></div>
                 </div>
 
-                <label class="slider-label" style="margin-top:18px">Mit Batteriespeicher?</label>
-                <div class="chips">
-                    <label class="chip">
-                        <input type="radio" name="PvWithStorage" value="false" checked="@(currentModel.PvWithStorage != true)" onchange="window.etdPrice && etdPrice.update()" />
-                        Nein
+                <div class="slider-block" data-calc="pv">
+                    <label class="slider-label">
+                        Batteriespeicher
+                        <span class="slider-value">
+                            <span data-out="pv-storage">@(pvStorage == 0 ? "Kein" : pvStorage.ToString())</span>
+                            <span data-out="pv-storage-unit">@(pvStorage == 0 ? "Speicher" : "kWh")</span>
+                        </span>
                     </label>
-                    <label class="chip">
-                        <input type="radio" name="PvWithStorage" value="true" checked="@(currentModel.PvWithStorage == true)" onchange="window.etdPrice && etdPrice.update()" />
-                        Ja
-                    </label>
+                    <input class="range" type="range" name="PvStorageKwh"
+                           min="0" max="20" step="1"
+                           value="@pvStorage"
+                           data-slider="pv-storage" oninput="window.etdPrice && etdPrice.update()" />
+                    <div class="range-scale"><span>Kein</span><span>10 kWh</span><span>20 kWh</span></div>
                 </div>
 
                 <div class="estimate-card" style="margin-top:14px">
@@ -99,48 +103,6 @@
         </EditForm>
     }
 </section>
-
-<script>
-window.etdPrice = (function () {
-    const fmt = n => Math.round(n).toLocaleString('de-DE');
-    function get(name) { const el = document.querySelector('[name="' + name + '"]'); return el ? +el.value : 0; }
-    function getRadio(name) { const el = document.querySelector('[name="' + name + '"]:checked'); return el ? el.value === 'true' : false; }
-    function estWallbox(kw, dist) {
-        kw = Math.max(4, Math.min(22, kw));
-        dist = Math.max(1, Math.min(50, dist));
-        let low = 1500 + (kw - 11) * 30 + Math.max(0, dist - 5) * 20;
-        let high = low + 400 + (kw > 11 ? 200 : 0) + (dist > 15 ? 300 : 0);
-        return { low: Math.max(low, 1100), high: Math.max(high, low + 300) };
-    }
-    function estPv(area, withStorage) {
-        area = Math.max(10, Math.min(200, area));
-        const kwp = Math.round(area / 6);
-        let low = kwp * 1100, high = kwp * 1500;
-        if (withStorage) { low += 6000; high += 9000; }
-        return { low, high };
-    }
-    function setOut(key, value) {
-        document.querySelectorAll('[data-out="' + key + '"]').forEach(e => e.textContent = value);
-    }
-    function update() {
-        if (document.querySelector('[name="WallboxKw"]')) {
-            const kw = get('WallboxKw'), dist = get('WallboxDistanceMeters');
-            setOut('wb-kw', kw);
-            setOut('wb-dist', dist);
-            const e = estWallbox(kw, dist);
-            setOut('wb-est', `~ ${fmt(e.low)} – ${fmt(e.high)} €`);
-        }
-        if (document.querySelector('[name="PvAreaSqm"]')) {
-            const area = get('PvAreaSqm'), st = getRadio('PvWithStorage');
-            setOut('pv-area', area);
-            const e = estPv(area, st);
-            setOut('pv-est', `~ ${fmt(e.low)} – ${fmt(e.high)} €`);
-        }
-    }
-    return { update };
-})();
-window.etdPrice.update();
-</script>
 
 @code {
     [SupplyParameterFromQuery(Name = "s")] private string? token { get; set; }
@@ -160,7 +122,7 @@ window.etdPrice.update();
             currentModel.WallboxKw ??= 11;
             currentModel.WallboxDistanceMeters ??= 5;
             currentModel.PvAreaSqm ??= 30;
-            currentModel.PvWithStorage ??= false;
+            currentModel.PvStorageKwh ??= 0;
         }
     }
 

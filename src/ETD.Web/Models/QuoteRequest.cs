@@ -29,7 +29,11 @@ public sealed class QuoteRequest
     public int? WallboxKw { get; set; }
     public int? WallboxDistanceMeters { get; set; }
     public int? PvAreaSqm { get; set; }
-    public bool? PvWithStorage { get; set; }
+
+    /// <summary>
+    /// PV battery storage capacity in kWh. 0 = no storage.
+    /// </summary>
+    public int? PvStorageKwh { get; set; }
 
     [Required, RegularExpression("^(asap|2w|4w|flex)$")]
     public string Timeframe { get; set; } = "flex";

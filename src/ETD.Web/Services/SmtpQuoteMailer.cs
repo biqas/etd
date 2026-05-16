@@ -69,7 +69,7 @@ Leistungen:
 Wallbox kW:       {q.WallboxKw}
 Wallbox Distanz:  {q.WallboxDistanceMeters} m
 PV Fläche:        {q.PvAreaSqm} m²
-PV Speicher:      {q.PvWithStorage}
+PV Speicher:      {(q.PvStorageKwh.GetValueOrDefault() == 0 ? "kein" : q.PvStorageKwh + " kWh")}
 
 Notiz:
 {q.Notes}"

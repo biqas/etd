@@ -23,7 +23,7 @@ public class PriceEstimatorTests
     [Test]
     public async Task Pv_30sqm_NoStorage_ReturnsRange()
     {
-        var e = PriceEstimator.EstimatePv(areaSqm: 30, withStorage: false);
+        var e = PriceEstimator.EstimatePv(areaSqm: 30, storageKwh: 0);
         await Assert.That(e.LowEuro).IsGreaterThan(0);
         await Assert.That(e.HighEuro).IsGreaterThan(e.LowEuro);
     }
@@ -31,8 +31,16 @@ public class PriceEstimatorTests
     [Test]
     public async Task Pv_WithStorage_MoreExpensive()
     {
-        var no = PriceEstimator.EstimatePv(30, false);
-        var yes = PriceEstimator.EstimatePv(30, true);
+        var no = PriceEstimator.EstimatePv(30, 0);
+        var yes = PriceEstimator.EstimatePv(30, 10);
         await Assert.That(yes.HighEuro).IsGreaterThan(no.HighEuro);
+    }
+
+    [Test]
+    public async Task Pv_LargerStorage_MoreExpensive()
+    {
+        var small = PriceEstimator.EstimatePv(30, 5);
+        var large = PriceEstimator.EstimatePv(30, 20);
+        await Assert.That(large.LowEuro).IsGreaterThan(small.LowEuro);
     }
 }

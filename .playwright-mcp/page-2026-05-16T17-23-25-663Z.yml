@@ -1,0 +1,123 @@
+- generic [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "ETD Elektrotechnik Desch" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e5]: ETD
+        - generic [ref=e6]: Elektrotechnik Desch
+      - navigation "Hauptnavigation" [ref=e7]:
+        - link "Leistungen" [ref=e8] [cursor=pointer]:
+          - /url: /leistungen
+        - link "Gewerbe" [ref=e9] [cursor=pointer]:
+          - /url: /gewerbe
+        - link "Referenzen" [ref=e10] [cursor=pointer]:
+          - /url: /referenzen
+        - link "Über uns" [ref=e11] [cursor=pointer]:
+          - /url: /ueber-uns
+        - link "Kontakt" [ref=e12] [cursor=pointer]:
+          - /url: /kontakt
+      - link "06050 9062874" [ref=e13] [cursor=pointer]:
+        - /url: tel:+4960509062874
+  - main [ref=e14]:
+    - generic [ref=e15]:
+      - generic [ref=e21]:
+        - generic [ref=e22]: Schritt 1 von 4
+        - generic [ref=e23]: Was brauchen Sie?
+      - heading "Was brauchen Sie?" [active] [level=1] [ref=e24]
+      - paragraph [ref=e25]: "Mehrfach-Auswahl möglich. Wenn unsicher: zur nächsten Frage springen — wir klären das im Telefongespräch."
+      - generic [ref=e26]:
+        - generic [ref=e27]:
+          - generic [ref=e28] [cursor=pointer]:
+            - generic [ref=e29]: ⚡
+            - generic [ref=e30]: Elektroinstallation
+          - generic [ref=e31] [cursor=pointer]:
+            - generic [ref=e32]: 🏠
+            - generic [ref=e33]: Smart Home & KNX
+          - generic [ref=e34] [cursor=pointer]:
+            - generic [ref=e35]: ☀
+            - generic [ref=e36]: Photovoltaik & Speicher
+          - generic [ref=e37] [cursor=pointer]:
+            - generic [ref=e38]: 🔌
+            - generic [ref=e39]: E-Mobilität & Wallbox
+          - generic [ref=e40] [cursor=pointer]:
+            - generic [ref=e41]: ❄
+            - generic [ref=e42]: Klima- und Kältetechnik
+          - generic [ref=e43] [cursor=pointer]:
+            - generic [ref=e44]: ✓
+            - generic [ref=e45]: E-Check / DGUV V3
+          - generic [ref=e46] [cursor=pointer]:
+            - generic [ref=e47]: 🔒
+            - generic [ref=e48]: Sicherheitstechnik
+          - generic [ref=e49] [cursor=pointer]:
+            - generic [ref=e50]: 📡
+            - generic [ref=e51]: Sat- und Antennenanlagen
+          - generic [ref=e52] [cursor=pointer]:
+            - generic [ref=e53]: 💡
+            - generic [ref=e54]: Beleuchtung & LED
+          - generic [ref=e55] [cursor=pointer]:
+            - generic [ref=e56]: 🌐
+            - generic [ref=e57]: Netzwerk & EDV
+          - generic [ref=e58] [cursor=pointer]:
+            - generic [ref=e59]: 📞
+            - generic [ref=e60]: Türsprechanlagen
+        - generic [ref=e61]: Für wen?
+        - generic [ref=e62]:
+          - generic [ref=e63] [cursor=pointer]: Privat
+          - generic [ref=e64] [cursor=pointer]: Gewerbe
+        - generic [ref=e65]: Weitere Hinweise (optional)
+        - textbox "Was sollen wir noch wissen? (Termin, Anzahl Räume, Sondersituationen ...)" [ref=e66]
+        - button "Weiter →" [ref=e68] [cursor=pointer]
+  - generic [ref=e70]:
+    - heading "Bereit für Ihr Projekt? Wir auch." [level=2] [ref=e71]
+    - paragraph [ref=e72]: Beschreiben Sie uns Ihr Anliegen — Sie hören innerhalb 24 h von uns.
+    - link "Angebot anfragen →" [ref=e73] [cursor=pointer]:
+      - /url: /angebot
+  - contentinfo [ref=e74]:
+    - generic [ref=e75]:
+      - generic [ref=e76]:
+        - link "ETD Elektrotechnik Desch" [ref=e77] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e78]: ETD
+          - text: Elektrotechnik Desch
+        - paragraph [ref=e79]:
+          - text: Meisterbetrieb für Elektro- und Kältetechnik.
+          - text: Innungsmitglied · Sachkundezertifikat A1.
+      - generic [ref=e80]:
+        - heading "Leistungen" [level=4] [ref=e81]
+        - link "Elektroinstallation" [ref=e82] [cursor=pointer]:
+          - /url: /leistungen/elektroinstallation
+        - link "Smart Home / KNX" [ref=e83] [cursor=pointer]:
+          - /url: /leistungen/smart-home-knx
+        - link "Photovoltaik" [ref=e84] [cursor=pointer]:
+          - /url: /leistungen/photovoltaik
+        - link "Wallbox" [ref=e85] [cursor=pointer]:
+          - /url: /leistungen/wallbox
+        - link "Klimatechnik" [ref=e86] [cursor=pointer]:
+          - /url: /leistungen/klimatechnik
+        - link "E-Check" [ref=e87] [cursor=pointer]:
+          - /url: /leistungen/e-check
+        - link "Sicherheit" [ref=e88] [cursor=pointer]:
+          - /url: /leistungen/sicherheit
+      - generic [ref=e89]:
+        - heading "Kontakt" [level=4] [ref=e90]
+        - link "06050 9062874" [ref=e91] [cursor=pointer]:
+          - /url: tel:+4960509062874
+        - link "mail@ElektroTechnikDesch.de" [ref=e92] [cursor=pointer]:
+          - /url: mailto:mail@ElektroTechnikDesch.de
+        - paragraph [ref=e93]:
+          - text: Von-Cancrin-Str. 22
+          - text: 63599 Biebergemünd
+      - generic [ref=e94]:
+        - heading "Angebot" [level=4] [ref=e95]
+        - link "Angebot anfragen" [ref=e96] [cursor=pointer]:
+          - /url: /angebot
+        - link "Notdienst" [ref=e97] [cursor=pointer]:
+          - /url: /notdienst
+      - generic [ref=e98]:
+        - link "Impressum" [ref=e99] [cursor=pointer]:
+          - /url: /impressum
+        - link "Datenschutz" [ref=e100] [cursor=pointer]:
+          - /url: /datenschutz
+        - link "Cookies" [ref=e101] [cursor=pointer]:
+          - /url: /cookies
+        - generic [ref=e102]: © 2026 Elektrotechnik Desch

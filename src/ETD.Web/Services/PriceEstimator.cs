@@ -14,17 +14,16 @@ public static class PriceEstimator
         return new PriceEstimate(Math.Max(low, 1500), Math.Max(high, low + 300));
     }
 
-    public static PriceEstimate EstimatePv(int areaSqm, bool withStorage)
+    public static PriceEstimate EstimatePv(int areaSqm, int storageKwh)
     {
         areaSqm = Math.Clamp(areaSqm, 10, 200);
+        storageKwh = Math.Clamp(storageKwh, 0, 30);
         var kwp = Math.Round(areaSqm / 6.0, MidpointRounding.AwayFromZero);
         var low = (int)(kwp * 1100);
         var high = (int)(kwp * 1500);
-        if (withStorage)
-        {
-            low += 6000;
-            high += 9000;
-        }
+        // Battery storage: ~600 €/kWh low, ~900 €/kWh high (Lithium 2024 installed)
+        low += storageKwh * 600;
+        high += storageKwh * 900;
         return new PriceEstimate(low, high);
     }
 }

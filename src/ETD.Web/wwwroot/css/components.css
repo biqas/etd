@@ -134,3 +134,88 @@ input[type=range].range::-moz-range-thumb {
     margin-top: 4px; letter-spacing: -0.02em;
     font-variant-numeric: tabular-nums;
 }
+
+/* Service card with SVG icon (Fluent / Lucide style) */
+.service-card { display: block; }
+.service-card .service-icon {
+    width: 56px; height: 56px;
+    background: var(--red-soft); color: var(--red);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 18px;
+    transition: background 250ms var(--ease-out),
+                color 250ms var(--ease-out),
+                transform 250ms var(--ease-out);
+    will-change: transform;
+}
+.service-card:hover .service-icon {
+    background: var(--red);
+    color: #fff;
+    transform: scale(1.06) rotate(-3deg);
+}
+
+/* Animated SVG icons — gentle hover idle */
+.svc-icon { transition: transform 350ms var(--ease-out); }
+
+/* Icon-specific motion on hover (parent .service-card or .icon-anim wrapper) */
+.service-card:hover .svc-icon[data-icon="zap"]            { animation: iconZap 0.7s ease; }
+.service-card:hover .svc-icon[data-icon="sun"]            { animation: iconSpin 1.4s linear infinite; }
+.service-card:hover .svc-icon[data-icon="snowflake"]      { animation: iconSpinRev 2.2s linear infinite; }
+.service-card:hover .svc-icon[data-icon="home"]           { animation: iconBounce 0.6s ease; }
+.service-card:hover .svc-icon[data-icon="plug-zap"]       { animation: iconZap 0.7s ease; }
+.service-card:hover .svc-icon[data-icon="shield-check"]   { animation: iconPop 0.5s ease; }
+.service-card:hover .svc-icon[data-icon="shield"]         { animation: iconPop 0.5s ease; }
+.service-card:hover .svc-icon[data-icon="satellite"]      { animation: iconWobble 0.8s ease; }
+.service-card:hover .svc-icon[data-icon="lightbulb"]      { animation: iconGlow 0.8s ease; }
+.service-card:hover .svc-icon[data-icon="network"]        { animation: iconPulse 1s ease infinite; }
+.service-card:hover .svc-icon[data-icon="phone"]          { animation: iconRing 0.6s ease; }
+
+@keyframes iconZap     { 0%, 100% { transform: none; } 40% { transform: translateY(-2px) scale(1.08); } 60% { transform: translateY(1px) scale(0.95); } }
+@keyframes iconSpin    { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+@keyframes iconSpinRev { from { transform: rotate(0); } to { transform: rotate(-360deg); } }
+@keyframes iconBounce  { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@keyframes iconPop     { 0% { transform: scale(1); } 50% { transform: scale(1.18); } 100% { transform: scale(1); } }
+@keyframes iconWobble  { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-8deg); } 75% { transform: rotate(8deg); } }
+@keyframes iconGlow    { 0%, 100% { filter: none; } 50% { filter: drop-shadow(0 0 6px rgba(255,255,255,0.9)); } }
+@keyframes iconPulse   { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+@keyframes iconRing    { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-14deg); } 50% { transform: rotate(14deg); } 75% { transform: rotate(-7deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+    .service-card:hover .svc-icon { animation: none !important; }
+    .service-card:hover .service-icon { transform: none; }
+}
+
+/* Standalone icon utility (gewerbe page, lists, etc.) */
+.icon-chip {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 48px; height: 48px;
+    background: var(--red-soft); color: var(--red);
+    border-radius: 12px;
+}
+
+/* Hero decorative pattern (service detail pages) */
+.hero-pattern { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.hero-pattern svg { display: block; width: 100%; height: 100%; }
+.hero-detail-icon {
+    position: absolute; right: -24px; top: 50%;
+    transform: translateY(-50%);
+    z-index: 1; pointer-events: none;
+    color: rgba(220, 31, 38, 0.20);
+    opacity: 0.9;
+}
+.hero-detail-icon .svc-icon { width: 320px; height: 320px; }
+@media (max-width: 900px) {
+    .hero-detail-icon { right: -80px; }
+    .hero-detail-icon .svc-icon { width: 220px; height: 220px; }
+}
+@media (max-width: 600px) { .hero-detail-icon { display: none; } }
+
+/* Subtle slow float on the giant hero icon */
+.hero-icon-art { animation: heroFloat 8s ease-in-out infinite; }
+@keyframes heroFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .hero-icon-art { animation: none; }
+}

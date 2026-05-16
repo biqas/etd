@@ -1,0 +1,126 @@
+@code {
+    [Parameter, EditorRequired] public string Name { get; set; } = "";
+    [Parameter] public int Size { get; set; } = 24;
+    [Parameter] public string? Class { get; set; }
+}
+
+@{
+    var cls = string.IsNullOrEmpty(Class) ? "svc-icon" : $"svc-icon {Class}";
+}
+
+@switch (Name)
+{
+    case "zap":
+        <svg width="@Size" height="@Size" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="@cls" data-icon="zap" aria-hidden="true">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+        </svg>
+        break;
+    case "home":
+        <svg width="@Size" height="@Size" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="@cls" data-icon="home" aria-hidden="true">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        break;
+    case "sun":
+        <svg width="@Size" height="@Size" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="@cls" data-icon="sun" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2"></path><path d="M12 20v2"></path>
+            <path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path>
+            <path d="M2 12h2"></path><path d="M20 12h2"></path>
+            <path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path>
+        </svg>
+        break;
+    case "plug-zap":
+        <svg width="@Size" height="@Size" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="@cls" data-icon="plug-zap" aria-hidden="true">
+            <path d="M6.3 20.3a2.4 2.4 0 0 0 3.4 0L12 18l-6-6-2.3 2.3a2.4 2.4 0 0 0 0 3.4Z"></path>
+            <path d="m2 22 3-3"></path>
+            <path d="M7.5 13.5 10 11"></path>
+            <path d="M10.5 16.5 13 14"></path>
+            <path d="m18 3-4 4h6l-4 4"></path>
+        </svg>
+        break;
+    case "snowflake":
+        <svg width="@Size" height="@Size" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="@cls" data-icon="snowflake" aria-hidden="true">
+            <path d="M2 12h20"></path><path d="M12 2v20"></path>
+            <path d="m20 16-4-4 4-4"></path><path d="m4 8 4 4-4 4"></path>
+            <path d="m16 4-4 4-4-4"></path><path d="m8 20 4-4 4 4"></path>
+        </svg>
+        break;
+    case "shield-check":
+        <svg width="@Size" height="@Size" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="@cls" data-icon="shield-check" aria-hidden="true">
+            <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
+            <path d="m9 12 2 2 4-4"></path>
+        </svg>
+        break;
+    case "shield":
+        <svg width="@Size" height="@Size" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="@cls" data-icon="shield" aria-hidden="true">
+            <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
+        </svg>
+        break;
+    case "satellite":
+        <svg width="@Size" height="@Size" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="@cls" data-icon="satellite" aria-hidden="true">
+            <path d="M4 10a7.31 7.31 0 0 0 10 10Z"></path>
+            <path d="m9 15 3-3"></path>
+            <path d="M17 13a6 6 0 0 0-6-6"></path>
+            <path d="M21 13A10 10 0 0 0 11 3"></path>
+        </svg>
+        break;
+    case "lightbulb":
+        <svg width="@Size" height="@Size" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="@cls" data-icon="lightbulb" aria-hidden="true">
+            <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path>
+            <path d="M9 18h6"></path>
+            <path d="M10 22h4"></path>
+        </svg>
+        break;
+    case "network":
+        <svg width="@Size" height="@Size" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="@cls" data-icon="network" aria-hidden="true">
+            <rect x="16" y="16" width="6" height="6" rx="1"></rect>
+            <rect x="2" y="16" width="6" height="6" rx="1"></rect>
+            <rect x="9" y="2" width="6" height="6" rx="1"></rect>
+            <path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"></path>
+            <path d="M12 12V8"></path>
+        </svg>
+        break;
+    case "phone":
+        <svg width="@Size" height="@Size" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="@cls" data-icon="phone" aria-hidden="true">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+        </svg>
+        break;
+    case "wrench":
+        <svg width="@Size" height="@Size" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="@cls" data-icon="wrench" aria-hidden="true">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+        </svg>
+        break;
+    case "cog":
+        <svg width="@Size" height="@Size" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="@cls" data-icon="cog" aria-hidden="true">
+            <path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"></path>
+            <path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"></path>
+            <path d="M12 2v2"></path><path d="M12 22v-2"></path>
+            <path d="m17 20.66-1-1.73"></path><path d="M11 10.27 7 3.34"></path>
+            <path d="m20.66 17-1.73-1"></path><path d="m3.34 7 1.73 1"></path>
+            <path d="M14 12h8"></path><path d="M2 12h2"></path>
+            <path d="m20.66 7-1.73 1"></path><path d="m3.34 17 1.73-1"></path>
+            <path d="m17 3.34-1 1.73"></path><path d="m11 13.73-4 6.93"></path>
+        </svg>
+        break;
+    case "siren":
+        <svg width="@Size" height="@Size" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="@cls" data-icon="siren" aria-hidden="true">
+            <path d="M7 18v-6a5 5 0 1 1 10 0v6"></path>
+            <path d="M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1z"></path>
+            <path d="M21 12h1"></path><path d="M18.5 4.5 18 5"></path>
+            <path d="M2 12h1"></path><path d="M12 2v1"></path>
+            <path d="m4.929 4.929.707.707"></path><path d="M12 12v6"></path>
+        </svg>
+        break;
+    case "factory":
+        <svg width="@Size" height="@Size" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="@cls" data-icon="factory" aria-hidden="true">
+            <path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path>
+            <path d="M17 18h1"></path><path d="M12 18h1"></path><path d="M7 18h1"></path>
+        </svg>
+        break;
+    default:
+        <svg width="@Size" height="@Size" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="@cls" data-icon="dot" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+        break;
+}

@@ -26,7 +26,7 @@
                        hidden InputText below, which Blazor's form binder can bind. *@
                     <input type="checkbox" data-service="@s.Slug" value="@s.Slug"
                            checked="@(currentModel!.Services.Contains(s.Slug))" />
-                    <span class="tile-icon">@s.Icon</span>
+                    <span class="tile-icon"><ServiceIcon Name="@s.Icon" Size="16" /></span>
                     <span>@s.Title</span>
                 </label>
             }

@@ -6,14 +6,10 @@
 }
 
 <a href="@Href" class="card service-card fade-in">
-    <div class="service-icon">@Icon</div>
+    <div class="service-icon">
+        <ServiceIcon Name="@Icon" Size="28" />
+    </div>
     <h3>@Title</h3>
     <p style="font-size:14px;color:var(--muted);margin-top:6px">@Description</p>
     <div style="font-size:13px;color:var(--red);margin-top:16px;font-weight:700">Mehr erfahren →</div>
 </a>
-
-<style>
-.service-card { display: block; }
-.service-card .service-icon { width: 52px; height: 52px; background: var(--red-soft); color: var(--red); border-radius: var(--radius-card); display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 16px; transition: background var(--motion-fast), color var(--motion-fast); }
-.service-card:hover .service-icon { background: var(--red); color: #fff; }
-</style>

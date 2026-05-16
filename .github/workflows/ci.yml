@@ -1,0 +1,33 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Unit tests
+        run: dotnet test tests/ETD.Web.Tests --configuration Release --no-build --verbosity normal
+
+      - name: Install Playwright browsers
+        run: |
+          dotnet build tests/ETD.E2E --configuration Release --no-restore
+          pwsh tests/ETD.E2E/bin/Release/net10.0/playwright.ps1 install --with-deps chromium
+
+      - name: E2E tests
+        run: dotnet test tests/ETD.E2E --configuration Release --no-build --verbosity normal

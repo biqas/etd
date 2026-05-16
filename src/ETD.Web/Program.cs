@@ -6,6 +6,7 @@ builder.AddServiceDefaults();
 
 builder.Services.AddDataProtection();
 builder.Services.AddSingleton<ETD.Web.Services.WizardStateProtector>();
+builder.Services.AddSingleton(new ETD.Web.Services.SubmissionRateLimiter(maxPerHour: 5));
 
 builder.Services.AddRazorComponents();   // no AddInteractiveServerComponents — static SSR only
 

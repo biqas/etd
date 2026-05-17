@@ -42,8 +42,12 @@
             <line x1="20" y1="62" x2="40" y2="62" stroke="#fff" stroke-width="1.8"/>
             <line x1="20" y1="68" x2="40" y2="68" stroke="#fff" stroke-width="1.8"/>
             <line x1="20" y1="74" x2="40" y2="74" stroke="#fff" stroke-width="1.8"/>
-            @* White filament arrow — points up *@
-            <path d="M20 36 L30 22 L40 36 L34 36 L34 50 L26 50 L26 36 Z" fill="#fff"/>
+            @* Weißer Glühdraht — 2 Pfeil-Peaks (M) auf Stem + horizontale Basis *@
+            <g fill="#fff">
+                <rect x="14" y="48" width="32" height="5"/>
+                <rect x="19" y="34" width="22" height="14"/>
+                <polygon points="19,34 25,13 30,25 35,13 41,34"/>
+            </g>
         </g>
 
         @* ============ WORTMARKE (right) ============ *@
@@ -83,7 +87,14 @@ else
         @* Vereinfachte Sockel-Linien: nur 2 statt 3 *@
         <line x1="14" y1="46" x2="30" y2="46" stroke="#fff" stroke-width="1.4"/>
         <line x1="14" y1="51" x2="30" y2="51" stroke="#fff" stroke-width="1.4"/>
-        @* Weißer Pfeil (Glühfaden) *@
-        <path d="M15 24 L22 12 L29 24 L25 24 L25 32 L19 32 L19 24 Z" fill="#fff"/>
+        @* Weißer Glühdraht — 2 Pfeil-Peaks (M) auf Stem + horizontale Basis *@
+        <g fill="#fff">
+            @* Basis-Bar (breiter als Stem) *@
+            <rect x="11" y="30" width="22" height="3"/>
+            @* Stem *@
+            <rect x="15" y="22" width="14" height="8"/>
+            @* M-Peaks: spitze Tips + tiefe V-Valley aber nicht ganz bis Base — wie Vorlage *@
+            <polygon points="15,22 19,8 22,16 26,8 29,22"/>
+        </g>
     </svg>
 }

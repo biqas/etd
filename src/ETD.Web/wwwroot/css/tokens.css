@@ -36,3 +36,10 @@
     --container: 1280px;
     --gutter: 32px;
 }
+
+@media (max-width: 768px) {
+    :root { --gutter: 20px; }
+}
+@media (max-width: 414px) {
+    :root { --gutter: 16px; }
+}

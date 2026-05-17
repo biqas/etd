@@ -1,0 +1,479 @@
+@page "/leistungen/smart-home-knx/bauherr"
+@using ETD.Web.Components.Shared
+
+<PageTitle>KNX für Bauherren — bauen Sie einmal und richtig — ETD Elektrotechnik Desch</PageTitle>
+<HeadContent>
+    <meta name="description" content="KNX für Neubau-Bauherren: 3 Pakete (Basic 18-25k €, Komfort 28-38k €, Premium 48-75k €) mit konkreten Gerätelisten und KfW-261-Förderung bis 45 % Tilgungszuschuss. Phasen-Timeline von Bauantrag bis Einzug." />
+</HeadContent>
+
+<!-- ============== HERO ============== -->
+<section class="bauherr-hero">
+    <div class="container">
+        <div class="bauherr-hero-grid">
+            <div>
+                <a href="/leistungen/smart-home-knx" class="bauherr-back">← Zurück zu KNX-Übersicht</a>
+                <div class="eyebrow" style="color:var(--red)">Pfad für Bauherren</div>
+                <h1 style="margin-bottom:14px">Bauen Sie einmal — <em style="color:var(--red);font-style:normal">und richtig.</em></h1>
+                <p style="font-size:1.125rem;color:var(--ink-2);max-width:600px;line-height:1.55">Im Neubau haben Sie das <strong>einmalige Zeitfenster</strong>, KNX richtig zu planen: Bus-Leitungen rein, bevor verputzt wird. Später nachrüsten kostet das 3-5-fache. Wir planen mit Ihrem Architekten und Elektroplaner, ziehen die Verkabelung parallel zur 230&nbsp;V, und übergeben Ihnen ein System, das <strong>30+ Jahre wächst</strong>.</p>
+
+                <div class="bauherr-hero-stats">
+                    <div class="bauherr-hero-stat">
+                        <div class="bauherr-hero-stat-num">3 – 6 Mo</div>
+                        <div class="bauherr-hero-stat-label">vor Spatenstich entscheiden</div>
+                    </div>
+                    <div class="bauherr-hero-stat">
+                        <div class="bauherr-hero-stat-num">bis 45 %</div>
+                        <div class="bauherr-hero-stat-label">KfW 261 Tilgungs­zuschuss</div>
+                    </div>
+                    <div class="bauherr-hero-stat">
+                        <div class="bauherr-hero-stat-num">+5 – 8 %</div>
+                        <div class="bauherr-hero-stat-label">Immobilien-Wert­steigerung</div>
+                    </div>
+                </div>
+
+                <div style="display:flex;gap:14px;margin-top:28px;flex-wrap:wrap">
+                    <a href="/angebot?for=smart-home-knx" class="btn btn-primary">Kostenfreie Erstberatung →</a>
+                    <a href="#pakete" class="btn btn-secondary">Pakete &amp; Preise</a>
+                </div>
+            </div>
+
+            <div class="bauherr-hero-illu" aria-hidden="true">
+                @* House under construction with bus pre-installed *@
+                <svg viewBox="0 0 420 340" xmlns="http://www.w3.org/2000/svg">
+                    @* Scaffolding behind house — light gray *@
+                    <g stroke="#9ca3af" stroke-width="1.2" fill="none" opacity="0.55">
+                        <line x1="40" y1="60" x2="40" y2="320"/>
+                        <line x1="380" y1="60" x2="380" y2="320"/>
+                        <line x1="40" y1="60" x2="380" y2="60"/>
+                        <line x1="40" y1="130" x2="380" y2="130"/>
+                        <line x1="40" y1="210" x2="380" y2="210"/>
+                        <line x1="40" y1="290" x2="380" y2="290"/>
+                        @* Vertical scaffolding posts *@
+                        <line x1="120" y1="60" x2="120" y2="320" stroke-dasharray="4 3"/>
+                        <line x1="210" y1="60" x2="210" y2="320" stroke-dasharray="4 3"/>
+                        <line x1="300" y1="60" x2="300" y2="320" stroke-dasharray="4 3"/>
+                    </g>
+
+                    @* House under construction — only roof skeleton + walls, no plaster *@
+                    <path d="M70 130 L210 50 L350 130 L350 135 L210 55 L70 135 Z" fill="#1f2937"/>
+
+                    @* House body — exposed brick texture suggestion *@
+                    <rect x="80" y="130" width="260" height="180" fill="#FBE5D6" stroke="#0e1116" stroke-width="2"/>
+
+                    @* Brick pattern hint *@
+                    <g opacity="0.35" stroke="#8B5A3C" stroke-width="0.6" fill="none">
+                        <line x1="80" y1="155" x2="340" y2="155"/>
+                        <line x1="80" y1="170" x2="340" y2="170"/>
+                        <line x1="80" y1="185" x2="340" y2="185"/>
+                        <line x1="80" y1="245" x2="340" y2="245"/>
+                        <line x1="80" y1="260" x2="340" y2="260"/>
+                        <line x1="80" y1="275" x2="340" y2="275"/>
+                    </g>
+
+                    @* Floor divider + room dividers *@
+                    <line x1="80" y1="220" x2="340" y2="220" stroke="#0e1116" stroke-width="1.5" opacity="0.4"/>
+                    <line x1="160" y1="130" x2="160" y2="220" stroke="#0e1116" stroke-width="1.5" opacity="0.4"/>
+                    <line x1="260" y1="130" x2="260" y2="220" stroke="#0e1116" stroke-width="1.5" opacity="0.4"/>
+                    <line x1="210" y1="220" x2="210" y2="310" stroke="#0e1116" stroke-width="1.5" opacity="0.4"/>
+
+                    @* KNX Bus pre-installed — RED PROMINENT, "rough-in" stage *@
+                    <line x1="80" y1="180" x2="340" y2="180" stroke="#DC1F26" stroke-width="3.5" stroke-dasharray="5 4">
+                        <animate attributeName="stroke-dashoffset" values="0;-9" dur="0.8s" repeatCount="indefinite"/>
+                    </line>
+                    <line x1="100" y1="180" x2="100" y2="270" stroke="#DC1F26" stroke-width="3" stroke-dasharray="5 4">
+                        <animate attributeName="stroke-dashoffset" values="0;-9" dur="0.8s" repeatCount="indefinite"/>
+                    </line>
+                    <line x1="100" y1="270" x2="320" y2="270" stroke="#DC1F26" stroke-width="3" stroke-dasharray="5 4">
+                        <animate attributeName="stroke-dashoffset" values="0;-9" dur="0.8s" repeatCount="indefinite"/>
+                    </line>
+
+                    @* "BUS BEREIT" label *@
+                    <text x="210" y="175" text-anchor="middle" font-size="11" font-weight="900" fill="#DC1F26" letter-spacing="1.4">BUS BEREIT</text>
+
+                    @* Future connection slots — empty white circles *@
+                    <circle cx="120" cy="180" r="5" fill="#fff" stroke="#DC1F26" stroke-width="2"/>
+                    <circle cx="180" cy="180" r="5" fill="#fff" stroke="#DC1F26" stroke-width="2"/>
+                    <circle cx="240" cy="180" r="5" fill="#fff" stroke="#DC1F26" stroke-width="2"/>
+                    <circle cx="300" cy="180" r="5" fill="#fff" stroke="#DC1F26" stroke-width="2"/>
+                    <circle cx="150" cy="270" r="5" fill="#fff" stroke="#DC1F26" stroke-width="2"/>
+                    <circle cx="220" cy="270" r="5" fill="#fff" stroke="#DC1F26" stroke-width="2"/>
+                    <circle cx="290" cy="270" r="5" fill="#fff" stroke="#DC1F26" stroke-width="2"/>
+
+                    @* Crane on right side *@
+                    <g transform="translate(390 50)">
+                        <line x1="0" y1="0" x2="0" y2="270" stroke="#0e1116" stroke-width="2.5"/>
+                        <line x1="-60" y1="0" x2="20" y2="0" stroke="#0e1116" stroke-width="2.5"/>
+                        <line x1="-50" y1="0" x2="-50" y2="20" stroke="#0e1116" stroke-width="1.3"/>
+                        <rect x="-55" y="20" width="10" height="8" fill="#FFD466" stroke="#0e1116" stroke-width="1"/>
+                    </g>
+
+                    @* Helmet badge bottom-left *@
+                    <g transform="translate(58 310)">
+                        <ellipse cx="0" cy="0" rx="14" ry="7" fill="#FFD466" stroke="#0e1116" stroke-width="1.5"/>
+                        <rect x="-14" y="0" width="28" height="3" fill="#FFD466" stroke="#0e1116" stroke-width="1.3"/>
+                    </g>
+                </svg>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============== WARUM JETZT ============== -->
+<section class="container fade-in" style="padding:64px 0">
+    <div class="eyebrow">Warum jetzt richtig planen</div>
+    <h2 style="margin-bottom:8px">Drei Gründe, die <em style="color:var(--red);font-style:normal">später nicht mehr gehen.</em></h2>
+    <p style="color:var(--muted);max-width:680px;margin-bottom:36px">Im Bestand sind viele Smart-Home-Funktionen nur mit Hybrid-Lösungen oder Aufstemmarbeit möglich. Im Neubau machen Sie es einmal — und es passt.</p>
+
+    <div class="bauherr-why-grid">
+        <article class="bauherr-why-card">
+            <div class="bauherr-why-icon"><ServiceIcon Name="zap" Size="32" /></div>
+            <h3>Bus-Verkabelung kostenneutral</h3>
+            <p>Während die 230-V-Leitungen sowieso gezogen werden, kommt das 2-Draht-Bus­kabel <strong>parallel mit hinzu</strong>. Das kostet <strong>ca. 1.500-3.000&nbsp;€</strong> extra. Nachrüsten im Bestand: das Zehnfache.</p>
+        </article>
+        <article class="bauherr-why-card">
+            <div class="bauherr-why-icon"><ServiceIcon Name="home" Size="32" /></div>
+            <h3>Wertsteigerung dokumentierbar</h3>
+            <p>KNX gilt bei Sachverständigen und Maklern als Premium-Ausstattung — <strong>+5-8 % Wertsteigerung</strong> in Bestlage. Verkauft sich später leichter, weil die Käufer keine Modernisierungs-Mehrkosten fürchten müssen.</p>
+        </article>
+        <article class="bauherr-why-card">
+            <div class="bauherr-why-icon"><ServiceIcon Name="sun" Size="32" /></div>
+            <h3>Vorbereitet für PV, WP, Wallbox</h3>
+            <p>Sie installieren PV vielleicht erst in 2 Jahren, die Wallbox in 5. Mit KNX als Backbone <strong>spielt das alles zusammen</strong>, ohne dass Sie nochmal Wände öffnen müssen.</p>
+        </article>
+    </div>
+</section>
+
+<!-- ============== PHASEN-TIMELINE ============== -->
+<section style="background:var(--ink);color:#fff;padding:72px 0">
+    <div class="container fade-in">
+        <div class="eyebrow" style="color:rgba(255,255,255,0.7)">Ablauf im Neubau</div>
+        <h2 style="color:#fff;margin-bottom:8px">Von der Beratung bis zum <em style="color:var(--red);font-style:normal">Einzug.</em></h2>
+        <p style="color:rgba(255,255,255,0.78);max-width:680px;margin-bottom:36px">Fünf Phasen, klar getaktet. Die wichtigste Phase ist Phase 1 — alles danach baut darauf auf.</p>
+
+        <div class="bauherr-phases">
+            <article class="bauherr-phase">
+                <div class="bauherr-phase-tag">Phase 1 · KRITISCH</div>
+                <div class="bauherr-phase-num">1</div>
+                <h3>Vor Bauantrag · 3-6 Monate vor Spatenstich</h3>
+                <p>Kostenfreie Erstberatung vor Ort, Funktions­umfang klären, KNX-Plan in den Elektro­plan integrieren. Wir liefern <strong>Plansatz</strong>, <strong>Lasten­heft</strong> und <strong>Geräte­liste</strong> — Ihr Architekt &amp; Elektroplaner können damit arbeiten.</p>
+                <div class="bauherr-phase-deliver">Liefert: KNX-Konzept · Geräteliste · Elektroplan-Integration · Festpreis-Angebot</div>
+            </article>
+
+            <article class="bauherr-phase">
+                <div class="bauherr-phase-tag">Phase 2</div>
+                <div class="bauherr-phase-num">2</div>
+                <h3>Rohbau · während Bauphase 2-4</h3>
+                <p>Bus-Leerrohre und KNX-Kabel (TP1 grün, J-Y(St)Y 2&nbsp;×&nbsp;2&nbsp;×&nbsp;0,8) werden <strong>parallel zur 230-V-Verkabelung</strong> verlegt — das ist der Moment, in dem es kostengünstig ist. Verteiler-Dosen UP55 in jeder Wand vorgesehen.</p>
+                <div class="bauherr-phase-deliver">Liefert: Verkabelung komplett · Verteiler-Dosen · Schaltschrank-Vorbereitung</div>
+            </article>
+
+            <article class="bauherr-phase">
+                <div class="bauherr-phase-tag">Phase 3</div>
+                <div class="bauherr-phase-num">3</div>
+                <h3>Innenausbau · Bauphase 4-5</h3>
+                <p>Schaltschrank wird mit KNX-Aktoren bestückt (Dimm-, Schalt-, Jalousie-, Heizungs­aktoren auf Hutschiene). Sensoren in den Räumen: Wand­taster, Bewegungs­melder, Temperatur­fühler. KNX-Spannungs­versorgung und IP-Interface eingebaut.</p>
+                <div class="bauherr-phase-deliver">Liefert: Aktoren montiert · Sensoren in Räumen · Bus aktiv</div>
+            </article>
+
+            <article class="bauherr-phase">
+                <div class="bauherr-phase-tag">Phase 4</div>
+                <div class="bauherr-phase-num">4</div>
+                <h3>ETS-Programmierung · vor Einzug</h3>
+                <p>Wir programmieren das Projekt mit <strong>ETS6 Professional</strong>: jedes Gerät bekommt seine Adresse, jede Gruppen­adresse ihre Funktion, jede Szene ihre Logik. Anschließend <strong>Test­lauf jeder Schalter, jeder Steckdose, jeder Jalousie</strong>.</p>
+                <div class="bauherr-phase-deliver">Liefert: ETS-Projekt · Inbetriebnahme-Protokoll · funktionierende Szenen</div>
+            </article>
+
+            <article class="bauherr-phase bauherr-phase-final">
+                <div class="bauherr-phase-tag">Phase 5</div>
+                <div class="bauherr-phase-num">5</div>
+                <h3>Übergabe &amp; Schulung · Einzug</h3>
+                <p>Sie bekommen die <strong>Dokumentation</strong>, eine <strong>schreib­geschützte ETS-Inside-Kopie</strong>, und eine 2-stündige Schulung. Kleine Änderungen (Szenen, Heizpläne) machen Sie später selbst. Größere Änderungen übernehmen wir auf Zuruf, abgerechnet nach Aufwand.</p>
+                <div class="bauherr-phase-deliver">Liefert: Doku · Schulung · ETS-Kopie für Kunden · Wartungs­optional</div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<!-- ============== 3 PAKETE ============== -->
+<section id="pakete" class="container fade-in" style="padding:72px 0">
+    <div class="eyebrow">Pakete für Bauherren</div>
+    <h2 style="margin-bottom:8px">Drei Stufen, <em style="color:var(--red);font-style:normal">Sie wählen.</em></h2>
+    <p style="color:var(--muted);max-width:740px;margin-bottom:36px">Alle Preise <strong>brutto inkl. ETS-Programmierung und Inbetriebnahme</strong>, zzgl. konventioneller Elektroinstallation (typisch 12.000-19.000&nbsp;€). Förder-Abzüge sind <strong>indikativ</strong> und hängen von Effizienz­haus-Stufe und individueller Situation ab — die finale Zahl liefert Ihr Energie-Effizienz-Experte.</p>
+
+    <div class="bauherr-pakete">
+
+        <article class="bauherr-paket">
+            <div class="bauherr-paket-tag">Solide Basis</div>
+            <h3>Basic</h3>
+            <div class="bauherr-paket-price">
+                <span class="bauherr-paket-price-amount">18.000 – 25.000 €</span>
+                <span class="bauherr-paket-price-label">brutto inkl. ETS</span>
+            </div>
+            <div class="bauherr-paket-foerderung">
+                <strong>Förderung indikativ:</strong>
+                KfW 261 Effizienz­haus 55 EE → 15-20 % Tilgungs­zuschuss<br/>
+                <em>Netto-Aufpreis nach Förderung: ca. 14.500 – 21.000 €</em>
+            </div>
+            <div class="bauherr-paket-section">
+                <h4>Was Sie bekommen</h4>
+                <ul>
+                    <li>Vollständige KNX-Bus­verkabelung (TP1 grün) in alle Räume</li>
+                    <li>Schaltschrank mit Aktoren: 1× Dimmaktor 4-fach LED, 2× Schaltaktor 8-fach, 1× Jalousieaktor 4-fach, 1× Heizungsaktor 6-fach (Theben HMT)</li>
+                    <li>8× Standard-Wandtaster Kunststoff (UP55, 2-/4-fach gemischt)</li>
+                    <li>4× Bewegungsmelder Innen (Bad, Flur, Keller)</li>
+                    <li>1× Wetterstation Basic (MDT SCN-WS3HW)</li>
+                    <li>1× KNX-IP-Interface für lokale Visu (Weinzierl 731)</li>
+                    <li>KNX-Spannungs­versorgung 640 mA</li>
+                    <li>ETS6-Programmierung &amp; Inbetriebnahme (ca. 25-35 Stunden)</li>
+                </ul>
+            </div>
+            <div class="bauherr-paket-section">
+                <h4>Damit können Sie</h4>
+                <ul class="bauherr-paket-features">
+                    <li>Lichtszenen per Taster &amp; Zeitplan</li>
+                    <li>Bewegungsabhängiges Licht in Flur/Bad/Keller</li>
+                    <li>Einzelraum-Heizungs­regelung Basis (DIN EN 15232 Klasse B-A)</li>
+                    <li>Jalousien-Automatik mit Wetter­station</li>
+                    <li>Lokale Visu auf Tablet/Smartphone</li>
+                </ul>
+            </div>
+            <a href="/angebot?for=smart-home-knx" class="bauherr-paket-cta">Beratung für Basic-Paket →</a>
+        </article>
+
+        <article class="bauherr-paket bauherr-paket-featured">
+            <div class="bauherr-paket-tag">★ Empfohlen</div>
+            <h3>Komfort</h3>
+            <div class="bauherr-paket-price">
+                <span class="bauherr-paket-price-amount">28.000 – 38.000 €</span>
+                <span class="bauherr-paket-price-label">brutto inkl. ETS</span>
+            </div>
+            <div class="bauherr-paket-foerderung">
+                <strong>Förderung indikativ:</strong>
+                KfW 261 Effizienzhaus 40 EE → 20-25 % Tilgungs­zuschuss<br/>
+                BAFA BEG-EM für Heizungs/Verschattungs­steuerung 15 %<br/>
+                <em>Netto-Aufpreis nach Förderung: ca. 19.500 – 28.000 €</em>
+            </div>
+            <div class="bauherr-paket-section">
+                <h4>Alles aus Basic, plus</h4>
+                <ul>
+                    <li>4× Glas­taster mit Display &amp; Temperatur­fühler (MDT GT II Smart) in zentralen Räumen</li>
+                    <li>3× Präsenz­melder Decke (statt einfacher BWM) für Wohnzimmer/Küche/Büro</li>
+                    <li>Anwesenheits­simulation (für Urlaubs­modus)</li>
+                    <li>KNX-Energie­zähler 3-fach am Haus­anschluss</li>
+                    <li>KNX-Logik­baustein (MDT SCN-LOG1)</li>
+                    <li>PV-Vorbereitung: Modbus-TCP-Schnittstelle zum kommenden Wechselrichter</li>
+                    <li>Wallbox-Vorbereitung: Leerrohr Garage + KNX-Gateway im Schaltschrank</li>
+                    <li>Erweiterte ETS-Programmierung (ca. 40-55 Stunden)</li>
+                </ul>
+            </div>
+            <div class="bauherr-paket-section">
+                <h4>Zusätzlich können Sie</h4>
+                <ul class="bauherr-paket-features">
+                    <li>Anwesenheits­simulation Urlaub (Licht/Jalousien tageszeit­gerecht)</li>
+                    <li>Live-Energie-Monitoring (Verbrauch je Raum)</li>
+                    <li>Volle Vorbereitung für PV-Eigen­verbrauch &amp; Wallbox</li>
+                    <li>Komplexere Szenen (Filmabend, Frühstück, Putzlicht, Gäste)</li>
+                    <li>DIN EN 15232 Klasse A erreichbar</li>
+                </ul>
+            </div>
+            <a href="/angebot?for=smart-home-knx" class="bauherr-paket-cta">Beratung für Komfort-Paket →</a>
+        </article>
+
+        <article class="bauherr-paket">
+            <div class="bauherr-paket-tag">Vollausstattung</div>
+            <h3>Premium</h3>
+            <div class="bauherr-paket-price">
+                <span class="bauherr-paket-price-amount">48.000 – 75.000 €</span>
+                <span class="bauherr-paket-price-label">brutto inkl. ETS</span>
+            </div>
+            <div class="bauherr-paket-foerderung">
+                <strong>Förderung indikativ:</strong>
+                KfW 261 Effizienz­haus 40 plus → bis 45 % Tilgungs­zuschuss<br/>
+                KfW 458 (Wärme­pumpe) bis 70 % auf WP &amp; Umfeld­technik<br/>
+                BAFA BEG-EM für Steuerungs­technik 15-20 %<br/>
+                <em>Netto-Aufpreis nach Förderung: ca. 28.000 – 50.000 €</em>
+            </div>
+            <div class="bauherr-paket-section">
+                <h4>Alles aus Komfort, plus</h4>
+                <ul>
+                    <li>Gira X1 Server für Visu &amp; komplexe Logik</li>
+                    <li>Premium-Wetterstation Elsner Suntracer KNX pro mit GPS</li>
+                    <li>PV-Wechselrichter aktiv eingebunden (Modbus TCP/Sunspec)</li>
+                    <li>11-kW-Wallbox mit KNX-OCPP-Gateway (z.B. ABB Terra AC)</li>
+                    <li>Wärmepumpen-Integration SG-Ready / EEBus</li>
+                    <li>Batterie­speicher 10 kWh mit Battery-Bridge</li>
+                    <li>Türkommunikation Gira inkl. Innen­station</li>
+                    <li>Multiroom-Audio Bridge (Sonos/Russound) — optional</li>
+                    <li>2× Bewegungsmelder Außen IP54 mit Frost­schutz</li>
+                    <li>Optional: Sprach-Bridge Alexa/Google</li>
+                    <li>Premium-ETS-Programmierung (ca. 60-80 Stunden)</li>
+                </ul>
+            </div>
+            <div class="bauherr-paket-section">
+                <h4>Zusätzlich können Sie</h4>
+                <ul class="bauherr-paket-features">
+                    <li>Volle Sektor­kopplung — PV-Über­schuss zu WP/Wallbox/Speicher</li>
+                    <li>500-800 €/Jahr Strom­kosten-Ersparnis dokumentier­bar</li>
+                    <li>§ 14a EnWG-Compliance automatisch erfüllt</li>
+                    <li>Sprachsteuerung optional („Alexa, Filmabend")</li>
+                    <li>Multiroom-Audio in allen Räumen</li>
+                    <li>Voll integriertes Sicherheits­konzept (BWM Außen, Anwesenheit, Alarm)</li>
+                </ul>
+            </div>
+            <a href="/angebot?for=smart-home-knx" class="bauherr-paket-cta">Beratung für Premium-Paket →</a>
+        </article>
+
+    </div>
+
+    <p style="margin-top:28px;font-size:13px;color:var(--muted);max-width:740px">Stundensatz ETS-Programmierung 89-130&nbsp;€ brutto. Alle Geräte­preise basieren auf MDT-Preisliste 2026, Theben &amp; Gira Standard, Stand März 2026. Verbindliche Festpreis-Kalkulation nach Vor-Ort-Termin und Elektroplan-Abstimmung.</p>
+</section>
+
+<!-- ============== MINI-CASE-STUDY ============== -->
+<section class="bauherr-case fade-in">
+    <div class="container">
+        <div class="eyebrow">Beispiel-Projekt</div>
+        <h2 style="margin-bottom:8px">So sieht ein typisches <em style="color:var(--red);font-style:normal">Bauherren-Projekt</em> aus.</h2>
+        <p style="color:var(--muted);max-width:680px;margin-bottom:36px">Realistisches Rechen­beispiel — die Werte und Förder­quoten entsprechen aktuellen 2026er-Sätzen.</p>
+
+        <div class="bauherr-case-grid">
+            <div class="bauherr-case-meta">
+                <div class="bauherr-case-meta-row"><span>Familie</span><strong>4 Personen, 2 Kinder</strong></div>
+                <div class="bauherr-case-meta-row"><span>Objekt</span><strong>EFH 165&nbsp;m², Neubau Spessart-Region</strong></div>
+                <div class="bauherr-case-meta-row"><span>Energie­standard</span><strong>Effizienz­haus 40 EE</strong></div>
+                <div class="bauherr-case-meta-row"><span>Bauphase</span><strong>Spatenstich 04/2025 · Einzug 03/2026</strong></div>
+                <div class="bauherr-case-meta-row"><span>Gewähltes Paket</span><strong style="color:var(--red)">Komfort + PV-Vorbereitung</strong></div>
+            </div>
+
+            <div class="bauherr-case-story">
+                <h3>Was die Familie wollte</h3>
+                <p>„Smart-Home, aber nicht so eine App-Lösung, die in 5 Jahren tot ist. Wir wollen <strong>jetzt PV-vorbereitet bauen</strong>, die Anlage selbst in 2 Jahren nach­rüsten, dann später die Wallbox dazu. Und es muss <strong>auch funktionieren, wenn das WLAN ausfällt</strong>."</p>
+
+                <h3 style="margin-top:24px">Was wir geplant haben</h3>
+                <ul>
+                    <li>KNX-Komplett­verkabelung in allen Räumen (Bus + 230&nbsp;V parallel)</li>
+                    <li>Schaltschrank mit Aktoren für Licht/Heizung/Jalousie + Logik­baustein + Energie­zähler</li>
+                    <li>Glas­taster mit Display in Wohn­räumen, Standard-Taster in Neben­räumen</li>
+                    <li>3 Präsenz­melder, Wetter­station, Anwesenheits-Sim</li>
+                    <li><strong>PV-Vorbereitung</strong>: Modbus-TCP-Bridge im Schaltschrank, Leerrohre zum geplanten Dach-Wechsel­richter</li>
+                    <li><strong>Wallbox-Vorbereitung</strong>: 11-kW-Anschluss + Leerrohr Garage, KNX-Gateway-Slot im Schaltschrank</li>
+                </ul>
+
+                <h3 style="margin-top:24px">Rechnung</h3>
+                <div class="bauherr-case-rechnung">
+                    <div class="bauherr-case-rechnung-row"><span>KNX-Komfort-Paket (Mitte Bandbreite)</span><strong>34.500 €</strong></div>
+                    <div class="bauherr-case-rechnung-row"><span>KfW 261 EH 40 EE Tilgungs­zuschuss (~20 %)</span><strong style="color:#16a34a">−6.900 €</strong></div>
+                    <div class="bauherr-case-rechnung-row"><span>BAFA BEG-EM für Heizungs­steuerung (~15 % auf 6.000 € Teilkosten)</span><strong style="color:#16a34a">−900 €</strong></div>
+                    <div class="bauherr-case-rechnung-row bauherr-case-rechnung-total"><span><strong>Netto-Aufpreis KNX</strong></span><strong style="color:var(--red)">26.700 €</strong></div>
+                </div>
+                <p style="font-size:13px;color:var(--muted);margin-top:14px">Plus die konventionelle Elektrik (ca. 16.000&nbsp;€ brutto) — die wäre sowieso angefallen. <strong>Mehr­kosten KNX vs. konventionell: ca. 11.000&nbsp;€ netto nach Förderung</strong> für 30+ Jahre Investitions­schutz.</p>
+
+                <h3 style="margin-top:24px">Ein Jahr nach Einzug</h3>
+                <p>Die PV-Anlage wurde 04/2027 installiert (10 kWp, 9.2-kW-Wechselrichter). <strong>Eintägige Inbetriebnahme</strong> — keine Wand-Arbeiten nötig, der KNX-Bus war bereits mit dem PV-Slot verbunden. Eigen­verbrauchs­quote stieg von erwartet 30 % auf <strong>62 %</strong>, weil die Wärme­pumpe automatisch in PV-Über­schuss-Phasen läuft. <strong>Strom­kosten 2027: ca. 680&nbsp;€/Jahr weniger</strong> als Vergleichs­objekt ohne KNX-Steuerung.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============== FAQ Bauherren ============== -->
+<section class="container fade-in" style="padding:72px 0">
+    <div class="eyebrow">Bauherren-FAQ</div>
+    <h2 style="margin-bottom:8px">Was Bauherren <em style="color:var(--red);font-style:normal">am häufigsten fragen.</em></h2>
+    <p style="color:var(--muted);max-width:680px;margin-bottom:36px">Wenn Ihre Frage nicht dabei ist — rufen Sie an: <a href="tel:+4960509062874" style="font-weight:800;color:var(--red)">06050&nbsp;9062874</a>.</p>
+
+    <div class="knx-myth-list" style="max-width:920px">
+        <details class="knx-myth">
+            <summary>
+                <span class="knx-myth-mark" style="background:#0e1116">?</span>
+                <span>Wann muss die KNX-Entscheidung spätestens fallen?</span>
+                <span class="knx-myth-arrow">›</span>
+            </summary>
+            <div class="knx-myth-body">
+                <p><strong>Vor Rohbau-Beginn — idealer­weise 3-6 Monate vor Spatenstich.</strong> Grund: Bus-Leerrohre und KNX-Kabel müssen parallel zur 230-V-Verkabelung gezogen werden. Wenn das Mauerwerk verputzt ist, ist Nachrüsten 3-5 mal so teuer. Wir empfehlen den Erst­beratungs-Termin <strong>zur Elektroplan-Erstellung</strong>, damit der Elektriker die KNX-Anforderungen direkt mit aufnimmt.</p>
+            </div>
+        </details>
+
+        <details class="knx-myth">
+            <summary>
+                <span class="knx-myth-mark" style="background:#0e1116">?</span>
+                <span>Müsst ihr mit unserem Architekten / Elektroplaner reden?</span>
+                <span class="knx-myth-arrow">›</span>
+            </summary>
+            <div class="knx-myth-body">
+                <p>Ja — und das macht den Unterschied. Wir liefern einen <strong>KNX-Plansatz</strong> (Geräteliste, Funktions­matrix, Schaltschrank-Layout, Bus-Topologie), den Ihr Elektroplaner direkt in den Elektroplan übernimmt. Bei Bedarf gehen wir in den Architekten-Termin mit. Das verhindert Missverständnisse und teure Nacharbeit.</p>
+            </div>
+        </details>
+
+        <details class="knx-myth">
+            <summary>
+                <span class="knx-myth-mark" style="background:#0e1116">?</span>
+                <span>Kann ich später noch erweitern?</span>
+                <span class="knx-myth-arrow">›</span>
+            </summary>
+            <div class="knx-myth-body">
+                <p>Ja, das ist <strong>einer der Kernvorteile von KNX</strong>. Sobald der Bus liegt, hängen Sie weitere Geräte einfach dran — neue Taster, neue Aktoren, neue Sensoren. Wir empfehlen schon bei der Planung: <strong>15-20 % freie Slots</strong> im Schaltschrank für spätere Erweiterungen. ETS-Programmierung der Erweiterung wird stunden­weise abgerechnet (89-130&nbsp;€/h brutto, typisch 1-3 Stunden für einzelne Geräte).</p>
+            </div>
+        </details>
+
+        <details class="knx-myth">
+            <summary>
+                <span class="knx-myth-mark" style="background:#0e1116">?</span>
+                <span>Was wenn ich später verkaufen will?</span>
+                <span class="knx-myth-arrow">›</span>
+            </summary>
+            <div class="knx-myth-body">
+                <p>KNX gilt bei Sachverständigen und Maklern als <strong>Premium-Ausstattung</strong>. Wertsteigerung typisch <strong>+5-8 % auf den Vergleichs­wert</strong> in Bestlage. Hinzu kommt: Käufer fürchten keine Modernisierungs-Mehrkosten, weil der Bus 30+ Jahre weiter funktioniert. Wir übergeben dem Käufer auf Wunsch die <strong>ETS-Inside-Kopie</strong> — er kann das System weiter pflegen lassen.</p>
+            </div>
+        </details>
+
+        <details class="knx-myth">
+            <summary>
+                <span class="knx-myth-mark" style="background:#0e1116">?</span>
+                <span>Was kostet eine kleine Änderung später (z.B. neue Szene)?</span>
+                <span class="knx-myth-arrow">›</span>
+            </summary>
+            <div class="knx-myth-body">
+                <p>Sie bekommen eine <strong>schreib­geschützte ETS-Inside-Kopie</strong>. Damit können Sie selbst Szenen anpassen, Heizpläne ändern, einzelne Funktionen umkonfigurieren — <strong>ohne Elektriker</strong>. Für größere Änderungen (neue Geräte, komplexe Logik, KNX-Secure-Schlüssel) übernehmen wir, abgerechnet pro Stunde (89-130&nbsp;€ brutto, typisch 1-3&nbsp;h). Auf Wunsch Wartungsvertrag.</p>
+            </div>
+        </details>
+
+        <details class="knx-myth">
+            <summary>
+                <span class="knx-myth-mark" style="background:#0e1116">?</span>
+                <span>Welche Förderung kann ich konkret beantragen?</span>
+                <span class="knx-myth-arrow">›</span>
+            </summary>
+            <div class="knx-myth-body">
+                <p>Bei einem <strong>Effizienz­haus 40 EE</strong>: <strong>KfW 261 Wohngebäude-Kredit</strong> bis 150.000&nbsp;€/Wohn­einheit mit 20 % Tilgungs­zuschuss. Mit einem <strong>Effizienz­haus 40 plus</strong>: bis 45 % Tilgungs­zuschuss möglich. Zusätzlich <strong>BAFA BEG-EM 15 %</strong> auf Smart-Home-Steuerungs­anteile. Wenn Sie eine Wärme­pumpe einbauen: <strong>KfW 458</strong> bezuschusst bis 70 % auf WP + Umfeld­technik — und KNX gilt explizit als Umfeld­maßnahme. <strong>Energie-Effizienz-Experte zwingend</strong> für KfW. Wir empfehlen den Experten in der Erst­beratungs-Phase einzubinden.</p>
+            </div>
+        </details>
+
+        <details class="knx-myth">
+            <summary>
+                <span class="knx-myth-mark" style="background:#0e1116">?</span>
+                <span>Wie lange dauert die Programmierung?</span>
+                <span class="knx-myth-arrow">›</span>
+            </summary>
+            <div class="knx-myth-body">
+                <p>Bei einem EFH typisch <strong>25-80 Stunden ETS-Programmierung</strong> (Basic-Paket ca. 25-35&nbsp;h, Komfort 40-55&nbsp;h, Premium 60-80&nbsp;h). Davon geschehen 60-70 % im Vorfeld am Schreibtisch (Projekt anlegen, Geräte definieren, Gruppen­adressen, Logiken). Die Inbetrieb­nahme vor Ort dauert typisch 2-5 Werktage, je nach Anzahl Räume. Final dann der <strong>Test­durchlauf jeder Schalter, jeder Steck­dose, jeder Jalousie</strong> mit Ihnen gemeinsam.</p>
+            </div>
+        </details>
+    </div>
+</section>
+
+<!-- ============== CTA ============== -->
+<section class="bauherr-cta">
+    <div class="container">
+        <div class="bauherr-cta-inner">
+            <div>
+                <div class="eyebrow" style="color:rgba(255,255,255,0.7)">Bereit für die Erstberatung?</div>
+                <h2 style="color:#fff;margin-bottom:14px">Kostenfrei. Vor Ort. <em style="color:var(--red);font-style:normal">Unverbindlich.</em></h2>
+                <p style="color:rgba(255,255,255,0.8);font-size:1.0625rem;max-width:580px;line-height:1.55">Wir kommen zu Ihnen, schauen uns Ihre Pläne an, klären welche Funktionen wirklich Sinn machen und liefern Ihnen eine <strong>KNX-Konzept-Skizze + indikatives Angebot</strong> innerhalb 7 Werktagen.</p>
+            </div>
+            <div class="bauherr-cta-buttons">
+                <a href="/angebot?for=smart-home-knx" class="btn btn-primary" style="font-size:16px;padding:16px 28px">Kostenfreie Erstberatung →</a>
+                <a href="tel:+4960509062874" class="bauherr-cta-tel">06050 9062874</a>
+                <span style="color:rgba(255,255,255,0.6);font-size:13px">Mo-Fr 8-18 Uhr</span>
+            </div>
+        </div>
+    </div>
+</section>

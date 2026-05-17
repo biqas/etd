@@ -100,9 +100,7 @@
             if (match is not null)
             {
                 _model.Services = new List<string> { match.Slug };
-                var hasParams = ServiceParams.HasParamsFor(match.Slug);
-                var next = hasParams ? "/angebot/preisrahmen" : "/angebot/zeit-ort";
-                Nav.NavigateTo($"{next}?s={Uri.EscapeDataString(Protector.Protect(_model))}", replace: true);
+                Nav.NavigateTo($"/angebot/preisrahmen?s={Uri.EscapeDataString(Protector.Protect(_model))}", replace: true);
             }
         }
     }
@@ -116,9 +114,7 @@
             return;
         }
 
-        var hasParams = ServiceParams.HasParamsForAny(_model.Services);
-        var next = hasParams ? "/angebot/preisrahmen" : "/angebot/zeit-ort";
-        Nav.NavigateTo($"{next}?s={Uri.EscapeDataString(Protector.Protect(_model))}");
+        Nav.NavigateTo($"/angebot/preisrahmen?s={Uri.EscapeDataString(Protector.Protect(_model))}");
     }
 }
 

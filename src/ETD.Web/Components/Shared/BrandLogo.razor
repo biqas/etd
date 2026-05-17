@@ -1,0 +1,89 @@
+@* ETD-Brandlogo als SVG — Variante "icon" oder "full" *@
+@code {
+    [Parameter] public string Variant { get; set; } = "icon"; // "icon" | "full" | "icon-dark"
+    [Parameter] public int Size { get; set; } = 40;
+    // Brighter colors for the small header icon so it reads as red+blue (not nearly-black).
+    // The "full" variant uses brand-true dark red/blue from the reference image.
+    private string BulbColor => Variant == "icon-dark" ? "#DC1F26"
+                              : Variant == "full"      ? "#6B1015"
+                                                       : "#A8161C";
+    private string FlakeColor => Variant == "icon-dark" ? "#7BB8E0"
+                               : Variant == "full"      ? "#1E5A8A"
+                                                        : "#2178B8";
+}
+
+@if (Variant == "full")
+{
+    @* Volles Logo (Icon links mit überlappender Schneeflocke + Wortmarke rechts) *@
+    <svg viewBox="0 0 380 200" xmlns="http://www.w3.org/2000/svg" width="@(Size * 1.9)" height="@Size" role="img" aria-label="ETD Elektrotechnik Desch — Meisterbetrieb für Elektro-, Kälte- und Klimatechnik">
+
+        @* ============ ICON (left): bulb foreground + snowflake/swoosh background ============ *@
+        @* Background layer: snowflake + swoosh, opacity reduced — sits behind the bulb *@
+        <g opacity="0.55">
+            @* Snowflake — positioned slightly to the right of the bulb, partly behind it *@
+            <g transform="translate(75 50)" stroke="@FlakeColor" stroke-width="3.5" stroke-linecap="round" fill="none">
+                <line x1="0" y1="-24" x2="0" y2="24"/>
+                <line x1="-21" y1="-12" x2="21" y2="12"/>
+                <line x1="-21" y1="12" x2="21" y2="-12"/>
+            </g>
+            @* Blue swoosh — water/air flow under the icon *@
+            <path d="M30 100 Q70 112 110 100 Q135 92 150 100" fill="none" stroke="@FlakeColor" stroke-width="5" stroke-linecap="round"/>
+            <path d="M40 115 Q80 124 120 115 Q140 109 152 115" fill="none" stroke="@FlakeColor" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+        </g>
+
+        @* Foreground: lightbulb in dark red, full opacity *@
+        <g transform="translate(15 12)">
+            <g fill="@BulbColor">
+                <circle cx="30" cy="34" r="28"/>
+                <rect x="20" y="58" width="20" height="6"/>
+                <path d="M20 64 L20 74 Q20 84 30 84 Q40 84 40 74 L40 64 Z"/>
+            </g>
+            @* White thread lines (screw base) *@
+            <line x1="20" y1="62" x2="40" y2="62" stroke="#fff" stroke-width="1.8"/>
+            <line x1="20" y1="68" x2="40" y2="68" stroke="#fff" stroke-width="1.8"/>
+            <line x1="20" y1="74" x2="40" y2="74" stroke="#fff" stroke-width="1.8"/>
+            @* White filament arrow — points up *@
+            <path d="M20 36 L30 22 L40 36 L34 36 L34 50 L26 50 L26 36 Z" fill="#fff"/>
+        </g>
+
+        @* ============ WORTMARKE (right) ============ *@
+        <g transform="translate(175 0)">
+            <text x="0" y="62" font-family="Inter, sans-serif" font-weight="900" font-size="60" fill="#0e1116" letter-spacing="-0.02em">ETD</text>
+            <text x="0" y="88" font-family="Inter, sans-serif" font-weight="700" font-size="16" fill="@BulbColor" letter-spacing="0.01em">Meisterbetrieb</text>
+            <text x="0" y="122" font-family="Inter, sans-serif" font-weight="800" font-size="22" fill="@BulbColor" letter-spacing="-0.01em">Elektrotechnik Desch</text>
+            <line x1="0" y1="144" x2="14" y2="144" stroke="@FlakeColor" stroke-width="1.6"/>
+            <text x="20" y="148" font-family="Inter, sans-serif" font-weight="700" font-size="12" fill="@FlakeColor">Elektrotechnik · Kälte- &amp; Klimatechnik</text>
+            <line x1="194" y1="144" x2="208" y2="144" stroke="@FlakeColor" stroke-width="1.6"/>
+        </g>
+    </svg>
+}
+else
+{
+    @* Icon-only Variante: bulb prominent + snowflake/swoosh dezent dahinter *@
+    <svg viewBox="0 0 80 64" xmlns="http://www.w3.org/2000/svg" width="@(Size * 1.25)" height="@Size" role="img" aria-label="ETD Elektrotechnik Desch">
+
+        @* === BACKGROUND: snowflake + swoosh (transluzent, hinter Lampe) === *@
+        <g opacity="0.4">
+            @* Schneeflocke — leicht rechts neben der Lampe, einfache 6-Strich-Variante (ohne Tip-Y's) *@
+            <g transform="translate(50 22)" stroke="@FlakeColor" stroke-width="3" stroke-linecap="round" fill="none">
+                <line x1="0" y1="-14" x2="0" y2="14"/>
+                <line x1="-12" y1="-7" x2="12" y2="7"/>
+                <line x1="-12" y1="7" x2="12" y2="-7"/>
+            </g>
+            @* Einfacher Swoosh am unteren Rand *@
+            <path d="M12 50 Q35 58 58 50 Q70 46 76 50" fill="none" stroke="@FlakeColor" stroke-width="4" stroke-linecap="round"/>
+        </g>
+
+        @* === FOREGROUND: Lampe rot, voll opak === *@
+        <g fill="@BulbColor">
+            <circle cx="22" cy="22" r="18"/>
+            <rect x="14" y="38" width="16" height="4" rx="0.5"/>
+            <path d="M14 42 L14 48 Q14 56 22 56 Q30 56 30 48 L30 42 Z"/>
+        </g>
+        @* Vereinfachte Sockel-Linien: nur 2 statt 3 *@
+        <line x1="14" y1="46" x2="30" y2="46" stroke="#fff" stroke-width="1.4"/>
+        <line x1="14" y1="51" x2="30" y2="51" stroke="#fff" stroke-width="1.4"/>
+        @* Weißer Pfeil (Glühfaden) *@
+        <path d="M15 24 L22 12 L29 24 L25 24 L25 32 L19 32 L19 24 Z" fill="#fff"/>
+    </svg>
+}

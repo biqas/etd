@@ -51,6 +51,19 @@ public sealed class SmtpQuoteMailer : IQuoteMailer
         m.From.Add(MailboxAddress.Parse(opts.From));
         m.To.Add(MailboxAddress.Parse(opts.To));
         m.Subject = $"Neue Anfrage von {q.Name} ({string.Join(", ", q.Services)})";
+
+        // Group selected features by service slug for readable mail
+        var featuresBySlug = (q.SelectedFeatures ?? new())
+            .Select(f => f.Split("::", 2))
+            .Where(parts => parts.Length == 2)
+            .GroupBy(parts => parts[0])
+            .ToDictionary(g => g.Key, g => g.Select(p => p[1]).ToList());
+
+        var featuresText = featuresBySlug.Any()
+            ? string.Join("\n\n", featuresBySlug.Select(kv =>
+                $"  {kv.Key}:\n" + string.Join("\n", kv.Value.Select(f => "    • " + f))))
+            : "  (keine konkreten Features ausgewählt — siehe Notiz)";
+
         m.Body = new TextPart("plain")
         {
             Text =
@@ -63,13 +76,11 @@ Audience:    {q.Audience}
 PLZ / Ort:   {q.Plz} {q.City}
 Zeitrahmen:  {q.Timeframe}
 
-Leistungen:
+Gewünschte Leistungen:
 {string.Join("\n", q.Services.Select(s => "  - " + s))}
 
-Wallbox kW:       {q.WallboxKw}
-Wallbox Distanz:  {q.WallboxDistanceMeters} m
-PV Fläche:        {q.PvAreaSqm} m²
-PV Speicher:      {(q.PvStorageKwh.GetValueOrDefault() == 0 ? "kein" : q.PvStorageKwh + " kWh")}
+Konkret gewünschte Features:
+{featuresText}
 
 Notiz:
 {q.Notes}"

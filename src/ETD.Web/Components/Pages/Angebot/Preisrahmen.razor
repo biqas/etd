@@ -10,7 +10,7 @@
     <div class="stepper">
         <div class="done"></div><div class="active"></div><div></div><div></div>
     </div>
-    <div class="step-meta"><span>Schritt 2 von 4</span><span>Preisrahmen (unverbindlich)</span></div>
+    <div class="step-meta"><span>Schritt 2 von 4</span><span>Was soll gemacht werden?</span></div>
 
     @if (currentModel is null)
     {
@@ -18,236 +18,42 @@
     }
     else
     {
-        <h1 style="margin-bottom:8px">Erste Kostenschätzung</h1>
-        <p style="color:var(--muted);margin-bottom:18px">Nur ein Richtwert. Verbindlich nach Vor-Ort-Termin.</p>
+        <h1 style="margin-bottom:8px">Was soll konkret gemacht werden?</h1>
+        <p style="color:var(--muted);margin-bottom:18px">Mehrfach­auswahl möglich. Wenn unsicher: <strong>einfach alles ankreuzen, was Sie interessiert</strong> — wir klären im Vor-Ort-Termin Details &amp; Preisrahmen.</p>
 
-        <EditForm Model="currentModel" OnValidSubmit="HandleNext" FormName="step2" Enhance>
+        <EditForm Model="currentModel" OnSubmit="HandleNext" FormName="step2" Enhance>
             <input type="hidden" name="s" value="@token" />
 
-            @if (currentModel.Services.Contains("elektroinstallation"))
+            @* Hidden field that JS keeps in sync with the checkbox state *@
+            <input type="hidden" name="SelectedFeaturesRaw" id="features-raw" value="@(currentModel.SelectedFeaturesRaw ?? "")" />
+
+            @foreach (var svc in selectedServices)
             {
-                var el = PriceEstimator.EstimateElektroinstallation(
-                    currentModel.ElektroRoomCount ?? 5,
-                    (currentModel.ElektroProjektart ?? "sanierung") == "neubau",
-                    currentModel.ElektroZaehlerschrankNeu ?? false);
-                <div class="param-block">
-                    <h3 class="param-block-title">Elektroinstallation</h3>
-                    <label class="slider-label">Projektart</label>
-                    <div class="chips">
-                        <label class="chip">
-                            <input type="radio" name="ElektroProjektart" value="neubau" checked="@((currentModel.ElektroProjektart ?? "sanierung") == "neubau")" oninput="window.etdPrice && etdPrice.update()" />
-                            Neubau
-                        </label>
-                        <label class="chip">
-                            <input type="radio" name="ElektroProjektart" value="sanierung" checked="@((currentModel.ElektroProjektart ?? "sanierung") == "sanierung")" oninput="window.etdPrice && etdPrice.update()" />
-                            Sanierung
-                        </label>
-                    </div>
-
-                    <div class="slider-block">
-                        <label class="slider-label">
-                            Anzahl Räume
-                            <span class="slider-value"><span data-out="el-rooms">@(currentModel.ElektroRoomCount ?? 5)</span></span>
-                        </label>
-                        <input class="range" type="range" name="ElektroRoomCount" min="1" max="12" step="1"
-                               value="@(currentModel.ElektroRoomCount ?? 5)" oninput="window.etdPrice && etdPrice.update()" />
-                        <div class="range-scale"><span>1</span><span>6</span><span>12</span></div>
-                    </div>
-
-                    <label class="checkbox-row">
-                        <input type="checkbox" name="ElektroZaehlerschrankNeu" value="true" checked="@(currentModel.ElektroZaehlerschrankNeu == true)" oninput="window.etdPrice && etdPrice.update()" />
-                        <span>Zählerschrank ebenfalls erneuern</span>
-                    </label>
-
-                    <div class="estimate-card">
-                        <div class="estimate-label">Elektroinstallation · Richtwert (zzgl. MwSt.)</div>
-                        <div class="estimate-amount" data-out="el-est">~ @($"{el.LowEuro:N0} – {el.HighEuro:N0}") €</div>
-                    </div>
-                </div>
-            }
-
-            @if (currentModel.Services.Contains("smart-home-knx"))
-            {
-                var knxFuncs = (currentModel.KnxFunctions ?? "light|blinds").Split('|', StringSplitOptions.RemoveEmptyEntries).ToHashSet();
-                var knxEst = PriceEstimator.EstimateKnx(currentModel.KnxRoomCount ?? 5, knxFuncs.Count);
-                <div class="param-block">
-                    <h3 class="param-block-title">Smart Home / KNX</h3>
-
-                    <div class="slider-block">
-                        <label class="slider-label">
-                            Anzahl Räume mit Smart Home
-                            <span class="slider-value"><span data-out="knx-rooms">@(currentModel.KnxRoomCount ?? 5)</span></span>
-                        </label>
-                        <input class="range" type="range" name="KnxRoomCount" min="1" max="12" step="1"
-                               value="@(currentModel.KnxRoomCount ?? 5)" oninput="window.etdPrice && etdPrice.update()" />
-                        <div class="range-scale"><span>1</span><span>6</span><span>12</span></div>
-                    </div>
-
-                    <label class="slider-label" style="margin-top:20px">Welche Funktionen?</label>
-                    <input type="hidden" name="KnxFunctions" value="@(currentModel.KnxFunctions ?? "light|blinds")" id="knx-functions-raw" />
-                    <div class="chips chips-wrap" id="knx-functions-group">
-                        @foreach (var (slug, label) in new[]{ ("light","Lichtsteuerung"), ("blinds","Jalousien"), ("heating","Heizung"), ("scenes","Szenen"), ("security","Sicherheit"), ("voice","Sprachsteuerung") })
+                <div class="feature-block">
+                    <h3 class="feature-block-title">
+                        <span class="feature-block-icon"><ServiceIcon Name="@svc.Icon" Size="20" /></span>
+                        @svc.Title
+                    </h3>
+                    <div class="feature-list" data-service-slug="@svc.Slug">
+                        @foreach (var feature in svc.Bullets)
                         {
-                            <label class="chip">
-                                <input type="checkbox" data-knx-func="@slug" checked="@(knxFuncs.Contains(slug))" oninput="window.etdPrice && etdPrice.update()" />
-                                @label
+                            var key = $"{svc.Slug}::{feature}";
+                            <label class="feature-row">
+                                <input type="checkbox" data-feature="@key" checked="@(currentModel.SelectedFeatures.Contains(key))" />
+                                <span class="feature-row-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                                <span class="feature-row-label">@feature</span>
                             </label>
                         }
-                    </div>
-
-                    <div class="estimate-card">
-                        <div class="estimate-label">KNX · Richtwert (zzgl. MwSt., je nach Funktionsumfang)</div>
-                        <div class="estimate-amount" data-out="knx-est">~ @($"{knxEst.LowEuro:N0} – {knxEst.HighEuro:N0}") €</div>
+                        <label class="feature-row feature-row-other">
+                            <input type="checkbox" data-feature="@($"{svc.Slug}::Sonstiges / im Termin klären")" checked="@(currentModel.SelectedFeatures.Contains($"{svc.Slug}::Sonstiges / im Termin klären"))" />
+                            <span class="feature-row-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span class="feature-row-label"><em>Sonstiges / im Termin klären</em></span>
+                        </label>
                     </div>
                 </div>
             }
 
-            @if (currentModel.Services.Contains("klimatechnik"))
-            {
-                var klima = PriceEstimator.EstimateKlima(currentModel.KlimaRoomCount ?? 1, currentModel.KlimaSystem ?? "single");
-                <div class="param-block">
-                    <h3 class="param-block-title">Klima- & Kältetechnik</h3>
-
-                    <div class="slider-block">
-                        <label class="slider-label">
-                            Anzahl Räume
-                            <span class="slider-value"><span data-out="klima-rooms">@(currentModel.KlimaRoomCount ?? 1)</span></span>
-                        </label>
-                        <input class="range" type="range" name="KlimaRoomCount" min="1" max="8" step="1"
-                               value="@(currentModel.KlimaRoomCount ?? 1)" oninput="window.etdPrice && etdPrice.update()" />
-                        <div class="range-scale"><span>1</span><span>4</span><span>8</span></div>
-                    </div>
-
-                    <label class="slider-label" style="margin-top:20px">System</label>
-                    <div class="chips chips-wrap">
-                        <label class="chip">
-                            <input type="radio" name="KlimaSystem" value="single" checked="@((currentModel.KlimaSystem ?? "single") == "single")" oninput="window.etdPrice && etdPrice.update()" />
-                            Single-Split (1×)
-                        </label>
-                        <label class="chip">
-                            <input type="radio" name="KlimaSystem" value="multi" checked="@(currentModel.KlimaSystem == "multi")" oninput="window.etdPrice && etdPrice.update()" />
-                            Multi-Split (mehrere Räume)
-                        </label>
-                        <label class="chip">
-                            <input type="radio" name="KlimaSystem" value="vrf" checked="@(currentModel.KlimaSystem == "vrf")" oninput="window.etdPrice && etdPrice.update()" />
-                            VRF (Gewerbe)
-                        </label>
-                    </div>
-
-                    <div class="estimate-card">
-                        <div class="estimate-label">Klimatechnik · Richtwert (zzgl. MwSt.)</div>
-                        <div class="estimate-amount" data-out="klima-est">~ @($"{klima.LowEuro:N0} – {klima.HighEuro:N0}") €</div>
-                    </div>
-                </div>
-            }
-
-            @if (currentModel.Services.Contains("sicherheit"))
-            {
-                var secComps = (currentModel.SecurityComponents ?? "alarm").Split('|', StringSplitOptions.RemoveEmptyEntries).ToHashSet();
-                var secEst = PriceEstimator.EstimateSecurity(secComps.Count, currentModel.SecuritySensorCount ?? 6);
-                <div class="param-block">
-                    <h3 class="param-block-title">Sicherheitstechnik</h3>
-
-                    <label class="slider-label">Komponenten</label>
-                    <input type="hidden" name="SecurityComponents" value="@(currentModel.SecurityComponents ?? "alarm")" id="sec-components-raw" />
-                    <div class="chips chips-wrap" id="sec-components-group">
-                        @foreach (var (slug, label) in new[]{ ("alarm","Alarm"), ("video","Videoüberwachung"), ("brandmelder","Brandmelder"), ("zutritt","Zutrittskontrolle") })
-                        {
-                            <label class="chip">
-                                <input type="checkbox" data-sec-comp="@slug" checked="@(secComps.Contains(slug))" oninput="window.etdPrice && etdPrice.update()" />
-                                @label
-                            </label>
-                        }
-                    </div>
-
-                    <div class="slider-block">
-                        <label class="slider-label">
-                            Geschätzte Anzahl Sensoren / Kameras
-                            <span class="slider-value"><span data-out="sec-units">@(currentModel.SecuritySensorCount ?? 6)</span></span>
-                        </label>
-                        <input class="range" type="range" name="SecuritySensorCount" min="1" max="30" step="1"
-                               value="@(currentModel.SecuritySensorCount ?? 6)" oninput="window.etdPrice && etdPrice.update()" />
-                        <div class="range-scale"><span>1</span><span>15</span><span>30</span></div>
-                    </div>
-
-                    <div class="estimate-card">
-                        <div class="estimate-label">Sicherheitstechnik · Richtwert (zzgl. MwSt.)</div>
-                        <div class="estimate-amount" data-out="sec-est">~ @($"{secEst.LowEuro:N0} – {secEst.HighEuro:N0}") €</div>
-                    </div>
-                </div>
-            }
-
-            @if (currentModel.Services.Contains("wallbox"))
-            {
-                var wb = PriceEstimator.EstimateWallbox(currentModel.WallboxKw ?? 11, currentModel.WallboxDistanceMeters ?? 5);
-                <div class="slider-block" data-calc="wallbox">
-                    <label class="slider-label">
-                        Wallbox-Leistung
-                        <span class="slider-value"><span data-out="wb-kw">@(currentModel.WallboxKw ?? 11)</span> kW</span>
-                    </label>
-                    <input class="range" type="range" name="WallboxKw"
-                           min="4" max="22" step="1"
-                           value="@(currentModel.WallboxKw ?? 11)"
-                           data-slider="wb-kw" oninput="window.etdPrice && etdPrice.update()" />
-                    <div class="range-scale"><span>3,7 kW</span><span>11 kW</span><span>22 kW</span></div>
-                </div>
-
-                <div class="slider-block" data-calc="wallbox">
-                    <label class="slider-label">
-                        Entfernung zum Zählerschrank
-                        <span class="slider-value"><span data-out="wb-dist">@(currentModel.WallboxDistanceMeters ?? 5)</span> m</span>
-                    </label>
-                    <input class="range" type="range" name="WallboxDistanceMeters"
-                           min="1" max="50" step="1"
-                           value="@(currentModel.WallboxDistanceMeters ?? 5)"
-                           data-slider="wb-dist" oninput="window.etdPrice && etdPrice.update()" />
-                    <div class="range-scale"><span>1 m</span><span>25 m</span><span>50 m</span></div>
-                </div>
-
-                <div class="estimate-card">
-                    <div class="estimate-label">Wallbox · Richtwert (zzgl. MwSt.)</div>
-                    <div class="estimate-amount" data-out="wb-est">~ @($"{wb.LowEuro:N0} – {wb.HighEuro:N0}") €</div>
-                </div>
-            }
-
-            @if (currentModel.Services.Contains("photovoltaik"))
-            {
-                var pv = PriceEstimator.EstimatePv(currentModel.PvAreaSqm ?? 30, currentModel.PvStorageKwh ?? 0);
-                var pvStorage = currentModel.PvStorageKwh ?? 0;
-                <div class="slider-block" data-calc="pv">
-                    <label class="slider-label">
-                        Geschätzte Dachfläche
-                        <span class="slider-value"><span data-out="pv-area">@(currentModel.PvAreaSqm ?? 30)</span> m²</span>
-                    </label>
-                    <input class="range" type="range" name="PvAreaSqm"
-                           min="10" max="200" step="5"
-                           value="@(currentModel.PvAreaSqm ?? 30)"
-                           data-slider="pv-area" oninput="window.etdPrice && etdPrice.update()" />
-                    <div class="range-scale"><span>10 m²</span><span>100 m²</span><span>200 m²</span></div>
-                </div>
-
-                <div class="slider-block" data-calc="pv">
-                    <label class="slider-label">
-                        Batteriespeicher
-                        <span class="slider-value">
-                            <span data-out="pv-storage">@(pvStorage == 0 ? "Kein" : pvStorage.ToString())</span>
-                            <span data-out="pv-storage-unit">@(pvStorage == 0 ? "Speicher" : "kWh")</span>
-                        </span>
-                    </label>
-                    <input class="range" type="range" name="PvStorageKwh"
-                           min="0" max="20" step="1"
-                           value="@pvStorage"
-                           data-slider="pv-storage" oninput="window.etdPrice && etdPrice.update()" />
-                    <div class="range-scale"><span>Kein</span><span>10 kWh</span><span>20 kWh</span></div>
-                </div>
-
-                <div class="estimate-card" style="margin-top:14px">
-                    <div class="estimate-label">Photovoltaik · Richtwert (zzgl. MwSt.)</div>
-                    <div class="estimate-amount" data-out="pv-est">~ @($"{pv.LowEuro:N0} – {pv.HighEuro:N0}") €</div>
-                </div>
-            }
-
-            <p style="font-size:12px;color:var(--muted);margin-top:8px">Diese Schätzung ersetzt kein Angebot. Verbindlich erst nach Vor-Ort-Termin.</p>
+            <p style="font-size:12px;color:var(--muted);margin-top:18px">Sie bekommen <strong>kein</strong> automatisches Angebot — wir besprechen alles im persönlichen Termin und liefern dann einen verbindlichen Festpreis.</p>
 
             <div class="nav-btns">
                 <button type="button" class="btn btn-ghost" @onclick="HandleBack">← Zurück</button>
@@ -262,36 +68,66 @@
     [SupplyParameterFromForm(FormName = "step2")] private QuoteRequest? model { get; set; }
 
     private QuoteRequest? currentModel;
+    private List<ServiceItem> selectedServices = new();
 
     protected override void OnParametersSet()
     {
-        if (model is not null)
-            currentModel = model;
-        else
-            currentModel = Protector.Unprotect(token);
+        currentModel = model ?? Protector.Unprotect(token);
 
-        if (currentModel is not null)
+        if (currentModel is null) return;
+
+        currentModel.SelectedFeatures ??= new();
+
+        // Parse raw → list on POST (form binder writes SelectedFeaturesRaw)
+        if (!string.IsNullOrWhiteSpace(currentModel.SelectedFeaturesRaw))
         {
-            currentModel.WallboxKw ??= 11;
-            currentModel.WallboxDistanceMeters ??= 5;
-            currentModel.PvAreaSqm ??= 30;
-            currentModel.PvStorageKwh ??= 0;
-            currentModel.ElektroProjektart ??= "sanierung";
-            currentModel.ElektroRoomCount ??= 5;
-            currentModel.ElektroZaehlerschrankNeu ??= false;
-            currentModel.KnxRoomCount ??= 5;
-            currentModel.KnxFunctions ??= "light|blinds";
-            currentModel.KlimaRoomCount ??= 1;
-            currentModel.KlimaSystem ??= "single";
-            currentModel.SecurityComponents ??= "alarm";
-            currentModel.SecuritySensorCount ??= 6;
+            currentModel.SelectedFeatures = currentModel.SelectedFeaturesRaw
+                .Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                .Distinct()
+                .ToList();
         }
+
+        selectedServices = currentModel.Services
+            .Select(slug => ServiceCatalog.FindBySlug(slug))
+            .Where(s => s is not null)
+            .Cast<ServiceItem>()
+            .ToList();
     }
 
     private void HandleNext()
     {
-        Nav.NavigateTo($"/angebot/zeit-ort?s={Uri.EscapeDataString(Protector.Protect(currentModel!))}");
+        // Persist the parsed list back into raw so it survives the state token
+        currentModel!.SelectedFeaturesRaw = string.Join('|', currentModel.SelectedFeatures ?? new List<string>());
+        Nav.NavigateTo($"/angebot/zeit-ort?s={Uri.EscapeDataString(Protector.Protect(currentModel))}");
     }
 
     private void HandleBack() => Nav.NavigateTo("/angebot");
 }
+
+<script>
+(function () {
+    function sync() {
+        var lists = document.querySelectorAll('.feature-list');
+        var raw = document.getElementById('features-raw');
+        if (!raw) return;
+        var picked = [];
+        lists.forEach(function (list) {
+            list.querySelectorAll('input[type=checkbox][data-feature]:checked').forEach(function (cb) {
+                picked.push(cb.getAttribute('data-feature'));
+            });
+        });
+        raw.value = picked.join('|');
+    }
+    function init() {
+        var lists = document.querySelectorAll('.feature-list');
+        if (!lists.length) return;
+        sync();
+        lists.forEach(function (list) {
+            list.addEventListener('change', sync);
+        });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
+    document.addEventListener('enhancedload', init);
+})();
+</script>

@@ -87,11 +87,8 @@
                     currentModel.Services = prev.Services;
                     currentModel.Audience = prev.Audience;
                     currentModel.Notes = prev.Notes;
-                    // Preserve price estimator fields if any.
-                    currentModel.WallboxKw ??= prev.WallboxKw;
-                    currentModel.WallboxDistanceMeters ??= prev.WallboxDistanceMeters;
-                    currentModel.PvAreaSqm ??= prev.PvAreaSqm;
-                    currentModel.PvStorageKwh ??= prev.PvStorageKwh;
+                    currentModel.SelectedFeatures = prev.SelectedFeatures ?? new();
+                    currentModel.SelectedFeaturesRaw = prev.SelectedFeaturesRaw;
                 }
             }
         }
@@ -130,11 +127,7 @@
             Nav.NavigateTo($"/angebot/kontakt?s={Uri.EscapeDataString(Protector.Protect(currentModel!))}");
     }
 
-    private void HandleBack()
-    {
-        var hasParams = ServiceParams.HasParamsForAny(currentModel!.Services);
-        Nav.NavigateTo(hasParams ? "/angebot/preisrahmen" : "/angebot");
-    }
+    private void HandleBack() => Nav.NavigateTo("/angebot/preisrahmen");
 }
 
 <script>

@@ -97,10 +97,8 @@
                     currentModel.Timeframe = prev.Timeframe;
                     currentModel.Plz = prev.Plz;
                     currentModel.City = prev.City;
-                    currentModel.WallboxKw ??= prev.WallboxKw;
-                    currentModel.WallboxDistanceMeters ??= prev.WallboxDistanceMeters;
-                    currentModel.PvAreaSqm ??= prev.PvAreaSqm;
-                    currentModel.PvStorageKwh ??= prev.PvStorageKwh;
+                    currentModel.SelectedFeatures = prev.SelectedFeatures ?? new();
+                    currentModel.SelectedFeaturesRaw = prev.SelectedFeaturesRaw;
                 }
             }
         }

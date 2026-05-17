@@ -2,30 +2,95 @@
 @using ETD.Web.Components.Shared
 
 <PageTitle>Referenzen — ETD</PageTitle>
+<HeadContent>
+    <meta name="description" content="Auszug aus den Referenz-Projekten von Elektrotechnik Desch — Privat und Gewerbe, vom Einfamilienhaus bis zur Zerspanungswerkstatt." />
+</HeadContent>
 
-<ServiceDetailHero Eyebrow="Projekte" Title="Referenzen." Sub="Ein Auszug aus unseren Kundenanlagen — vom Einfamilienhaus bis zum Holzhaus in Blockbohlenbauweise." />
+<ServiceDetailHero Eyebrow="Projekte" Title="Referenzen." Sub="Ein Auszug aus unseren Kundenanlagen — vom Einfamilienhaus über Holzhaus-Neubau bis hin zur Zerspanungs­werkstatt mit laufender Betreuung." />
 
 <section class="container fade-in" style="padding:64px 0">
-    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:24px">
-        <article class="card" style="overflow:hidden;padding:0">
-            <div style="aspect-ratio:4/3;background:linear-gradient(135deg, #1a1f2a, #0e1116);display:flex;align-items:center;justify-content:center;color:#fca5a5;position:relative;overflow:hidden">
-                <div style="position:absolute;inset:0;opacity:0.18;background:radial-gradient(circle at 25% 30%, var(--red) 0, transparent 45%), radial-gradient(circle at 75% 70%, var(--red) 0, transparent 45%)"></div>
-                <ServiceIcon Name="home" Size="72" />
+
+    @* Featured: Moosmann Zerspanung *@
+    <article class="ref-featured">
+        <div class="ref-featured-illu">
+            <div class="ref-featured-cog" aria-hidden="true">
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <radialGradient id="ref-rad" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#DC1F26" stop-opacity="0.6"/>
+                            <stop offset="100%" stop-color="#DC1F26" stop-opacity="0"/>
+                        </radialGradient>
+                    </defs>
+                    <circle cx="100" cy="100" r="100" fill="url(#ref-rad)"/>
+                    <g transform="translate(100 100)" fill="#FFD466" stroke="#0e1116" stroke-width="2">
+                        <path d="M-8 -55 L8 -55 L12 -42 L8 -36 L0 -36 L-8 -36 L-12 -42 Z"/>
+                        <path d="M-8 55 L8 55 L12 42 L8 36 L0 36 L-8 36 L-12 42 Z"/>
+                        <path d="M-55 -8 L-55 8 L-42 12 L-36 8 L-36 0 L-36 -8 L-42 -12 Z"/>
+                        <path d="M55 -8 L55 8 L42 12 L36 8 L36 0 L36 -8 L42 -12 Z"/>
+                        <path d="M-39 -39 L-28 -50 L-15 -42 L-19 -34 L-27 -27 L-34 -19 L-42 -15 L-50 -28 Z"/>
+                        <path d="M39 39 L50 28 L42 15 L34 19 L27 27 L19 34 L15 42 L28 50 Z"/>
+                        <path d="M-39 39 L-50 28 L-42 15 L-34 19 L-27 27 L-19 34 L-15 42 L-28 50 Z"/>
+                        <path d="M39 -39 L28 -50 L15 -42 L19 -34 L27 -27 L34 -19 L42 -15 L50 -28 Z"/>
+                        <circle cx="0" cy="0" r="20" fill="#1A2440" stroke="#0e1116" stroke-width="2"/>
+                        <circle cx="0" cy="0" r="8" fill="#fff"/>
+                    </g>
+                </svg>
             </div>
-            <div style="padding:20px">
-                <div class="eyebrow">Featured Case</div>
-                <h3>Holzhaus in Blockbohlenbauweise</h3>
-                <p style="color:var(--muted);font-size:14px;margin-top:8px">Komplette Elektroinstallation in einem Holzhaus mit besonderen Anforderungen an Leitungsführung und Brandschutz.</p>
-            </div>
-        </article>
-        @for (int i = 0; i < 5; i++)
+        </div>
+        <div class="ref-featured-body">
+            <div class="eyebrow">Gewerbe · laufende Betreuung</div>
+            <h2 style="margin-bottom:14px">Moosmann Zerspanung</h2>
+            <p style="font-size:1.0625rem;color:var(--ink-2);line-height:1.6">Komplette Elektrik einer Zerspanungs-Werkstatt — vom Schaltschrank über Maschinen­anschluss und Beleuchtung bis zum Netzwerk. Seit Inbetriebnahme <strong>laufende Wartung &amp; Betreuung</strong>.</p>
+            <a href="https://moosmann-zerspanung-stage-fe7dcae185f98.webflow.io/" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:18px">Webseite Moosmann ↗</a>
+        </div>
+    </article>
+
+    @* Real reference photos *@
+    <div class="eyebrow" style="margin-top:64px">Privatprojekte (Auswahl)</div>
+    <h2 style="margin-bottom:8px">Aus über <em style="color:var(--red);font-style:normal">25 Jahren Praxis.</em></h2>
+    <p style="color:var(--muted);max-width:680px;margin-bottom:36px">Ein Querschnitt durch unsere Privat- und Gewerbe­kunden­projekte. Vom kompletten Elektroplan für einen Neubau bis zur sauberen Sanierung im Bestand.</p>
+
+    <div class="ref-gallery">
+        @foreach (var (file, caption) in PrivateRefs)
         {
-            <article class="card" style="overflow:hidden;padding:0">
-                <div style="aspect-ratio:4/3;background:linear-gradient(135deg, #f3f4f6, #e5e7eb);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px">Weitere Projekte folgen</div>
-                <div style="padding:20px">
-                    <h3 style="font-size:1rem;color:var(--muted)">Projekt-Slot @(i + 2)</h3>
-                </div>
+            <article class="ref-card">
+                <a href="@($"/img/legacy/{file}")" target="_blank" rel="noopener">
+                    <img src="@($"/img/legacy/{file}")" alt="@caption" loading="lazy" />
+                </a>
+                <div class="ref-card-caption">@caption</div>
             </article>
         }
     </div>
+
+    @* Holzhaus separate feature *@
+    <article class="ref-featured ref-featured-secondary" style="margin-top:48px">
+        <div class="ref-featured-illu">
+            <div class="ref-featured-cog" aria-hidden="true" style="background:linear-gradient(135deg, #1a1f2a, #0e1116)">
+                <ServiceIcon Name="home" Size="80" />
+            </div>
+        </div>
+        <div class="ref-featured-body">
+            <div class="eyebrow">Privat · Neubau</div>
+            <h2 style="margin-bottom:14px">Holzhaus in Blockbohlen­bauweise</h2>
+            <p style="font-size:1.0625rem;color:var(--ink-2);line-height:1.6">Komplette Elektroinstallation in einem Holzhaus mit besonderen Anforderungen an Leitungs­führung und Brandschutz. Brandgeschützte Kabelkanäle, separate Trennung von Bus- und 230-V-Leitungen.</p>
+        </div>
+    </article>
+
 </section>
+
+@code {
+    private static readonly (string File, string Caption)[] PrivateRefs = new[]
+    {
+        ("referenz-01.jpg",  "Wohnraum — neuer Elektroplan"),
+        ("referenz-02.jpg",  "Verteiler­schrank — Neuaufbau"),
+        ("referenz-03.jpg",  "Sanierung Bestand — saubere Leitungs­führung"),
+        ("referenz-04.jpg",  "Bad-Sanierung — Beleuchtung &amp; Steckdosen"),
+        ("referenz-05.jpg",  "Schalter­bild im Wohnraum"),
+        ("referenz-06.jpg",  "Designschalter — Sanierung"),
+        ("referenz-08.jpg",  "Sicherungs­schrank — Modernisierung"),
+        ("referenz-09.jpg",  "Außen­steckdose — IP-Schutz"),
+        ("referenz-10.jpg",  "Leuchten­installation Decke"),
+        ("referenz-11.jpg",  "Schalter & Steckdosen — Designreihe"),
+        ("referenz-12.jpg",  "Beleuchtung &amp; Verkabelung — Endmontage"),
+    };
+}

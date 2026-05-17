@@ -29,9 +29,9 @@ public static class ServiceCatalog
             HasPriceEstimator: true),
 
         new("klimatechnik", "Klima- und Kältetechnik", "snowflake",
-            "Klimaanlagen Privat & Gewerbe — zertifiziert nach §6 ChemKlimaschutzV.",
-            "Wir installieren und warten Klimaanlagen für Wohn- und Geschäftsräume. Mit Sachkundezertifikat A1 und Betriebszertifizierung gemäß §6 ChemKlimaschutzV.",
-            new[] { "Multi-Split & VRF-Systeme", "Wohnraum- und Gewerbekühlung", "Wartung & Dichtheitsprüfung", "Inbetriebnahme & Anmeldung" }),
+            "Klimaanlagen Privat & Gewerbe — eingetragener Meisterbetrieb im Kälte-Anlagenbauer-Handwerk.",
+            "Wir installieren und warten Klimaanlagen für Wohn- und Geschäftsräume. Eingetragen in der Handwerksrolle der HWK Wiesbaden im Kälte-Anlagenbauer-Handwerk, mit Sachkundezertifikat A1 und Betriebszertifizierung gemäß §6 ChemKlimaschutzV — alles aus einer Hand statt zwei Gewerken.",
+            new[] { "Eingetragen Handwerksrolle HWK Wiesbaden — Kälte-Anlagenbauer", "Multi-Split & VRF-Systeme", "Wohnraum- und Gewerbekühlung", "Wartung & jährliche Dichtheitsprüfung (Pflicht ab 5 t CO₂-Äquivalent)", "Inbetriebnahme & Anmeldung beim Umweltbundesamt" }),
 
         new("e-check", "E-Check / DGUV V3", "shield-check",
             "Gesetzlich vorgeschriebene Prüfung ortsfester und ortsveränderlicher Anlagen.",
@@ -56,9 +56,9 @@ public static class ServiceCatalog
             IsTopTier: false),
 
         new("netzwerk", "Netzwerk & EDV", "network",
-            "Strukturierte Verkabelung, WLAN, Patchschränke.",
-            "CAT 6/7-Verkabelung für Neubau und Bestand. Patchfelder, WLAN-Ausleuchtung und Glasfaser-Vorbereitung aus einer Hand.",
-            new[] { "CAT 6/7 strukturierte Verkabelung", "Patchfelder & Schränke", "WLAN-Ausleuchtung", "Glasfaser-Vorbereitung" },
+            "Strukturierte Verkabelung mit mindestens CAT 7, WLAN, Patchschränke.",
+            "Mindestens CAT 7-Verkabelung für Neubau und Bestand — zukunftssicher für 10-Gigabit. Patchfelder, WLAN-Ausleuchtung und Glasfaser-Vorbereitung aus einer Hand.",
+            new[] { "Mindestens CAT 7 strukturierte Verkabelung (10 GbE-fähig)", "Patchfelder & 19″-Schränke", "WLAN-Ausleuchtung mit Heatmap", "Glasfaser-Vorbereitung" },
             IsTopTier: false),
 
         new("sprechanlagen", "Türsprechanlagen", "phone",

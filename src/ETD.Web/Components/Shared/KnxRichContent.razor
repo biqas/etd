@@ -296,144 +296,659 @@
     <div class="knx-hero-grid">
         <div>
             <div class="eyebrow">So funktioniert KNX</div>
-            <h2 style="margin-bottom:14px">Ein Bus. <em style="color:var(--red);font-style:normal">Alles vernetzt.</em></h2>
-            <p style="font-size:1.0625rem;color:var(--ink-2);margin-bottom:14px">KNX ist der weltweite Standard für Gebäude­automation — ein zweiadriges Buskabel verbindet alle Sensoren und Aktoren in Ihrem Haus. <strong>Keine Cloud. Kein Hersteller-Lock-in. Volle Kontrolle.</strong></p>
-            <p style="font-size:1.0625rem;color:var(--ink-2)">Jedes Gerät — vom Licht­schalter über den Thermostat bis zur Wallbox — kann mit jedem anderen reden. Sie definieren Szenen und Logiken, die zu Ihrem Alltag passen. Das System läuft <strong>auch ohne Internet</strong> und bleibt <strong>30+ Jahre erweiterbar</strong>.</p>
+            <h2 style="margin-bottom:14px">Ein Bus. <em style="color:var(--red);font-style:normal">Alle Gewerke.</em></h2>
+            <p style="font-size:1.0625rem;color:var(--ink-2);margin-bottom:14px">KNX ist der weltweite Standard für Gebäude­automation — <strong>ISO 14543-3 &amp; EN 50090, seit 1990</strong>. Ein zwei­adriges Bus­kabel verbindet alle Geräte. Über <strong>500 Hersteller</strong> bauen KNX-zertifizierte Komponenten, die alle dieselbe Sprache sprechen.</p>
+            <p style="font-size:1.0625rem;color:var(--ink-2);margin-bottom:14px"><strong>Sensoren</strong> (Taster, Bewegungs­melder, Temperatur­fühler, Wetter­station) hängen am Bus und schicken <strong>Telegramme</strong>. <strong>Aktoren</strong> sitzen zentral im <strong>Schaltschrank</strong> und schalten die 230-V-Leitungen zu Lichtern, Jalousien und Heizung. Das ist der entscheidende Unterschied zur klassischen Elektroinstallation — und der Grund, warum sich Szenen jederzeit per Software ändern lassen, ohne eine einzige Wand zu öffnen.</p>
+            <p style="font-size:1.0625rem;color:var(--ink-2)">Über Gateways spricht der gleiche Bus mit <strong>PV-Wechselrichter, Wärmepumpe (SG-Ready/EEBus), Wallbox (OCPP/EEBus) und Speicher</strong> — die Basis für echtes <strong>Energie­management</strong>. Läuft <strong>komplett lokal</strong>, ohne Cloud, ohne Internet­zwang. 30+ Jahre Lebensdauer, herstellerübergreifend austauschbar.</p>
         </div>
         <div class="knx-house-illustration" aria-hidden="true">
-            @* Inline SVG: simplified house cross-section with KNX bus + devices *@
-            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+            @* Inline SVG: detailed house cross-section with KNX architecture truth *@
+            <svg viewBox="0 0 520 410" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <linearGradient id="busGlow" x1="0" y1="0" x2="1" y2="0">
-                        <stop offset="0%" stop-color="#dc1f26" stop-opacity="0.0"/>
-                        <stop offset="50%" stop-color="#dc1f26" stop-opacity="0.9"/>
-                        <stop offset="100%" stop-color="#dc1f26" stop-opacity="0.0"/>
-                    </linearGradient>
+                    <pattern id="knx-pv-pattern" width="6" height="6" patternUnits="userSpaceOnUse">
+                        <rect width="6" height="6" fill="#1A2440"/>
+                        <line x1="0" y1="6" x2="6" y2="0" stroke="#3a4960" stroke-width="0.6"/>
+                    </pattern>
+                    <marker id="knx-arrow-end" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                        <polygon points="0 0, 6 3, 0 6" fill="#0e1116"/>
+                    </marker>
                 </defs>
 
-                @* Roof *@
-                <path d="M30 110 L200 30 L370 110 L370 115 L200 35 L30 115 Z" fill="#0e1116"/>
-
-                @* House outline *@
-                <rect x="40" y="110" width="320" height="180" rx="4" fill="none" stroke="#0e1116" stroke-width="2"/>
-                @* Floor divider *@
-                <line x1="40" y1="200" x2="360" y2="200" stroke="#0e1116" stroke-width="1.5" opacity="0.4"/>
-                @* Room dividers — upper floor *@
-                <line x1="160" y1="110" x2="160" y2="200" stroke="#0e1116" stroke-width="1.5" opacity="0.4"/>
-                <line x1="260" y1="110" x2="260" y2="200" stroke="#0e1116" stroke-width="1.5" opacity="0.4"/>
-                @* Room dividers — lower floor *@
-                <line x1="200" y1="200" x2="200" y2="290" stroke="#0e1116" stroke-width="1.5" opacity="0.4"/>
-
-                @* KNX bus line (pulsing red) *@
-                <path d="M20 245 L40 245 L60 245 L60 155 L160 155 L260 155 L340 155 L340 245 L360 245 L380 245"
-                      fill="none" stroke="#dc1f26" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 4">
-                    <animate attributeName="stroke-dashoffset" values="0;-8" dur="0.8s" repeatCount="indefinite"/>
-                </path>
-
-                @* Bus line label *@
-                <text x="100" y="148" font-family="Inter, sans-serif" font-size="9" font-weight="700" fill="#dc1f26" letter-spacing="0.8">KNX-BUS</text>
-
-                @* Upper-floor devices *@
-                <g transform="translate(95 165)">
-                    @* Light bulb *@
-                    <circle cx="0" cy="0" r="13" fill="#fff" stroke="#0e1116" stroke-width="1.5"/>
-                    <path d="M-5 -2 a5 5 0 0 1 10 0 c0 2 -1.5 3 -2 4 v2 h-6 v-2 c-.5 -1 -2 -2 -2 -4 z" fill="#dc1f26" opacity="0.85"/>
-                    <line x1="-3" y1="6" x2="3" y2="6" stroke="#0e1116" stroke-width="1.2"/>
-                </g>
-                <g transform="translate(210 165)">
-                    @* Blinds *@
-                    <rect x="-12" y="-10" width="24" height="20" rx="1" fill="#fff" stroke="#0e1116" stroke-width="1.5"/>
-                    <line x1="-10" y1="-5" x2="10" y2="-5" stroke="#0e1116" stroke-width="1"/>
-                    <line x1="-10" y1="0" x2="10" y2="0" stroke="#0e1116" stroke-width="1"/>
-                    <line x1="-10" y1="5" x2="10" y2="5" stroke="#0e1116" stroke-width="1"/>
-                </g>
-                <g transform="translate(310 165)">
-                    @* Thermostat *@
-                    <circle cx="0" cy="0" r="13" fill="#fff" stroke="#0e1116" stroke-width="1.5"/>
-                    <text x="0" y="3" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="800" fill="#dc1f26">21°</text>
+                @* ========== SKY: SUN + CLOUD-STRIKETHROUGH + PHONE ========== *@
+                @* Sun top-right *@
+                <g transform="translate(490 35)">
+                    <circle cx="0" cy="0" r="10" fill="#FFD466"/>
+                    <g stroke="#FFD466" stroke-width="2.5" stroke-linecap="round">
+                        <line x1="0" y1="-14" x2="0" y2="-18"/>
+                        <line x1="0" y1="14" x2="0" y2="18"/>
+                        <line x1="-14" y1="0" x2="-18" y2="0"/>
+                        <line x1="14" y1="0" x2="18" y2="0"/>
+                        <line x1="-10" y1="-10" x2="-13" y2="-13"/>
+                        <line x1="10" y1="10" x2="13" y2="13"/>
+                        <line x1="10" y1="-10" x2="13" y2="-13"/>
+                        <line x1="-10" y1="10" x2="-13" y2="13"/>
+                    </g>
                 </g>
 
-                @* Lower-floor devices *@
-                <g transform="translate(115 255)">
-                    @* Wallbox icon *@
-                    <rect x="-10" y="-12" width="20" height="24" rx="3" fill="#fff" stroke="#0e1116" stroke-width="1.5"/>
-                    <circle cx="0" cy="-4" r="2.5" fill="#dc1f26"/>
-                    <path d="M-3 4 L3 4" stroke="#0e1116" stroke-width="1.5" stroke-linecap="round"/>
+                @* No-cloud badge top-left *@
+                <g transform="translate(40 35)">
+                    <ellipse cx="0" cy="0" rx="20" ry="9" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1"/>
+                    <circle cx="-7" cy="-4" r="6" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1"/>
+                    <circle cx="6" cy="-3" r="7" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1"/>
+                    <line x1="-22" y1="8" x2="22" y2="-12" stroke="#DC1F26" stroke-width="2.5" stroke-linecap="round"/>
                 </g>
-                <g transform="translate(280 255)">
-                    @* Switch / control *@
-                    <rect x="-12" y="-10" width="24" height="20" rx="2" fill="#fff" stroke="#0e1116" stroke-width="1.5"/>
-                    <circle cx="0" cy="0" r="3" fill="#0e1116"/>
+                <text x="70" y="38" font-size="8" font-weight="800" fill="#DC1F26" letter-spacing="0.4">KEINE CLOUD</text>
+
+                @* Smartphone — optional, top-right corner *@
+                <text x="475" y="82" text-anchor="middle" font-size="7" font-weight="700" fill="#9ca3af" letter-spacing="0.4">OPTIONAL</text>
+                <g transform="translate(475 115)">
+                    <rect x="-11" y="-20" width="22" height="40" rx="3.5" fill="#0e1116"/>
+                    <rect x="-8.5" y="-17" width="17" height="32" rx="1.5" fill="#1A2440"/>
+                    <rect x="-6" y="-15" width="5" height="5" rx="0.4" fill="#DC1F26"/>
+                    <rect x="1" y="-15" width="5" height="5" rx="0.4" fill="#FFD466"/>
+                    <rect x="-6" y="-9" width="5" height="5" rx="0.4" fill="#FFD466"/>
+                    <rect x="1" y="-9" width="5" height="5" rx="0.4" fill="#3a4960"/>
+                    <rect x="-6" y="-3" width="12" height="3" rx="0.4" fill="#22c55e"/>
+                    <circle cx="0" cy="16" r="1.5" fill="#fff"/>
+                </g>
+                @* WiFi arcs from phone *@
+                <g transform="translate(460 100)" fill="none" stroke="#DC1F26" stroke-width="1.5" stroke-linecap="round" opacity="0.65">
+                    <path d="M-6 0 q6 -6 12 0"/>
+                    <path d="M-9 -3 q9 -9 18 0"/>
+                    <circle cx="3" cy="3" r="1" fill="#DC1F26"/>
                 </g>
 
-                @* Bus drops to devices *@
-                <line x1="95" y1="155" x2="95" y2="155" stroke="#dc1f26" stroke-width="1.5"/>
-                <line x1="210" y1="155" x2="210" y2="155" stroke="#dc1f26" stroke-width="1.5"/>
-                <line x1="310" y1="155" x2="310" y2="155" stroke="#dc1f26" stroke-width="1.5"/>
-                <line x1="115" y1="245" x2="115" y2="245" stroke="#dc1f26" stroke-width="1.5"/>
-                <line x1="280" y1="245" x2="280" y2="245" stroke="#dc1f26" stroke-width="1.5"/>
+                @* ========== ROOF + WEATHER STATION + PV ========== *@
+                <path d="M40 145 L260 50 L480 145 L480 150 L260 55 L40 150 Z" fill="#0e1116"/>
 
-                @* Smartphone, top right, connected via wifi *@
-                <g transform="translate(360 60)">
-                    <rect x="-12" y="-22" width="24" height="44" rx="4" fill="#0e1116"/>
-                    <rect x="-9" y="-19" width="18" height="34" rx="1.5" fill="#dc1f26" opacity="0.95"/>
-                    <line x1="-3" y1="-13" x2="3" y2="-13" stroke="#fff" stroke-width="1.5"/>
-                    <line x1="-3" y1="-8" x2="3" y2="-8" stroke="#fff" stroke-width="1.5" opacity="0.7"/>
-                    <circle cx="0" cy="18" r="1.5" fill="#fff"/>
+                @* Weather station antenna at roof apex *@
+                <line x1="260" y1="55" x2="260" y2="42" stroke="#0e1116" stroke-width="1.8"/>
+                <g transform="translate(260 38)">
+                    <circle cx="0" cy="0" r="3" fill="#fff" stroke="#0e1116" stroke-width="1.2"/>
+                    <g>
+                        <circle cx="-3" cy="0" r="1.5" fill="#DC1F26"/>
+                        <circle cx="3" cy="0" r="1.5" fill="#DC1F26"/>
+                        <circle cx="0" cy="-3" r="1.5" fill="#DC1F26"/>
+                        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="3s" repeatCount="indefinite"/>
+                    </g>
                 </g>
-                @* Wifi arcs from phone to bus *@
-                <g transform="translate(330 90)" fill="none" stroke="#dc1f26" stroke-width="1.5" stroke-linecap="round" opacity="0.7">
-                    <path d="M-8 -8 a10 10 0 0 1 16 0"/>
-                    <path d="M-12 -4 a14 14 0 0 1 24 0"/>
-                </g>
+                <text x="285" y="42" font-size="7" font-weight="800" fill="#0e1116" letter-spacing="0.3">WETTERSTATION</text>
 
-                @* Bottom annotation: a glowing pulse along the bus *@
-                <line x1="20" y1="245" x2="380" y2="245" stroke="url(#busGlow)" stroke-width="3" opacity="0.8">
-                    <animate attributeName="opacity" values="0;0.8;0" dur="2.5s" repeatCount="indefinite"/>
+                @* PV panels on left roof slope *@
+                <polygon points="80,140 175,98 215,115 120,158" fill="url(#knx-pv-pattern)" stroke="#3a4960" stroke-width="0.8"/>
+                <line x1="115" y1="125" x2="150" y2="140" stroke="#3a4960" stroke-width="0.6" opacity="0.7"/>
+                <line x1="148" y1="111" x2="183" y2="126" stroke="#3a4960" stroke-width="0.6" opacity="0.7"/>
+                <text x="148" y="175" text-anchor="middle" font-size="8" font-weight="800" fill="#fff" letter-spacing="0.3">PV 10 kWp</text>
+
+                @* ========== HOUSE BODY (3 floors) ========== *@
+                <rect x="50" y="145" width="380" height="195" fill="#fff" stroke="#0e1116" stroke-width="2"/>
+
+                @* Floor dividers *@
+                <line x1="50" y1="215" x2="430" y2="215" stroke="#0e1116" stroke-width="1.3" opacity="0.3"/>
+                <line x1="50" y1="285" x2="430" y2="285" stroke="#0e1116" stroke-width="1.3" opacity="0.3"/>
+
+                @* Upper floor: 4 rooms *@
+                <line x1="145" y1="145" x2="145" y2="215" stroke="#0e1116" stroke-width="1.2" opacity="0.3"/>
+                <line x1="240" y1="145" x2="240" y2="215" stroke="#0e1116" stroke-width="1.2" opacity="0.3"/>
+                <line x1="335" y1="145" x2="335" y2="215" stroke="#0e1116" stroke-width="1.2" opacity="0.3"/>
+
+                @* Lower floor: 3 rooms *@
+                <line x1="170" y1="215" x2="170" y2="285" stroke="#0e1116" stroke-width="1.2" opacity="0.3"/>
+                <line x1="320" y1="215" x2="320" y2="285" stroke="#0e1116" stroke-width="1.2" opacity="0.3"/>
+
+                @* Basement room divider *@
+                <line x1="240" y1="285" x2="240" y2="340" stroke="#0e1116" stroke-width="1.2" opacity="0.3"/>
+
+                @* Room labels upper *@
+                <text x="97" y="160" text-anchor="middle" font-size="7.5" font-weight="800" fill="#9ca3af" letter-spacing="0.4">SCHLAFEN</text>
+                <text x="192" y="160" text-anchor="middle" font-size="7.5" font-weight="800" fill="#9ca3af" letter-spacing="0.4">BAD</text>
+                <text x="287" y="160" text-anchor="middle" font-size="7.5" font-weight="800" fill="#9ca3af" letter-spacing="0.4">KINDER</text>
+                <text x="382" y="160" text-anchor="middle" font-size="7.5" font-weight="800" fill="#9ca3af" letter-spacing="0.4">FLUR</text>
+
+                @* Room labels lower *@
+                <text x="110" y="228" text-anchor="middle" font-size="7.5" font-weight="800" fill="#9ca3af" letter-spacing="0.4">WOHNRAUM</text>
+                <text x="245" y="228" text-anchor="middle" font-size="7.5" font-weight="800" fill="#9ca3af" letter-spacing="0.4">KÜCHE</text>
+                <text x="375" y="228" text-anchor="middle" font-size="7.5" font-weight="800" fill="#9ca3af" letter-spacing="0.4">GARAGE</text>
+
+                @* Basement labels *@
+                <text x="145" y="298" text-anchor="middle" font-size="7.5" font-weight="800" fill="#9ca3af" letter-spacing="0.4">HWR</text>
+                <text x="335" y="298" text-anchor="middle" font-size="7.5" font-weight="800" fill="#9ca3af" letter-spacing="0.4">KELLER</text>
+
+                @* ========== KNX BUS ========== *@
+                @* Bus drop UP to weather station — light dashed *@
+                <line x1="260" y1="195" x2="260" y2="55" stroke="#DC1F26" stroke-width="1.6" stroke-dasharray="3 3"/>
+
+                @* Main upper bus *@
+                <line x1="60" y1="195" x2="420" y2="195" stroke="#DC1F26" stroke-width="2.5" stroke-dasharray="5 4">
+                    <animate attributeName="stroke-dashoffset" values="0;-9" dur="0.8s" repeatCount="indefinite"/>
                 </line>
+                @* Bus extension OUT RIGHT to PV inverter *@
+                <line x1="420" y1="195" x2="445" y2="195" stroke="#DC1F26" stroke-width="1.6" stroke-dasharray="3 3"/>
+
+                @* Vertical drop on left from upper bus down through all floors *@
+                <line x1="60" y1="195" x2="60" y2="320" stroke="#DC1F26" stroke-width="2.5" stroke-dasharray="5 4">
+                    <animate attributeName="stroke-dashoffset" values="0;-9" dur="0.8s" repeatCount="indefinite"/>
+                </line>
+
+                @* Lower-floor horizontal bus *@
+                <line x1="60" y1="255" x2="420" y2="255" stroke="#DC1F26" stroke-width="2.5" stroke-dasharray="5 4">
+                    <animate attributeName="stroke-dashoffset" values="0;-9" dur="0.8s" repeatCount="indefinite"/>
+                </line>
+                @* Bus extension OUT LEFT to Wärmepumpe *@
+                <line x1="50" y1="255" x2="20" y2="255" stroke="#DC1F26" stroke-width="1.6" stroke-dasharray="3 3"/>
+
+                @* Basement horizontal bus *@
+                <line x1="60" y1="320" x2="320" y2="320" stroke="#DC1F26" stroke-width="2.5" stroke-dasharray="5 4">
+                    <animate attributeName="stroke-dashoffset" values="0;-9" dur="0.8s" repeatCount="indefinite"/>
+                </line>
+
+                @* KNX-BUS label *@
+                <text x="240" y="191" text-anchor="middle" font-size="8" font-weight="800" fill="#DC1F26" letter-spacing="1.2">KNX-BUS · 2-DRAHT</text>
+
+                @* ========== UPPER-FLOOR SENSORS ========== *@
+                @* SCHLAFEN: taster + temp *@
+                <circle cx="85" cy="195" r="2.5" fill="#DC1F26"/>
+                <line x1="85" y1="195" x2="85" y2="205" stroke="#DC1F26" stroke-width="1.5"/>
+                <g transform="translate(85 211)">
+                    <rect x="-4" y="-4" width="8" height="11" rx="1" fill="#fff" stroke="#0e1116" stroke-width="1.2"/>
+                    <rect x="-2.5" y="-2.5" width="5" height="2.5" fill="#DC1F26"/>
+                    <rect x="-2.5" y="1" width="5" height="2.5" fill="#DC1F26" opacity="0.5"/>
+                </g>
+
+                <circle cx="123" cy="195" r="2.5" fill="#DC1F26"/>
+                <line x1="123" y1="195" x2="123" y2="205" stroke="#DC1F26" stroke-width="1.5"/>
+                <g transform="translate(123 211)">
+                    <circle cx="0" cy="0" r="5" fill="#fff" stroke="#0e1116" stroke-width="1.2"/>
+                    <text x="0" y="1.8" text-anchor="middle" font-size="5.5" font-weight="800" fill="#DC1F26">19°</text>
+                </g>
+
+                @* BAD: BWM + taster *@
+                <circle cx="170" cy="195" r="2.5" fill="#DC1F26"/>
+                <line x1="170" y1="195" x2="170" y2="205" stroke="#DC1F26" stroke-width="1.5"/>
+                <g transform="translate(170 211)">
+                    <rect x="-5" y="-2.5" width="10" height="5" rx="1" fill="#fff" stroke="#0e1116" stroke-width="1.2"/>
+                    <path d="M-3 0.5 q1 -2.5 2 0 q1 2.5 2 0" fill="none" stroke="#DC1F26" stroke-width="0.9"/>
+                </g>
+
+                <circle cx="215" cy="195" r="2.5" fill="#DC1F26"/>
+                <line x1="215" y1="195" x2="215" y2="205" stroke="#DC1F26" stroke-width="1.5"/>
+                <g transform="translate(215 211)">
+                    <rect x="-4" y="-4" width="8" height="11" rx="1" fill="#fff" stroke="#0e1116" stroke-width="1.2"/>
+                    <rect x="-2.5" y="-2.5" width="5" height="2.5" fill="#DC1F26"/>
+                    <rect x="-2.5" y="1" width="5" height="2.5" fill="#DC1F26" opacity="0.5"/>
+                </g>
+
+                @* KINDER: taster + temp *@
+                <circle cx="265" cy="195" r="2.5" fill="#DC1F26"/>
+                <line x1="265" y1="195" x2="265" y2="205" stroke="#DC1F26" stroke-width="1.5"/>
+                <g transform="translate(265 211)">
+                    <rect x="-4" y="-4" width="8" height="11" rx="1" fill="#fff" stroke="#0e1116" stroke-width="1.2"/>
+                    <rect x="-2.5" y="-2.5" width="5" height="2.5" fill="#DC1F26"/>
+                    <rect x="-2.5" y="1" width="5" height="2.5" fill="#DC1F26" opacity="0.5"/>
+                </g>
+
+                <circle cx="310" cy="195" r="2.5" fill="#DC1F26"/>
+                <line x1="310" y1="195" x2="310" y2="205" stroke="#DC1F26" stroke-width="1.5"/>
+                <g transform="translate(310 211)">
+                    <circle cx="0" cy="0" r="5" fill="#fff" stroke="#0e1116" stroke-width="1.2"/>
+                    <text x="0" y="1.8" text-anchor="middle" font-size="5.5" font-weight="800" fill="#DC1F26">21°</text>
+                </g>
+
+                @* FLUR: glastaster (smart) + BWM *@
+                <circle cx="360" cy="195" r="2.5" fill="#DC1F26"/>
+                <line x1="360" y1="195" x2="360" y2="205" stroke="#DC1F26" stroke-width="1.5"/>
+                <g transform="translate(360 211)">
+                    <rect x="-5" y="-4" width="10" height="11" rx="1" fill="#1A2440" stroke="#0e1116" stroke-width="1.2"/>
+                    <text x="0" y="-0.3" text-anchor="middle" font-size="3.5" font-weight="800" fill="#FFD466">SZENE</text>
+                    <text x="0" y="4" text-anchor="middle" font-size="4" font-weight="800" fill="#FFD466">21°</text>
+                </g>
+
+                <circle cx="405" cy="195" r="2.5" fill="#DC1F26"/>
+                <line x1="405" y1="195" x2="405" y2="205" stroke="#DC1F26" stroke-width="1.5"/>
+                <g transform="translate(405 211)">
+                    <rect x="-5" y="-2.5" width="10" height="5" rx="1" fill="#fff" stroke="#0e1116" stroke-width="1.2"/>
+                    <path d="M-3 0.5 q1 -2.5 2 0 q1 2.5 2 0" fill="none" stroke="#DC1F26" stroke-width="0.9"/>
+                </g>
+
+                @* ========== LOWER-FLOOR SENSORS + WALLBOX ========== *@
+                @* WOHNRAUM: taster + temp *@
+                <circle cx="100" cy="255" r="2.5" fill="#DC1F26"/>
+                <line x1="100" y1="255" x2="100" y2="265" stroke="#DC1F26" stroke-width="1.5"/>
+                <g transform="translate(100 271)">
+                    <rect x="-4" y="-4" width="8" height="11" rx="1" fill="#fff" stroke="#0e1116" stroke-width="1.2"/>
+                    <rect x="-2.5" y="-2.5" width="5" height="2.5" fill="#DC1F26"/>
+                    <rect x="-2.5" y="1" width="5" height="2.5" fill="#DC1F26" opacity="0.5"/>
+                </g>
+
+                <circle cx="140" cy="255" r="2.5" fill="#DC1F26"/>
+                <line x1="140" y1="255" x2="140" y2="265" stroke="#DC1F26" stroke-width="1.5"/>
+                <g transform="translate(140 271)">
+                    <circle cx="0" cy="0" r="5" fill="#fff" stroke="#0e1116" stroke-width="1.2"/>
+                    <text x="0" y="1.8" text-anchor="middle" font-size="5.5" font-weight="800" fill="#DC1F26">22°</text>
+                </g>
+
+                @* KÜCHE: smart outlet + BWM *@
+                <circle cx="220" cy="255" r="2.5" fill="#DC1F26"/>
+                <line x1="220" y1="255" x2="220" y2="265" stroke="#DC1F26" stroke-width="1.5"/>
+                <g transform="translate(220 271)">
+                    <rect x="-4" y="-4" width="8" height="8" rx="1" fill="#fff" stroke="#0e1116" stroke-width="1.2"/>
+                    <circle cx="-1.5" cy="0" r="0.7" fill="#0e1116"/>
+                    <circle cx="1.5" cy="0" r="0.7" fill="#0e1116"/>
+                </g>
+
+                <circle cx="275" cy="255" r="2.5" fill="#DC1F26"/>
+                <line x1="275" y1="255" x2="275" y2="265" stroke="#DC1F26" stroke-width="1.5"/>
+                <g transform="translate(275 271)">
+                    <rect x="-5" y="-2.5" width="10" height="5" rx="1" fill="#fff" stroke="#0e1116" stroke-width="1.2"/>
+                    <path d="M-3 0.5 q1 -2.5 2 0 q1 2.5 2 0" fill="none" stroke="#DC1F26" stroke-width="0.9"/>
+                </g>
+
+                @* GARAGE: wallbox + EV *@
+                <circle cx="370" cy="255" r="2.5" fill="#DC1F26"/>
+                <line x1="370" y1="255" x2="370" y2="263" stroke="#DC1F26" stroke-width="1.5"/>
+                <g transform="translate(370 270)">
+                    <rect x="-6" y="-7" width="12" height="14" rx="1.5" fill="#fff" stroke="#0e1116" stroke-width="1.3"/>
+                    <circle cx="0" cy="-3" r="2" fill="#DC1F26">
+                        <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite"/>
+                    </circle>
+                    <text x="0" y="5.5" text-anchor="middle" font-size="4" font-weight="800" fill="#0e1116">11kW</text>
+                </g>
+                @* Charging cable wallbox → EV *@
+                <path d="M376 268 Q392 274 402 282" fill="none" stroke="#0e1116" stroke-width="1.3"/>
+                @* EV silhouette in garage *@
+                <g transform="translate(402 285)">
+                    <path d="M-13 0 L-10 -5 L10 -5 L13 0 L13 3 L-13 3 Z" fill="#1A2440" stroke="#0e1116" stroke-width="1"/>
+                    <circle cx="-9" cy="4" r="1.8" fill="#0e1116"/>
+                    <circle cx="9" cy="4" r="1.8" fill="#0e1116"/>
+                    <rect x="-8" y="-4" width="6" height="3" fill="#3a4960"/>
+                    <rect x="2" y="-4" width="6" height="3" fill="#3a4960"/>
+                </g>
+
+                @* ========== SCHALTSCHRANK in HWR (basement) ========== *@
+                @* Bus connection dot at HWR *@
+                <circle cx="125" cy="320" r="2.8" fill="#DC1F26"/>
+                <g transform="translate(125 326)">
+                    @* Frame *@
+                    <rect x="-38" y="0" width="76" height="14" rx="1.5" fill="#fff" stroke="#0e1116" stroke-width="1.5"/>
+                    @* Title bar *@
+                    <rect x="-38" y="0" width="76" height="3.5" fill="#0e1116"/>
+                    <text x="0" y="2.8" text-anchor="middle" font-size="3" font-weight="800" fill="#fff" letter-spacing="0.3">SCHALTSCHRANK · AKTOREN ZENTRAL</text>
+                    @* Actuator tiles *@
+                    <g transform="translate(-33 9)">
+                        <rect x="0" y="-3" width="11" height="6" rx="0.5" fill="#FFD466" stroke="#0e1116" stroke-width="0.4"/>
+                        <text x="5.5" y="0.5" text-anchor="middle" font-size="2.8" font-weight="800" fill="#0e1116">DIMM</text>
+                    </g>
+                    <g transform="translate(-19 9)">
+                        <rect x="0" y="-3" width="11" height="6" rx="0.5" fill="#fff" stroke="#0e1116" stroke-width="0.4"/>
+                        <text x="5.5" y="0.5" text-anchor="middle" font-size="2.8" font-weight="800" fill="#0e1116">SCHALT</text>
+                    </g>
+                    <g transform="translate(-5 9)">
+                        <rect x="0" y="-3" width="11" height="6" rx="0.5" fill="#fff" stroke="#0e1116" stroke-width="0.4"/>
+                        <text x="5.5" y="0.5" text-anchor="middle" font-size="2.8" font-weight="800" fill="#0e1116">JAL</text>
+                    </g>
+                    <g transform="translate(9 9)">
+                        <rect x="0" y="-3" width="11" height="6" rx="0.5" fill="#fff" stroke="#0e1116" stroke-width="0.4"/>
+                        <text x="5.5" y="0.5" text-anchor="middle" font-size="2.8" font-weight="800" fill="#0e1116">HEIZ</text>
+                    </g>
+                    <g transform="translate(23 9)">
+                        <rect x="0" y="-3" width="11" height="6" rx="0.5" fill="#22c55e" stroke="#0e1116" stroke-width="0.4"/>
+                        <text x="5.5" y="0.5" text-anchor="middle" font-size="2.8" font-weight="800" fill="#fff">PWR</text>
+                        <animate attributeName="opacity" values="1;0.6;1" dur="1.5s" repeatCount="indefinite"/>
+                    </g>
+                </g>
+
+                @* Schaltschrank annotation *@
+                <text x="225" y="350" font-size="7" font-weight="800" fill="#DC1F26" letter-spacing="0.3">SCHALTET 230 V</text>
+                <text x="225" y="358" font-size="6.5" font-weight="700" fill="#6b7280">→ Lichter · Jalousien · Heizung</text>
+
+                @* ========== BATTERY in KELLER ========== *@
+                <circle cx="285" cy="320" r="2.8" fill="#DC1F26"/>
+                <line x1="285" y1="320" x2="285" y2="326" stroke="#DC1F26" stroke-width="1.5"/>
+                <g transform="translate(285 328)">
+                    <rect x="-13" y="0" width="26" height="16" rx="1.5" fill="#1A2440" stroke="#0e1116" stroke-width="1.3"/>
+                    <rect x="-11" y="2" width="22" height="3.5" fill="#22c55e"/>
+                    <rect x="-11" y="6" width="22" height="3.5" fill="#22c55e" opacity="0.7"/>
+                    <rect x="-11" y="10" width="22" height="3.5" fill="#22c55e" opacity="0.4"/>
+                    <text x="0" y="-2" text-anchor="middle" font-size="5" font-weight="800" fill="#0e1116" letter-spacing="0.3">SPEICHER</text>
+                    <text x="0" y="14.5" text-anchor="middle" font-size="4.5" font-weight="800" fill="#fff">10 kWh</text>
+                </g>
+
+                @* ========== WÄRMEPUMPE outside left ========== *@
+                <g transform="translate(20 255)">
+                    <rect x="-14" y="-13" width="28" height="26" rx="2" fill="#1A2440" stroke="#0e1116" stroke-width="1.3"/>
+                    <circle cx="0" cy="0" r="9" fill="#fff" stroke="#0e1116" stroke-width="1"/>
+                    <g>
+                        <path d="M-7 0 q7 -3.5 14 0 M0 -7 q3.5 7 0 14 M7 0 q-7 3.5 -14 0 M0 7 q-3.5 -7 0 -14" fill="none" stroke="#0e1116" stroke-width="1.1" stroke-linecap="round"/>
+                        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="4s" repeatCount="indefinite"/>
+                    </g>
+                </g>
+                <text x="20" y="284" text-anchor="middle" font-size="7" font-weight="800" fill="#0e1116" letter-spacing="0.3">WÄRMEPUMPE</text>
+                <text x="20" y="293" text-anchor="middle" font-size="6.5" font-weight="800" fill="#DC1F26" letter-spacing="0.4">SG-READY</text>
+
+                @* ========== PV INVERTER outside right ========== *@
+                <g transform="translate(465 195)">
+                    <rect x="-14" y="-13" width="28" height="26" rx="1.5" fill="#fff" stroke="#0e1116" stroke-width="1.5"/>
+                    <text x="0" y="-3" text-anchor="middle" font-size="6" font-weight="800" fill="#DC1F26">PV-INV</text>
+                    <text x="0" y="6" text-anchor="middle" font-size="5.5" font-weight="800" fill="#0e1116">9.2 kW</text>
+                    @* tiny LED *@
+                    <circle cx="-10" cy="9" r="0.9" fill="#22c55e">
+                        <animate attributeName="opacity" values="1;0.4;1" dur="1.5s" repeatCount="indefinite"/>
+                    </circle>
+                </g>
+
+                @* ========== TELEGRAMS — animated packets ========== *@
+                <g>
+                    <circle r="2.8" fill="#FFD466" stroke="#DC1F26" stroke-width="1">
+                        <animateMotion path="M60 195 L420 195" dur="2.4s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle r="2.8" fill="#FFD466" stroke="#DC1F26" stroke-width="1">
+                        <animateMotion path="M420 195 L60 195" dur="2.8s" repeatCount="indefinite" begin="0.5s"/>
+                    </circle>
+                    <circle r="2.8" fill="#FFD466" stroke="#DC1F26" stroke-width="1">
+                        <animateMotion path="M60 255 L420 255" dur="2.6s" repeatCount="indefinite" begin="1.1s"/>
+                    </circle>
+                </g>
+
+                @* ========== LEGEND (bottom-right) ========== *@
+                <g transform="translate(345 378)">
+                    <line x1="0" y1="0" x2="14" y2="0" stroke="#DC1F26" stroke-width="2" stroke-dasharray="3 2"/>
+                    <text x="18" y="2.5" font-size="6" font-weight="700" fill="#0e1116">KNX-Bus</text>
+                    <circle cx="60" cy="0" r="2.5" fill="#FFD466" stroke="#DC1F26" stroke-width="1"/>
+                    <text x="66" y="2.5" font-size="6" font-weight="700" fill="#0e1116">Telegramm</text>
+                </g>
             </svg>
         </div>
     </div>
 </section>
 
-<!-- ============== USE-CASE GRID ============== -->
+<!-- ============== USE-CASE GRID — WITH CONCRETE DEVICES + PRICES ============== -->
 <section style="background:var(--white);padding:64px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
     <div class="container fade-in">
-        <div class="eyebrow">Was KNX für Sie tut</div>
-        <h2 style="margin-bottom:8px">Sechs typische <em style="color:var(--red);font-style:normal">Alltags­szenen.</em></h2>
-        <p style="color:var(--muted);max-width:680px;margin-bottom:36px">Das sind die häufigsten Anwendungen — wir setzen so viele davon ein, wie Sie möchten. Erweitern Sie später nach Bedarf.</p>
+        <div class="eyebrow">Was KNX konkret tut</div>
+        <h2 style="margin-bottom:8px">Sechs Anwendungen — <em style="color:var(--red);font-style:normal">mit Geräten und Preisen.</em></h2>
+        <p style="color:var(--muted);max-width:740px;margin-bottom:36px">Sie sehen <strong>genau welche Komponenten</strong> wir einsetzen und in welchem <strong>Preisrahmen</strong> sich der Use-Case bewegt. Brutto-Endkunden­preise inkl. ETS-Programmierung und Inbetrieb­nahme — präzises Festpreis-Angebot nach Vor-Ort-Termin.</p>
 
         <div class="knx-usecase-grid">
+
             <article class="card knx-uc">
                 <div class="knx-uc-icon"><ServiceIcon Name="lightbulb" Size="28" /></div>
-                <h3>Licht­szenen</h3>
-                <p>„Filmabend", „Frühstück", „Putzlicht" — auf Knopfdruck oder per Zeitplan. Tunable White passt die Lichtfarbe an die Tageszeit an.</p>
+                <h3>Licht­szenen &amp; Tunable White</h3>
+                <p>„Filmabend", „Frühstück", „Putzlicht" — auf Knopfdruck, per Zeitplan oder per Bewegungs­melder. Tunable White passt die Lichtfarbe an die Tageszeit an: morgens kalt-aktivierend, abends warm-entspannend.</p>
+                <div class="knx-uc-meta">
+                    <div class="knx-uc-devices">
+                        <strong>Geräte:</strong>
+                        <ul>
+                            <li>Glas­taster mit Display (MDT GT II Smart, ca. 150-250&nbsp;€)</li>
+                            <li>Dimm­aktor 4-fach LED (280-480&nbsp;€)</li>
+                            <li>Schalt­aktor 8-fach (180-320&nbsp;€)</li>
+                            <li>Optional: KNX-Konstant­lichtregler &amp; DALI-Gateway</li>
+                        </ul>
+                    </div>
+                    <div class="knx-uc-price">
+                        <span class="knx-uc-price-label">Preisrahmen pro Raum</span>
+                        <span class="knx-uc-price-amount">800 – 2.400&nbsp;€</span>
+                    </div>
+                </div>
             </article>
+
             <article class="card knx-uc">
                 <div class="knx-uc-icon"><ServiceIcon Name="home" Size="28" /></div>
-                <h3>Jalousien & Sonnen­schutz</h3>
-                <p>Fahren automatisch hoch beim Sonnenaufgang, runter wenn die Sonne zu stark einfällt. Bei Wind fahren sie sicherheits­halber ein.</p>
+                <h3>Jalousien &amp; Sonnen­schutz</h3>
+                <p>Fahren automatisch hoch beim Sonnen­aufgang, runter wenn die Sonne zu stark einfällt. Wetter­station löst bei Wind &gt; 60 km/h die Sicherheits­fahrt aus. Im Sommer reduziert das die Klimalast bis 25 %.</p>
+                <div class="knx-uc-meta">
+                    <div class="knx-uc-devices">
+                        <strong>Geräte:</strong>
+                        <ul>
+                            <li>Jalousie­aktor 4-fach (180-350&nbsp;€)</li>
+                            <li>Wetter­station Basic (280-350&nbsp;€)<br/>oder Elsner Suntracer KNX pro mit GPS (1.800-2.300&nbsp;€)</li>
+                            <li>Roll­laden­motoren (separat, nicht KNX)</li>
+                        </ul>
+                    </div>
+                    <div class="knx-uc-price">
+                        <span class="knx-uc-price-label">Preisrahmen 6-8 Fenster</span>
+                        <span class="knx-uc-price-amount">1.800 – 4.500&nbsp;€</span>
+                    </div>
+                </div>
             </article>
+
             <article class="card knx-uc">
                 <div class="knx-uc-icon"><ServiceIcon Name="snowflake" Size="28" /></div>
-                <h3>Einzelraum­regelung</h3>
-                <p>Jeder Raum hat seine eigene Wohlfühl­temperatur. Bei Abwesenheit wird automatisch abgesenkt. Spart bis zu 30 % Heizkosten.</p>
+                <h3>Einzelraum-Heizungs­regelung</h3>
+                <p>Jeder Raum hat seine eigene Wohlfühl­temperatur. Bei Abwesenheit wird automatisch abgesenkt, Fenster auf = Heizung aus. <strong>Spart bis zu 30 % Heiz­energie</strong> (DIN EN 15232 Klasse A) und ist <strong>BAFA-förderfähig mit 15-20 %</strong>.</p>
+                <div class="knx-uc-meta">
+                    <div class="knx-uc-devices">
+                        <strong>Geräte:</strong>
+                        <ul>
+                            <li>Heizungs­aktor 6-fach (Theben HMT 6 S, 245-295&nbsp;€)</li>
+                            <li>Stell­antriebe pro Heiz­körper (15-30&nbsp;€)</li>
+                            <li>Raum­temperatur­regler im Taster (50-100&nbsp;€/Raum)</li>
+                            <li>Optional: Fenster-Reed-Sensoren</li>
+                        </ul>
+                    </div>
+                    <div class="knx-uc-price">
+                        <span class="knx-uc-price-label">Preisrahmen 1 Etage / 6 Räume</span>
+                        <span class="knx-uc-price-amount">1.800 – 4.200&nbsp;€</span>
+                    </div>
+                </div>
             </article>
+
             <article class="card knx-uc">
                 <div class="knx-uc-icon"><ServiceIcon Name="shield" Size="28" /></div>
-                <h3>Anwesenheits-Simulation</h3>
-                <p>Im Urlaub schaltet sich abends das Wohnzimmer­licht ein, Jalousien fahren wie gewohnt. Sieht aus, als wären Sie zu Hause.</p>
+                <h3>Sicherheit &amp; Anwesenheit</h3>
+                <p>Im Urlaub schaltet sich abends Licht ein, Jalousien fahren wie gewohnt, die Stehlampe rotiert die Räume — sieht aus, als wären Sie zu Hause. Bewegungs- und Glasbruch­sensoren lösen Alarm aus, automatische Außen­beleuchtung schreckt ab.</p>
+                <div class="knx-uc-meta">
+                    <div class="knx-uc-devices">
+                        <strong>Geräte:</strong>
+                        <ul>
+                            <li>BWM Innen (Theben thePiccola, 70-160&nbsp;€)</li>
+                            <li>BWM Außen IP54 (130-280&nbsp;€)</li>
+                            <li>Fenster-/Tür­kontakte, Glasbruch­sensor</li>
+                            <li>Optional: KNX-Sirene, Türkommunikation</li>
+                        </ul>
+                    </div>
+                    <div class="knx-uc-price">
+                        <span class="knx-uc-price-label">Preisrahmen EFH-Basispaket</span>
+                        <span class="knx-uc-price-amount">2.800 – 6.500&nbsp;€</span>
+                    </div>
+                </div>
             </article>
-            <article class="card knx-uc">
+
+            <article class="card knx-uc knx-uc-highlight">
                 <div class="knx-uc-icon"><ServiceIcon Name="sun" Size="28" /></div>
-                <h3>PV-Eigen­verbrauch</h3>
-                <p>Wallbox lädt das E-Auto, wenn die Sonne scheint. Wärmepumpe heizt vor. Kein Strom geht ungenutzt ins Netz.</p>
+                <h3>Energie­management / Sektor­kopplung</h3>
+                <p>KNX koordiniert <strong>PV, Wärmepumpe, Wallbox und Speicher</strong>: Mittags lädt die Sonne den Akku und das E-Auto, die Wärmepumpe heizt vor. <strong>500-800 €/Jahr Stromkosten weniger</strong>, HEMS amortisiert in ca. 18 Monaten. Außerdem: <strong>§ 14a EnWG-Pflicht</strong> für steuerbare Wallbox/WP wird erfüllt.</p>
+                <div class="knx-uc-meta">
+                    <div class="knx-uc-devices">
+                        <strong>Geräte:</strong>
+                        <ul>
+                            <li>KNX-Energie­zähler 3-fach (220-400&nbsp;€)</li>
+                            <li>KNX-Logik­baustein (MDT, Gira X1, 350-900&nbsp;€)</li>
+                            <li>Gateway WP (SG-Ready/EEBus, 200-400&nbsp;€)</li>
+                            <li>Gateway Wallbox (KNX-OCPP, 250-500&nbsp;€)</li>
+                            <li>PV-Wechselrichter über Modbus TCP/Sunspec</li>
+                        </ul>
+                    </div>
+                    <div class="knx-uc-price">
+                        <span class="knx-uc-price-label">Preisrahmen Sektor­kopplung</span>
+                        <span class="knx-uc-price-amount">1.800 – 3.500&nbsp;€</span>
+                    </div>
+                </div>
             </article>
+
             <article class="card knx-uc">
                 <div class="knx-uc-icon"><ServiceIcon Name="phone" Size="28" /></div>
-                <h3>Sprach­steuerung (optional)</h3>
-                <p>„Alexa, Filmabend." Via Bridge anbindbar — aber nur als Komfort, nicht als Voraussetzung. KNX läuft auch wenn die Cloud aus ist.</p>
+                <h3>Visualisierung &amp; Sprache (optional)</h3>
+                <p>Lokale App auf Tablet/Smartphone via Gira X1 oder MDT VisuControl. <strong>Sprach­steuerung</strong> (Alexa/Google) als Bridge anbindbar — aber nur Komfort, keine Voraussetzung. KNX läuft auch wenn die Cloud aus ist.</p>
+                <div class="knx-uc-meta">
+                    <div class="knx-uc-devices">
+                        <strong>Geräte:</strong>
+                        <ul>
+                            <li>KNX-IP-Interface (Weinzierl 731, 130-200&nbsp;€)</li>
+                            <li>Visu-Server (MDT, Gira X1, 350-1.700&nbsp;€)</li>
+                            <li>Tablet-Wand­halterung mit lokaler App</li>
+                            <li>Optional: Sonos/Russound-KNX-Bridge, Sprach-Bridge</li>
+                        </ul>
+                    </div>
+                    <div class="knx-uc-price">
+                        <span class="knx-uc-price-label">Preisrahmen Visu + Bridges</span>
+                        <span class="knx-uc-price-amount">400 – 1.800&nbsp;€</span>
+                    </div>
+                </div>
             </article>
+
+        </div>
+
+        <p style="margin-top:24px;font-size:13px;color:var(--muted);max-width:740px">Alle Preise zzgl. Verkabelung, Schaltschrank-Material und ETS-Programmierung (Stundensatz 89-130&nbsp;€ brutto, typisch 25-80&nbsp;h für ein EFH). Präzises Festpreis-Angebot nach Vor-Ort-Termin.</p>
+    </div>
+</section>
+
+<!-- ============== SEKTORKOPPLUNG DEEP-DIVE ============== -->
+<section class="knx-sector fade-in">
+    <div class="container">
+        <div class="knx-sector-head">
+            <div>
+                <div class="eyebrow">Sektor­kopplung &amp; § 14a EnWG</div>
+                <h2 style="margin-bottom:12px">PV, Wärmepumpe, Wallbox, Speicher — <em style="color:var(--red);font-style:normal">ein System steuert alles.</em></h2>
+                <p style="font-size:1.0625rem;color:var(--ink-2);max-width:720px">Seit <strong>01.01.2024</strong> sind alle Wärme­pumpen, Wallboxen und Speicher &gt; 4,2&nbsp;kW per <strong>§ 14a EnWG steuer­bar pflicht</strong>. Der Netz­betreiber darf bei Engpässen dimmen — im Gegenzug gibt es <strong>reduzierte Netz­entgelte</strong>. KNX mit HEMS-Logik macht die geforderte Steuer­barkeit nutzbar und holt dabei <strong>500-800&nbsp;€/Jahr</strong> raus.</p>
+            </div>
+        </div>
+
+        <div class="knx-sector-grid">
+            @* Energy flow diagram *@
+            <div class="knx-sector-diagram">
+                <svg viewBox="0 0 540 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <defs>
+                        <marker id="sec-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                            <polygon points="0 0, 8 4, 0 8" fill="#DC1F26"/>
+                        </marker>
+                        <marker id="sec-arrow-green" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                            <polygon points="0 0, 8 4, 0 8" fill="#22c55e"/>
+                        </marker>
+                    </defs>
+
+                    @* Central KNX hub *@
+                    <g transform="translate(270 180)">
+                        <circle cx="0" cy="0" r="48" fill="#fff" stroke="#DC1F26" stroke-width="2.5"/>
+                        <circle cx="0" cy="0" r="44" fill="none" stroke="#DC1F26" stroke-width="0.8" stroke-dasharray="3 2">
+                            <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="12s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="0" y="-6" text-anchor="middle" font-size="14" font-weight="800" fill="#DC1F26" letter-spacing="0.5">KNX</text>
+                        <text x="0" y="8" text-anchor="middle" font-size="9" font-weight="800" fill="#0e1116" letter-spacing="0.3">+ HEMS</text>
+                        <text x="0" y="20" text-anchor="middle" font-size="7" font-weight="700" fill="#6b7280" letter-spacing="0.3">Logik / Bus</text>
+                    </g>
+
+                    @* PV top *@
+                    <g transform="translate(270 50)">
+                        <rect x="-44" y="-22" width="88" height="44" rx="6" fill="#fff" stroke="#0e1116" stroke-width="1.5"/>
+                        <g transform="translate(-30 -8)">
+                            @* sun icon *@
+                            <circle cx="0" cy="0" r="6" fill="#FFD466"/>
+                            <line x1="0" y1="-10" x2="0" y2="-12" stroke="#FFD466" stroke-width="1.5" stroke-linecap="round"/>
+                            <line x1="0" y1="10" x2="0" y2="12" stroke="#FFD466" stroke-width="1.5" stroke-linecap="round"/>
+                            <line x1="-10" y1="0" x2="-12" y2="0" stroke="#FFD466" stroke-width="1.5" stroke-linecap="round"/>
+                            <line x1="10" y1="0" x2="12" y2="0" stroke="#FFD466" stroke-width="1.5" stroke-linecap="round"/>
+                        </g>
+                        <text x="6" y="-5" font-size="11" font-weight="800" fill="#0e1116">PV-Anlage</text>
+                        <text x="6" y="8" font-size="9" font-weight="700" fill="#6b7280">10 kWp / Modbus TCP</text>
+                    </g>
+                    @* PV → KNX (green = energy flow into the system) *@
+                    <line x1="270" y1="90" x2="270" y2="130" stroke="#22c55e" stroke-width="3" marker-end="url(#sec-arrow-green)">
+                        <animate attributeName="stroke-dasharray" values="0 200;200 0" dur="2s" repeatCount="indefinite"/>
+                    </line>
+                    <text x="278" y="115" font-size="8" font-weight="800" fill="#22c55e">7 kW</text>
+
+                    @* Battery left *@
+                    <g transform="translate(70 180)">
+                        <rect x="-44" y="-22" width="88" height="44" rx="6" fill="#fff" stroke="#0e1116" stroke-width="1.5"/>
+                        <g transform="translate(-30 0)">
+                            <rect x="-9" y="-9" width="18" height="18" rx="1.5" fill="#1A2440" stroke="#0e1116" stroke-width="1"/>
+                            <rect x="-7" y="-7" width="14" height="2" fill="#22c55e"/>
+                            <rect x="-7" y="-4" width="14" height="2" fill="#22c55e"/>
+                            <rect x="-7" y="-1" width="14" height="2" fill="#22c55e" opacity="0.6"/>
+                        </g>
+                        <text x="6" y="-2" font-size="11" font-weight="800" fill="#0e1116">Speicher</text>
+                        <text x="6" y="10" font-size="9" font-weight="700" fill="#6b7280">10 kWh</text>
+                    </g>
+                    @* KNX ↔ Battery (bidirectional) *@
+                    <line x1="222" y1="180" x2="120" y2="180" stroke="#DC1F26" stroke-width="2.5" marker-end="url(#sec-arrow)" marker-start="url(#sec-arrow)"/>
+                    <text x="170" y="172" text-anchor="middle" font-size="8" font-weight="800" fill="#DC1F26">Lade/Entlade</text>
+
+                    @* Wärmepumpe right *@
+                    <g transform="translate(470 180)">
+                        <rect x="-44" y="-22" width="88" height="44" rx="6" fill="#fff" stroke="#0e1116" stroke-width="1.5"/>
+                        <g transform="translate(-30 0)">
+                            <circle cx="0" cy="0" r="9" fill="#1A2440" stroke="#0e1116" stroke-width="1"/>
+                            <path d="M-6 0 q6 -3 12 0 M0 -6 q3 6 0 12" stroke="#fff" stroke-width="1.2" fill="none" stroke-linecap="round">
+                                <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="3s" repeatCount="indefinite"/>
+                            </path>
+                        </g>
+                        <text x="6" y="-2" font-size="11" font-weight="800" fill="#0e1116">Wärmepumpe</text>
+                        <text x="6" y="10" font-size="9" font-weight="700" fill="#6b7280">SG-Ready / EEBus</text>
+                    </g>
+                    @* KNX → WP *@
+                    <line x1="320" y1="180" x2="420" y2="180" stroke="#DC1F26" stroke-width="2.5" marker-end="url(#sec-arrow)"/>
+                    <text x="370" y="172" text-anchor="middle" font-size="8" font-weight="800" fill="#DC1F26">2 kW heizt vor</text>
+
+                    @* Wallbox bottom-left *@
+                    <g transform="translate(150 310)">
+                        <rect x="-50" y="-22" width="100" height="44" rx="6" fill="#fff" stroke="#0e1116" stroke-width="1.5"/>
+                        <g transform="translate(-32 0)">
+                            <rect x="-6" y="-10" width="12" height="20" rx="1.5" fill="#fff" stroke="#0e1116" stroke-width="1"/>
+                            <circle cx="0" cy="-4" r="2.5" fill="#DC1F26">
+                                <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite"/>
+                            </circle>
+                            <text x="0" y="6" text-anchor="middle" font-size="5" font-weight="800" fill="#0e1116">11kW</text>
+                        </g>
+                        <text x="3" y="-2" font-size="11" font-weight="800" fill="#0e1116">Wallbox + EV</text>
+                        <text x="3" y="10" font-size="9" font-weight="700" fill="#6b7280">OCPP / EEBus</text>
+                    </g>
+                    @* KNX → Wallbox *@
+                    <line x1="246" y1="218" x2="180" y2="282" stroke="#DC1F26" stroke-width="2.5" marker-end="url(#sec-arrow)"/>
+                    <text x="195" y="245" font-size="8" font-weight="800" fill="#DC1F26">1.5 kW EV</text>
+
+                    @* Haushalt bottom-right *@
+                    <g transform="translate(420 310)">
+                        <rect x="-50" y="-22" width="100" height="44" rx="6" fill="#fff" stroke="#0e1116" stroke-width="1.5"/>
+                        <g transform="translate(-32 0)">
+                            <path d="M-9 5 L0 -6 L9 5 L9 9 L-9 9 Z" fill="#FFD466" stroke="#0e1116" stroke-width="1"/>
+                            <rect x="-2.5" y="2" width="5" height="7" fill="#0e1116"/>
+                        </g>
+                        <text x="3" y="-2" font-size="11" font-weight="800" fill="#0e1116">Haushalt</text>
+                        <text x="3" y="10" font-size="9" font-weight="700" fill="#6b7280">0,5 kW Grundlast</text>
+                    </g>
+                    @* KNX → Haushalt *@
+                    <line x1="293" y1="218" x2="358" y2="282" stroke="#DC1F26" stroke-width="2.5" marker-end="url(#sec-arrow)"/>
+
+                    @* Netz indicator bottom center *@
+                    <g transform="translate(270 340)">
+                        <rect x="-50" y="-12" width="100" height="20" rx="3" fill="#22c55e" opacity="0.12" stroke="#22c55e" stroke-width="1" stroke-dasharray="3 2"/>
+                        <text x="0" y="2" text-anchor="middle" font-size="8" font-weight="800" fill="#16a34a" letter-spacing="0.3">EIGEN­VERBRAUCH 70 %</text>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="knx-sector-stats">
+                <article class="knx-stat">
+                    <div class="knx-stat-num">500 – 800 €</div>
+                    <div class="knx-stat-label">Stromkosten-Ersparnis pro Jahr</div>
+                    <p>Bei 4-Personen-Haushalt mit 10&nbsp;kWp PV + 10&nbsp;kWh Speicher + Wärmepumpe + E-Auto.</p>
+                </article>
+                <article class="knx-stat">
+                    <div class="knx-stat-num">~ 18 Monate</div>
+                    <div class="knx-stat-label">Amortisation der HEMS-Hardware</div>
+                    <p>Logik­baustein + Energie­zähler + Gateways amortisieren sich aus der Eigen­verbrauchs-Steigerung.</p>
+                </article>
+                <article class="knx-stat">
+                    <div class="knx-stat-num">30 % → 70 %</div>
+                    <div class="knx-stat-label">Eigen­verbrauchs­quote</div>
+                    <p>Statt PV-Über­schuss für 8&nbsp;ct/kWh ins Netz zu schieben, nutzen Sie ihn für 35-45&nbsp;ct/kWh selbst.</p>
+                </article>
+                <article class="knx-stat knx-stat-warn">
+                    <div class="knx-stat-num">§ 14a EnWG</div>
+                    <div class="knx-stat-label">Pflicht seit 01.01.2024</div>
+                    <p>Wallbox &amp; WP &gt; 4,2&nbsp;kW müssen steuer­bar sein. KNX erfüllt die Pflicht — plus reduzierte Netz­entgelte.</p>
+                </article>
+            </div>
         </div>
     </div>
 </section>
@@ -660,6 +1175,100 @@
     </div>
 </section>
 
+<!-- ============== ENERGIEEFFIZIENZ + FÖRDERUNG ============== -->
+<section class="knx-energy fade-in">
+    <div class="container">
+        <div class="eyebrow">Energie­effizienz &amp; Förderung 2026</div>
+        <h2 style="margin-bottom:8px">Die Norm <em style="color:var(--red);font-style:normal">spart, der Staat zahlt mit.</em></h2>
+        <p style="color:var(--ink-2);max-width:740px;margin-bottom:36px;font-size:1.0625rem">KNX ermöglicht <strong>DIN EN 15232-1 Klasse&nbsp;A</strong> — die höchste Gebäude­automations-Klasse mit dokumentierter Energie­einsparung. Gleichzeitig ist KNX als <strong>„digitale System­technik zur energetischen Optimierung"</strong> in BAFA-BEG und als <strong>Umfeld­maßnahme zur Wärme­pumpen-Förderung KfW&nbsp;458</strong> direkt förderfähig.</p>
+
+        <div class="knx-energy-grid">
+            @* EN 15232 Klassen Tabelle *@
+            <div class="knx-en15232-card">
+                <h3 style="margin-bottom:14px">DIN EN 15232 — Gebäude­automations-Klassen</h3>
+                <div class="knx-en15232-table">
+                    <div class="knx-en15232-row knx-en15232-header">
+                        <span>Klasse</span><span>Was sie bedeutet</span><span>Heiz­energie</span><span>Strom</span>
+                    </div>
+                    <div class="knx-en15232-row knx-en15232-a">
+                        <span class="knx-class-badge">A</span>
+                        <span>Hoch energie­effizientes GA — Einzel­raum, Präsenz, tages­licht­abhängig, Sonnen­stand, Lastmanagement. <strong>Mit KNX erreichbar.</strong></span>
+                        <span class="knx-en15232-saving">−20 bis −30 %</span>
+                        <span class="knx-en15232-saving">~ −8 %</span>
+                    </div>
+                    <div class="knx-en15232-row">
+                        <span class="knx-class-badge knx-class-b">B</span>
+                        <span>Erweitertes GA — Zentrale Heizungs­steuerung, Beleuchtungs­schaltung, manuelle Verschattung.</span>
+                        <span>−10 bis −15 %</span>
+                        <span>~ −4 %</span>
+                    </div>
+                    <div class="knx-en15232-row">
+                        <span class="knx-class-badge knx-class-c">C</span>
+                        <span><strong>Referenz</strong> — Standard-Installation ohne Automation (Faktor 1,00).</span>
+                        <span>0 %</span>
+                        <span>0 %</span>
+                    </div>
+                    <div class="knx-en15232-row">
+                        <span class="knx-class-badge knx-class-d">D</span>
+                        <span>Keine / nicht-effiziente Automation — typischer Bestand ohne Regelung.</span>
+                        <span class="knx-en15232-worse">+ 10 %</span>
+                        <span>+ 2 %</span>
+                    </div>
+                </div>
+                <p style="margin-top:14px;font-size:12px;color:var(--muted)">Werte für Wohngebäude, gemittelt aus DIN-Sekundär­quellen (ZVEI, tab, IKZ, Beckhoff). Exakte BAC-Faktoren je Gebäudetyp im DIN-Volltext.</p>
+            </div>
+
+            @* Förderung Karten *@
+            <div class="knx-foerderung-cards">
+                <article class="knx-foerderung-card knx-foerderung-hot">
+                    <div class="knx-foerderung-tag">★ Top-Förderung 2026</div>
+                    <h3>KfW 458 — Heizungs­förderung</h3>
+                    <div class="knx-foerderung-num">bis 70 %</div>
+                    <p>Bei Wärme­pumpen-Sanierung gilt KNX/HEMS als <strong>Umfeld­maßnahme</strong> — wird mit demselben Förder­satz bezuschusst wie die Wärme­pumpe selbst.</p>
+                    <ul class="knx-foerderung-meta">
+                        <li>30 % Grund­förderung</li>
+                        <li>+ 20 % Klima­geschwindigkeit (bis 31.12.2028)</li>
+                        <li>+ 5 % Effizienz (natürliches Kältemittel)</li>
+                        <li>+ 30 % Einkommens-Bonus (Haushalt ≤ 40.000 €)</li>
+                        <li>Cap: max. 30.000 € pro Wohneinheit</li>
+                    </ul>
+                </article>
+
+                <article class="knx-foerderung-card">
+                    <h3>BAFA BEG Einzel­maßnahmen</h3>
+                    <div class="knx-foerderung-num">15 – 20 %</div>
+                    <p>Auf intelligente Heizungs- und Verschattungs­steuerung, Smart-Meter-Gateways, Fenster-/Tür­sensoren. <strong>+5 % mit individuellem Sanierungs­fahrplan (iSFP)</strong>.</p>
+                    <ul class="knx-foerderung-meta">
+                        <li>Mindestinvestition 300 €</li>
+                        <li>bis 30.000 € förderfähig pro Wohneinheit/Jahr</li>
+                        <li>bis 60.000 € mit iSFP</li>
+                        <li>Gebäude mind. 5 Jahre alt, Energie-Experte zwingend</li>
+                    </ul>
+                </article>
+
+                <article class="knx-foerderung-card">
+                    <h3>KfW 261 — Wohngebäude-Kredit</h3>
+                    <div class="knx-foerderung-num">bis 45 %</div>
+                    <p>Tilgungs­zuschuss je nach erreichtem Effizienz­haus-Niveau (EH 40 EE / EH 55 EE). KNX-Komponenten mitfinanzier­bar.</p>
+                    <ul class="knx-foerderung-meta">
+                        <li>bis 150.000 € Kredit pro Wohneinheit</li>
+                        <li>5 - 45 % Tilgungs­zuschuss</li>
+                        <li>+ 50 % Zuschuss für Fach­planung &amp; Bau­begleitung</li>
+                    </ul>
+                </article>
+
+                <article class="knx-foerderung-card">
+                    <h3>§ 35c EStG — Steuer­bonus</h3>
+                    <div class="knx-foerderung-num">20 %</div>
+                    <p>Alternative zu KfW/BAFA (keine Doppel­förderung). 20 % der Kosten über 3 Jahre absetzbar, max. 40.000 €. Gebäude ≥ 10 Jahre alt.</p>
+                </article>
+            </div>
+        </div>
+
+        <p style="margin-top:24px;font-size:12px;color:var(--muted);max-width:740px">Quellen: KfW.de (458, 261, 159), BAFA.de (BEG EM), DIN EN 15232-1:2017-12, ZVEI-Studie „Energie­effizienz durch Gebäude­automation". Förder­details Stand 2026. Verbind­liche Beratung über Energie­effizienz-Experte.</p>
+    </div>
+</section>
+
 <!-- ============== INVESTMENT GRAPH ============== -->
 <section class="knx-investment fade-in">
     <div class="container">
@@ -753,6 +1362,104 @@
     </div>
 </section>
 
+<!-- ============== MYTHEN-FAQ ============== -->
+<section class="knx-myths fade-in">
+    <div class="container">
+        <div class="eyebrow">Mythen entkräftet</div>
+        <h2 style="margin-bottom:8px">Sechs Sätze, die Sie über KNX vielleicht <em style="color:var(--red);font-style:normal">falsch gehört haben.</em></h2>
+        <p style="color:var(--muted);max-width:680px;margin-bottom:36px">Smart-Home ist ein verwirrter Markt. Hier räumen wir mit den häufigsten Missverständnissen auf — kurz und mit Quellen.</p>
+
+        <div class="knx-myth-list">
+            <details class="knx-myth">
+                <summary>
+                    <span class="knx-myth-mark">✗</span>
+                    <span>„KNX ist veraltet."</span>
+                    <span class="knx-myth-arrow">›</span>
+                </summary>
+                <div class="knx-myth-body">
+                    <p>KNX entstand 1990 aus EIB/EHS/BCI und ist seit 2006 <strong>ISO/IEC 14543-3</strong> und <strong>EN 50090</strong> zertifiziert. Über 500 Hersteller weltweit bauen kontinuierlich neue Komponenten. KNX-IP, KNX&nbsp;Secure (AES-128 verschlüsselt), KNX&nbsp;RF und KNX&nbsp;IoT wurden in den letzten Jahren ergänzt — der Standard wächst jährlich.</p>
+                </div>
+            </details>
+
+            <details class="knx-myth">
+                <summary>
+                    <span class="knx-myth-mark">✗</span>
+                    <span>„KNX braucht eine Cloud."</span>
+                    <span class="knx-myth-arrow">›</span>
+                </summary>
+                <div class="knx-myth-body">
+                    <p>KNX läuft <strong>vollständig lokal auf dem Bus</strong>. Visualisierung wahlweise lokal (Gira&nbsp;X1, MDT&nbsp;VisuControl, Home&nbsp;Assistant) oder optional in einer Cloud. Im Gegensatz zu Hue/Tuya/Matter-Cloud-Diensten kein Zwang zur Internet­verbindung. Bei Internet-Ausfall arbeiten Licht, Heizung und Jalousien ungestört weiter — die Cloud-Anbieter können das nicht versprechen.</p>
+                </div>
+            </details>
+
+            <details class="knx-myth">
+                <summary>
+                    <span class="knx-myth-mark">✗</span>
+                    <span>„KNX ist nur für Reiche."</span>
+                    <span class="knx-myth-arrow">›</span>
+                </summary>
+                <div class="knx-myth-body">
+                    <p>Mehrkosten gegenüber konventioneller Elektrik liegen für ein EFH typisch bei <strong>18.000-35.000 € brutto</strong>. Davon abzuziehen: <strong>15-70 % Förderung</strong> (siehe oben), plus <strong>20-30 % Heiz­energie-Ersparnis</strong> über die Lebenszeit (DIN EN 15232 Klasse A). ROI bei energiegeführtem Einsatz typisch 8-12 Jahre. Bus-Verkabelung hält 30+ Jahre — keine 5-Jahres-Erneuerung wie bei Cloud-Sets.</p>
+                </div>
+            </details>
+
+            <details class="knx-myth">
+                <summary>
+                    <span class="knx-myth-mark">✗</span>
+                    <span>„Wenn der Hersteller pleitegeht, ist das System tot."</span>
+                    <span class="knx-myth-arrow">›</span>
+                </summary>
+                <div class="knx-myth-body">
+                    <p>Falsch — KNX ist ein <strong>hersteller­übergreifender Standard</strong>. Ein defekter Gira-Taster wird durch einen MDT-Taster ersetzt; beide sprechen dieselbe Sprache. Klassisches Beispiel: ABB-i-bus-Geräte aus 1995 funktionieren heute noch mit MDT-Geräten von 2026. Über 500 zertifizierte Hersteller stellen sicher, dass das System auch in 30 Jahren noch wartbar ist.</p>
+                </div>
+            </details>
+
+            <details class="knx-myth">
+                <summary>
+                    <span class="knx-myth-mark">✗</span>
+                    <span>„Hue, Tuya, Apple Home oder Matter reichen doch."</span>
+                    <span class="knx-myth-arrow">›</span>
+                </summary>
+                <div class="knx-myth-body">
+                    <p>Diese Systeme sind <strong>funkbasiert</strong>: Latenz, Reichweiten­probleme, Batterien wechseln. KNX TP ist <strong>drahtgebunden</strong> und reagiert &lt; 50 ms. Hue kann <em>nur</em> Licht, Tuya je App nur einen Hersteller — KNX vernetzt <strong>alle Gewerke gewerk­übergreifend</strong> (Licht, Heizung, Jalousie, Klima, Sicherheit, Energie). Matter ist auf App-Ebene komplementär — KNX bleibt das Backbone des Hauses.</p>
+                </div>
+            </details>
+
+            <details class="knx-myth">
+                <summary>
+                    <span class="knx-myth-mark">✗</span>
+                    <span>„Loxone ist einfacher als KNX."</span>
+                    <span class="knx-myth-arrow">›</span>
+                </summary>
+                <div class="knx-myth-body">
+                    <p>Stimmt teils — Loxone ist proprietär mit zentralem Miniserver, daher schneller in Betrieb. Aber: <strong>Vendor-Lock-in</strong>, single-point-of-failure (alle Logik in einem Server), nur Loxone-Geräte verwendbar. KNX ist dezentral (jeder Aktor hat eigene Logik), offen, herstellerunabhängig — bei 30+ Jahren Gebäude-Lebenszyklus ein hartes Argument für KNX.</p>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<!-- ============== HERSTELLER LOGOS ============== -->
+<section class="knx-vendors fade-in">
+    <div class="container">
+        <div class="knx-vendors-head">
+            <span class="eyebrow">Hersteller­unabhängig</span>
+            <p>Wir kombinieren das jeweils Beste aus &gt; 500 KNX-zertifizierten Marken — alle voll kompatibel:</p>
+        </div>
+        <div class="knx-vendors-grid">
+            <span class="knx-vendor">MDT</span>
+            <span class="knx-vendor">Gira</span>
+            <span class="knx-vendor">Jung</span>
+            <span class="knx-vendor">Busch-Jaeger</span>
+            <span class="knx-vendor">ABB</span>
+            <span class="knx-vendor">Theben</span>
+            <span class="knx-vendor">Siemens</span>
+            <span class="knx-vendor">Elsner</span>
+            <span class="knx-vendor">Weinzierl</span>
+        </div>
+    </div>
+</section>
+
 <!-- ============== ABLAUF ============== -->
 <section style="background:var(--ink);color:#fff;padding:72px 0">
     <div class="container fade-in">
@@ -796,5 +1503,42 @@
                 </div>
             </li>
         </ol>
+    </div>
+</section>
+
+<!-- ============== PERSONA-PATH CTAs ============== -->
+<section class="knx-paths fade-in">
+    <div class="container">
+        <div class="eyebrow" style="color:rgba(255,255,255,0.7)">Ihr nächster Schritt</div>
+        <h2 style="color:#fff;margin-bottom:8px">Wo stehen Sie <em style="color:var(--red);font-style:normal">gerade?</em></h2>
+        <p style="color:rgba(255,255,255,0.78);max-width:680px;margin-bottom:36px">Wir haben zwei vertiefte Pfade vorbereitet — mit Paket-Preisen, Förder-Rechnung und Ablauf passend zu Ihrer Situation.</p>
+
+        <div class="knx-paths-grid">
+            <a href="/leistungen/smart-home-knx/bauherr" class="knx-path-card">
+                <div class="knx-path-badge">Neubau / Planungsphase</div>
+                <h3>Ich baue gerade.</h3>
+                <p>Bus-Leitungen müssen rein, <strong>bevor verputzt wird</strong>. Jetzt richtig planen spart später 5-stellig. KfW&nbsp;261 Wohngebäude-Kredit nutzt sich.</p>
+                <ul class="knx-path-list">
+                    <li>3 Pakete: Basic / Komfort / Premium</li>
+                    <li>Konkrete Geräte­listen je Paket</li>
+                    <li>KfW 261 Tilgungs­zuschuss bis 45 %</li>
+                    <li>Phasen-Timeline von Bau­antrag bis Einzug</li>
+                </ul>
+                <span class="knx-path-cta">Pfad für Bauherren →</span>
+            </a>
+
+            <a href="/leistungen/smart-home-knx/sanierer" class="knx-path-card">
+                <div class="knx-path-badge">Bestand / Modernisierung</div>
+                <h3>Ich modernisiere.</h3>
+                <p>Wärme­pumpe rein, PV oben drauf, Wallbox in die Garage — und <strong>alles soll mit­einander reden</strong>. Hybrid wired+RF, schritt­weise ausbaubar.</p>
+                <ul class="knx-path-list">
+                    <li>Hybrid-Lösung: wo Kabel geht, dort Kabel; sonst KNX-RF</li>
+                    <li>3-Stufen-Ausbau: Licht → Heizung → Sektorkopplung</li>
+                    <li>KfW 458: KNX gilt als Umfeld­maßnahme zur WP → <strong>bis 70 %</strong></li>
+                    <li>BAFA BEG EM 15-20 % auf Smart-Home-Steuerung</li>
+                </ul>
+                <span class="knx-path-cta">Pfad für Sanierer →</span>
+            </a>
+        </div>
     </div>
 </section>

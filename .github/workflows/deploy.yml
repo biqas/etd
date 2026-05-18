@@ -1,8 +1,10 @@
 name: deploy
 
+# Disabled: image push + cluster apply läuft aktuell manuell aus dem Dev-Workspace.
+# Re-aktivieren: das ghcr-Package biqas/etd/etd-web mit dem Repo verbinden
+# (Package-Settings → Manage Actions Access → Add Repository → etd → Write).
+# Danach die `on:`-Sektion freischalten.
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:

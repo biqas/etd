@@ -1,100 +1,61 @@
-@* ETD-Brandlogo als SVG — Variante "icon" oder "full" *@
+@* ETD mark-only SVG. Wordmark text belongs in normal HTML/CSS, not inside this logo.
+   Variants:
+     icon       — dark colors for use on light backgrounds (e.g. header on white)
+     icon-dark  — brighter colors for use on dark backgrounds (e.g. footer on near-black)
+*@
 @code {
-    [Parameter] public string Variant { get; set; } = "icon"; // "icon" | "full" | "icon-dark"
+    [Parameter] public string Variant { get; set; } = "icon";
     [Parameter] public int Size { get; set; } = 40;
-    // Brighter colors for the small header icon so it reads as red+blue (not nearly-black).
-    // The "full" variant uses brand-true dark red/blue from the reference image.
-    private string BulbColor => Variant == "icon-dark" ? "#DC1F26"
-                              : Variant == "full"      ? "#6B1015"
-                                                       : "#A8161C";
-    private string FlakeColor => Variant == "icon-dark" ? "#7BB8E0"
-                               : Variant == "full"      ? "#1E5A8A"
-                                                        : "#2178B8";
+
+    private string Red => Variant == "icon-dark" ? "#DC1F26" : "#710B0E";
+    private string Blue => Variant == "icon-dark" ? "#7BB8E0" : "#075F9F";
 }
 
-@if (Variant == "full")
-{
-    @* Volles Logo (Icon links mit überlappender Schneeflocke + Wortmarke rechts) *@
-    <svg viewBox="0 0 380 200" xmlns="http://www.w3.org/2000/svg" width="@(Size * 1.9)" height="@Size" role="img" aria-label="ETD Elektrotechnik Desch — Meisterbetrieb für Elektro-, Kälte- und Klimatechnik">
+<svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" width="@(Size * 1.78)" height="@Size" role="img" aria-label="ETD Elektrotechnik Desch">
+    <g aria-hidden="true">
 
-        @* ============ ICON (left): bulb foreground + snowflake/swoosh background ============ *@
-        @* Background layer: snowflake + swoosh, opacity reduced — sits behind the bulb *@
-        <g opacity="0.55">
-            @* Snowflake — positioned slightly to the right of the bulb, partly behind it *@
-            <g transform="translate(75 50)" stroke="@FlakeColor" stroke-width="3.5" stroke-linecap="round" fill="none">
-                <line x1="0" y1="-24" x2="0" y2="24"/>
-                <line x1="-21" y1="-12" x2="21" y2="12"/>
-                <line x1="-21" y1="12" x2="21" y2="-12"/>
-            </g>
-            @* Blue swoosh — water/air flow under the icon *@
-            <path d="M30 100 Q70 112 110 100 Q135 92 150 100" fill="none" stroke="@FlakeColor" stroke-width="5" stroke-linecap="round"/>
-            <path d="M40 115 Q80 124 120 115 Q140 109 152 115" fill="none" stroke="@FlakeColor" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
-        </g>
+        @* ============ BULB (left) — Lottie-Style ============ *@
+        <g transform="translate(8 12)">
+            <ellipse cx="68" cy="160" rx="38" ry="3" fill="#0e1116" opacity="0.10"/>
 
-        @* Foreground: lightbulb in dark red, full opacity *@
-        <g transform="translate(15 12)">
-            <g fill="@BulbColor">
-                <circle cx="30" cy="34" r="28"/>
-                <rect x="20" y="58" width="20" height="6"/>
-                <path d="M20 64 L20 74 Q20 84 30 84 Q40 84 40 74 L40 64 Z"/>
+            <g fill="@Red">
+                <path d="M68 6 C36 6 12 30 12 62 C12 82 22 100 38 110 L38 122 H98 V110 C114 100 124 82 124 62 C124 30 100 6 68 6 Z"/>
+                <rect x="38" y="121" width="60" height="22" rx="3"/>
+                <path d="M50 143 H86 V150 C86 150 80 152 68 152 C56 152 50 150 50 150 Z"/>
             </g>
-            @* White thread lines (screw base) *@
-            <line x1="20" y1="62" x2="40" y2="62" stroke="#fff" stroke-width="1.8"/>
-            <line x1="20" y1="68" x2="40" y2="68" stroke="#fff" stroke-width="1.8"/>
-            <line x1="20" y1="74" x2="40" y2="74" stroke="#fff" stroke-width="1.8"/>
-            @* Weißer Glühdraht — 2 Pfeil-Peaks (M) auf Stem + horizontale Basis *@
+
+            <g fill="#fff" stroke="#fff" stroke-linejoin="round" stroke-linecap="round">
+                <polygon points="32,76 50,28 68,58 86,28 104,76"/>
+                <rect x="50" y="76" width="36" height="22"/>
+                <rect x="32" y="98" width="72" height="9" rx="3"/>
+            </g>
+
             <g fill="#fff">
-                <rect x="14" y="48" width="32" height="5"/>
-                <rect x="19" y="34" width="22" height="14"/>
-                <polygon points="19,34 25,13 30,25 35,13 41,34"/>
+                <rect x="38" y="124" width="60" height="3" rx="1.5"/>
+                <rect x="38" y="131" width="60" height="3" rx="1.5"/>
+                <rect x="38" y="138" width="60" height="3" rx="1.5"/>
             </g>
+
+            <ellipse cx="42" cy="38" rx="8" ry="5" fill="#fff" opacity="0.22" transform="rotate(-25 42 38)"/>
         </g>
 
-        @* ============ WORTMARKE (right) ============ *@
-        <g transform="translate(175 0)">
-            <text x="0" y="62" font-family="Inter, sans-serif" font-weight="900" font-size="60" fill="#0e1116" letter-spacing="-0.02em">ETD</text>
-            <text x="0" y="88" font-family="Inter, sans-serif" font-weight="700" font-size="16" fill="@BulbColor" letter-spacing="0.01em">Meisterbetrieb</text>
-            <text x="0" y="122" font-family="Inter, sans-serif" font-weight="800" font-size="22" fill="@BulbColor" letter-spacing="-0.01em">Elektrotechnik Desch</text>
-            <line x1="0" y1="144" x2="14" y2="144" stroke="@FlakeColor" stroke-width="1.6"/>
-            <text x="20" y="148" font-family="Inter, sans-serif" font-weight="700" font-size="12" fill="@FlakeColor">Elektrotechnik · Kälte- &amp; Klimatechnik</text>
-            <line x1="194" y1="144" x2="208" y2="144" stroke="@FlakeColor" stroke-width="1.6"/>
-        </g>
-    </svg>
-}
-else
-{
-    @* Icon-only Variante: bulb prominent + snowflake/swoosh dezent dahinter *@
-    <svg viewBox="0 0 80 64" xmlns="http://www.w3.org/2000/svg" width="@(Size * 1.25)" height="@Size" role="img" aria-label="ETD Elektrotechnik Desch">
-
-        @* === BACKGROUND: snowflake + swoosh (transluzent, hinter Lampe) === *@
-        <g opacity="0.4">
-            @* Schneeflocke — leicht rechts neben der Lampe, einfache 6-Strich-Variante (ohne Tip-Y's) *@
-            <g transform="translate(50 22)" stroke="@FlakeColor" stroke-width="3" stroke-linecap="round" fill="none">
-                <line x1="0" y1="-14" x2="0" y2="14"/>
-                <line x1="-12" y1="-7" x2="12" y2="7"/>
-                <line x1="-12" y1="7" x2="12" y2="-7"/>
+        @* ============ SNOWFLAKE (right) — Lottie 6-arm + V-tips ============ *@
+        <g transform="translate(228 90)" stroke="@Blue" stroke-linecap="round" fill="none">
+            <g stroke-width="8">
+                <line x1="0" y1="-58" x2="0" y2="58"/>
+                <line x1="-50" y1="-29" x2="50" y2="29"/>
+                <line x1="-50" y1="29" x2="50" y2="-29"/>
             </g>
-            @* Einfacher Swoosh am unteren Rand *@
-            <path d="M12 50 Q35 58 58 50 Q70 46 76 50" fill="none" stroke="@FlakeColor" stroke-width="4" stroke-linecap="round"/>
+            <g stroke-width="6">
+                <path d="M0 -58 L-10 -48 M0 -58 L10 -48"/>
+                <path d="M0 58 L-10 48 M0 58 L10 48"/>
+                <path d="M-50 -29 L-40 -33 M-50 -29 L-40 -25"/>
+                <path d="M50 29 L40 33 M50 29 L40 25"/>
+                <path d="M-50 29 L-40 25 M-50 29 L-40 33"/>
+                <path d="M50 -29 L40 -25 M50 -29 L40 -33"/>
+            </g>
+            <circle cx="0" cy="0" r="5" fill="@Blue" stroke="none"/>
         </g>
 
-        @* === FOREGROUND: Lampe rot, voll opak === *@
-        <g fill="@BulbColor">
-            <circle cx="22" cy="22" r="18"/>
-            <rect x="14" y="38" width="16" height="4" rx="0.5"/>
-            <path d="M14 42 L14 48 Q14 56 22 56 Q30 56 30 48 L30 42 Z"/>
-        </g>
-        @* Vereinfachte Sockel-Linien: nur 2 statt 3 *@
-        <line x1="14" y1="46" x2="30" y2="46" stroke="#fff" stroke-width="1.4"/>
-        <line x1="14" y1="51" x2="30" y2="51" stroke="#fff" stroke-width="1.4"/>
-        @* Weißer Glühdraht — 2 Pfeil-Peaks (M) auf Stem + horizontale Basis *@
-        <g fill="#fff">
-            @* Basis-Bar (breiter als Stem) *@
-            <rect x="11" y="30" width="22" height="3"/>
-            @* Stem *@
-            <rect x="15" y="22" width="14" height="8"/>
-            @* M-Peaks: spitze Tips + tiefe V-Valley aber nicht ganz bis Base — wie Vorlage *@
-            <polygon points="15,22 19,8 22,16 26,8 29,22"/>
-        </g>
-    </svg>
-}
+    </g>
+</svg>

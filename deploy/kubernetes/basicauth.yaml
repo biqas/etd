@@ -1,0 +1,21 @@
+---
+# htpasswd-formatted secret for Traefik BasicAuth.
+# Hash is bcrypt of `etd:<password>`. Regenerate via:
+#   htpasswd -nbB etd <password>
+# Then base64-encode and replace the `users` value below.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: etd-basicauth
+type: Opaque
+stringData:
+  users: 'etd:$2y$05$ffeqBBi.HTW4WUVG44iN0.J6PnEgmk9upnYKSOw0XRYsrS8pa6EK.'
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: etd-basicauth
+spec:
+  basicAuth:
+    secret: etd-basicauth
+    realm: 'ETD Preview'

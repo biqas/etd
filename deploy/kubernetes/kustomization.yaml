@@ -1,12 +1,10 @@
-namespace: etd
+namespace: etd-dev
 
 resources:
 - namespace.yaml
-- mailpit
 - etd-web
+- basicauth.yaml
 - ingress.yaml
 
 generatorOptions:
   disableNameSuffixHash: true
-
-

@@ -1,0 +1,452 @@
+@page "/leistungen/smart-home-knx/sanierer"
+@using ETD.Web.Components.Shared
+
+<PageTitle>KNX im Bestand — Modernisieren ohne alles aufzureißen — ETD Elektrotechnik Desch</PageTitle>
+<HeadContent>
+    <meta name="description" content="KNX im Bestandshaus: Hybrid wired+RF, 3-Stufen-Ausbau Licht→Heizung→Sektorkopplung. KfW 458 deckt KNX als Umfeldmaßnahme zur Wärmepumpe — bis 70 % Förderung." />
+</HeadContent>
+
+<!-- ============== HERO ============== -->
+<section class="bauherr-hero">
+    <div class="container">
+        <div class="bauherr-hero-grid">
+            <div>
+                <a href="/leistungen/smart-home-knx" class="bauherr-back">← Zurück zu KNX-Übersicht</a>
+                <div class="eyebrow" style="color:var(--red)">Pfad für Sanierer</div>
+                <h1 style="margin-bottom:14px">Modernisieren — <em style="color:var(--red);font-style:normal">ohne alles aufzureißen.</em></h1>
+                <p style="font-size:1.125rem;color:var(--ink-2);max-width:600px;line-height:1.55">Im Bestand geht KNX <strong>hybrid</strong>: dort wo Kabel rein kann, ziehen wir 2-Draht-Bus; wo nicht, nutzen wir <strong>KNX-RF (Funk)</strong>. Das System wächst <strong>in drei Stufen</strong> mit Ihrem Budget — heute Lichtsteuerung, in zwei Jahren Wärmepumpe mit Einzelraum-Regelung, in fünf Jahren PV mit Wallbox.</p>
+
+                <div class="bauherr-hero-stats">
+                    <div class="bauherr-hero-stat">
+                        <div class="bauherr-hero-stat-num">bis 70 %</div>
+                        <div class="bauherr-hero-stat-label">KfW 458 — KNX als Umfeldmaßnahme zur WP</div>
+                    </div>
+                    <div class="bauherr-hero-stat">
+                        <div class="bauherr-hero-stat-num">15 – 20 %</div>
+                        <div class="bauherr-hero-stat-label">BAFA BEG-EM für Smart-Home-Steuerung</div>
+                    </div>
+                    <div class="bauherr-hero-stat">
+                        <div class="bauherr-hero-stat-num">3 Stufen</div>
+                        <div class="bauherr-hero-stat-label">Schrittweise ausbaubar, kein Big-Bang</div>
+                    </div>
+                </div>
+
+                <div style="display:flex;gap:14px;margin-top:28px;flex-wrap:wrap">
+                    <a href="/angebot?for=smart-home-knx" class="btn btn-primary">Kostenfreie Erstberatung →</a>
+                    <a href="#pakete" class="btn btn-secondary">Pakete &amp; Preise</a>
+                </div>
+            </div>
+
+            <div class="bauherr-hero-illu" aria-hidden="true">
+                @* Existing house — hybrid retrofit: partial wired bus + RF radiating in upper floor *@
+                <svg viewBox="0 0 420 340" xmlns="http://www.w3.org/2000/svg">
+                    @* Roof + house outline *@
+                    <path d="M50 130 L210 50 L370 130 L370 135 L210 55 L50 135 Z" fill="#0e1116"/>
+                    <rect x="60" y="130" width="300" height="190" fill="#fff" stroke="#0e1116" stroke-width="2"/>
+
+                    @* Floor divider + room dividers *@
+                    <line x1="60" y1="225" x2="360" y2="225" stroke="#0e1116" stroke-width="1.3" opacity="0.3"/>
+                    <line x1="150" y1="130" x2="150" y2="225" stroke="#0e1116" stroke-width="1.2" opacity="0.3"/>
+                    <line x1="270" y1="130" x2="270" y2="225" stroke="#0e1116" stroke-width="1.2" opacity="0.3"/>
+                    <line x1="200" y1="225" x2="200" y2="320" stroke="#0e1116" stroke-width="1.2" opacity="0.3"/>
+
+                    @* HYBRID badge on roof *@
+                    <text x="210" y="100" text-anchor="middle" font-size="14" font-weight="900" fill="#fff" letter-spacing="1.5">HYBRID</text>
+
+                    @* Wired bus in LOWER floor only (existing 230V can be accompanied) *@
+                    <line x1="80" y1="275" x2="340" y2="275" stroke="#DC1F26" stroke-width="3" stroke-dasharray="5 4">
+                        <animate attributeName="stroke-dashoffset" values="0;-9" dur="0.8s" repeatCount="indefinite"/>
+                    </line>
+                    <text x="210" y="265" text-anchor="middle" font-size="10" font-weight="800" fill="#DC1F26" letter-spacing="1">KABEL-BUS (UG)</text>
+
+                    @* RF Gateway in lower floor center *@
+                    <g transform="translate(210 275)">
+                        <rect x="-9" y="-9" width="18" height="18" rx="1.5" fill="#fff" stroke="#0e1116" stroke-width="1.5"/>
+                        <path d="M-5 -5 q5 -5 10 0 M-6 -2 q6 -6 12 0" fill="none" stroke="#DC1F26" stroke-width="1.5" stroke-linecap="round"/>
+                    </g>
+
+                    @* RF pulses radiating UP from gateway to upper floor rooms *@
+                    <g fill="none" stroke="#DC1F26" stroke-width="1.5" stroke-linecap="round">
+                        <path d="M210 260 Q170 220 110 175" opacity="0.6">
+                            <animate attributeName="opacity" values="0.2;0.9;0.2" dur="2s" repeatCount="indefinite"/>
+                        </path>
+                        <path d="M210 260 Q210 220 210 175" opacity="0.6">
+                            <animate attributeName="opacity" values="0.2;0.9;0.2" dur="2s" begin="0.4s" repeatCount="indefinite"/>
+                        </path>
+                        <path d="M210 260 Q250 220 310 175" opacity="0.6">
+                            <animate attributeName="opacity" values="0.2;0.9;0.2" dur="2s" begin="0.8s" repeatCount="indefinite"/>
+                        </path>
+                    </g>
+
+                    @* Wireless KNX-RF devices in UPPER floor (hollow circles = RF, not wired) *@
+                    <circle cx="105" cy="175" r="7" fill="#fff" stroke="#DC1F26" stroke-width="2.5"/>
+                    <circle cx="210" cy="175" r="7" fill="#fff" stroke="#DC1F26" stroke-width="2.5"/>
+                    <circle cx="315" cy="175" r="7" fill="#fff" stroke="#DC1F26" stroke-width="2.5"/>
+                    <text x="105" y="155" text-anchor="middle" font-size="9" font-weight="700" fill="#6b7280">RF</text>
+                    <text x="210" y="155" text-anchor="middle" font-size="9" font-weight="700" fill="#6b7280">RF</text>
+                    <text x="315" y="155" text-anchor="middle" font-size="9" font-weight="700" fill="#6b7280">RF</text>
+
+                    @* Wired devices in LOWER floor (solid red dots) *@
+                    <circle cx="120" cy="275" r="5" fill="#DC1F26"/>
+                    <circle cx="160" cy="275" r="5" fill="#DC1F26"/>
+                    <circle cx="270" cy="275" r="5" fill="#DC1F26"/>
+                    <circle cx="310" cy="275" r="5" fill="#DC1F26"/>
+
+                    @* Legend at the very bottom *@
+                    <g transform="translate(80 305)" font-size="9" font-weight="700">
+                        <circle cx="0" cy="0" r="4" fill="#DC1F26"/>
+                        <text x="9" y="3" fill="#0e1116">Wired KNX</text>
+                        <circle cx="100" cy="0" r="4" fill="#fff" stroke="#DC1F26" stroke-width="2"/>
+                        <text x="109" y="3" fill="#0e1116">KNX-RF (Funk)</text>
+                    </g>
+                </svg>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============== WARUM JETZT ============== -->
+<section class="container fade-in" style="padding:64px 0">
+    <div class="eyebrow">Warum gerade jetzt</div>
+    <h2 style="margin-bottom:8px">Drei Treiber, die <em style="color:var(--red);font-style:normal">heute zusammenkommen.</em></h2>
+    <p style="color:var(--muted);max-width:680px;margin-bottom:36px">Sanierung lohnt sich jetzt — gesetzlich gefordert, gefördert wie nie, und KNX macht den Mehrwert aus jeder Investition heraus.</p>
+
+    <div class="bauherr-why-grid">
+        <article class="bauherr-why-card">
+            <div class="bauherr-why-icon"><ServiceIcon Name="zap" Size="32" /></div>
+            <h3>§ 14a EnWG — Pflicht seit 2024</h3>
+            <p>Wärme­pumpen, Wallboxen und Speicher &gt; 4,2&nbsp;kW müssen <strong>steuerbar</strong> sein. KNX mit HEMS-Logik erfüllt die Pflicht — plus <strong>reduzierte Netz­entgelte</strong> als Bonus.</p>
+        </article>
+        <article class="bauherr-why-card">
+            <div class="bauherr-why-icon"><ServiceIcon Name="sun" Size="32" /></div>
+            <h3>KfW 458 — bis 70 % auf WP &amp; Umfeld</h3>
+            <p>Beim Wärme­pumpen-Tausch gilt KNX als <strong>Umfeld­maßnahme</strong> und wird mit demselben Förder­satz bezuschusst wie die WP selbst. Plus BAFA BEG-EM 15-20 % auf reine Steuerungs­technik.</p>
+        </article>
+        <article class="bauherr-why-card">
+            <div class="bauherr-why-icon"><ServiceIcon Name="home" Size="32" /></div>
+            <h3>Hybrid — kein Bagger im Wohnzimmer</h3>
+            <p>Wo wir Kabel ziehen können, kommt KNX TP1 rein. Wo nicht (massive Wände, Stockwerksdecken), nutzen wir <strong>KNX-RF</strong>. Beides spricht denselben Bus — kein Lock-in.</p>
+        </article>
+    </div>
+</section>
+
+<!-- ============== 3-STUFEN-AUSBAU ============== -->
+<section style="background:var(--ink);color:#fff;padding:72px 0">
+    <div class="container fade-in">
+        <div class="eyebrow" style="color:rgba(255,255,255,0.7)">Schrittweiser Ausbau</div>
+        <h2 style="color:#fff;margin-bottom:8px">Drei Stufen, <em style="color:var(--red);font-style:normal">Sie bestimmen das Tempo.</em></h2>
+        <p style="color:rgba(255,255,255,0.78);max-width:680px;margin-bottom:36px">Jede Stufe ist eigenständig sinnvoll. Sie können Stufe 1 fünf Jahre nutzen, dann Stufe 2 ergänzen. Der einmal verlegte Bus wächst mit.</p>
+
+        <div class="bauherr-phases">
+            <article class="bauherr-phase">
+                <div class="bauherr-phase-tag">Stufe 1 · Einstieg</div>
+                <div class="bauherr-phase-num">1</div>
+                <h3>Licht, Jalousie, Visualisierung</h3>
+                <p>Wir tauschen die zentralen Wandtaster gegen KNX-Glastaster, hängen einen kleinen Schaltschrank dazu (oder erweitern den vorhandenen), bringen Wetter­station und Visu-Server ein. <strong>Bus wird so weit gezogen wie möglich</strong>, restliche Räume bekommen KNX-RF-Taster.</p>
+                <div class="bauherr-phase-deliver">Liefert: 4-6 Glas­taster · Dimm/Schalt/Jalousie­aktoren · Wetter­station · IP-Interface · ETS-Programmierung</div>
+            </article>
+
+            <article class="bauherr-phase">
+                <div class="bauherr-phase-tag">Stufe 2 · Energie</div>
+                <div class="bauherr-phase-num">2</div>
+                <h3>Wärme­pumpe + Einzelraum-Regelung</h3>
+                <p>Beim Heizungs­tausch kommt die <strong>Wärme­pumpe mit SG-Ready-Schnitt­stelle</strong>. KNX-Heizungs­aktor ersetzt die alten Raum­thermostate, Stell­antriebe auf alle Heiz­körper. Fenster-Kontakte für „Fenster offen = Heizung aus". <strong>KfW 458 fördert KNX als WP-Umfeld­maßnahme mit bis zu 70 %</strong>.</p>
+                <div class="bauherr-phase-deliver">Liefert: Heizungs­aktor 6-fach · Stell­antriebe je Heiz­körper · Raum-Regelung · SG-Ready-Gateway · WP-Integration</div>
+            </article>
+
+            <article class="bauherr-phase bauherr-phase-final">
+                <div class="bauherr-phase-tag">Stufe 3 · Vollausbau</div>
+                <div class="bauherr-phase-num">3</div>
+                <h3>PV + Speicher + Wallbox = Sektor­kopplung</h3>
+                <p>PV-Anlage über Modbus TCP an KNX, Batterie­speicher über Bridge, Wallbox mit KNX-OCPP-Gateway. <strong>HEMS-Logik</strong> verteilt PV-Über­schuss an WP / Speicher / E-Auto — automatisch. <strong>§14a-EnWG-Compliance</strong> automatisch erfüllt.</p>
+                <div class="bauherr-phase-deliver">Liefert: PV-Bridge · Battery-Bridge · Wallbox-Gateway · HEMS-Logik · Energie-Monitoring · Visualisierung Strom­flüsse</div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<!-- ============== 3 PAKETE ============== -->
+<section id="pakete" class="container fade-in" style="padding:72px 0">
+    <div class="eyebrow">Pakete für Sanierer</div>
+    <h2 style="margin-bottom:8px">Drei Einstiegs-Niveaus, <em style="color:var(--red);font-style:normal">Sie wählen.</em></h2>
+    <p style="color:var(--muted);max-width:740px;margin-bottom:36px">Bandbreiten brutto inkl. ETS-Programmierung. <strong>Die Sanierer-Pakete enthalten bereits einen 30&nbsp;%-Aufschlag</strong> gegenüber Neubau-Preisen — das deckt den typischen Mehraufwand im Bestand ab (Schlitze schlagen, Kabelwege finden, Hybrid-Planung wired↔RF, Verputz-Nacharbeit). Präzises Festpreis-Angebot nach Vor-Ort-Termin.</p>
+
+    <div class="bauherr-pakete">
+
+        <article class="bauherr-paket">
+            <div class="bauherr-paket-tag">Einstieg · 4-6 Räume</div>
+            <h3>Licht + Visu</h3>
+            <div class="bauherr-paket-price">
+                <span class="bauherr-paket-price-amount">20.300 – 30.400 €</span>
+                <span class="bauherr-paket-price-label">brutto inkl. ETS · 4-6 Räume</span>
+            </div>
+            <div class="bauherr-paket-foerderung">
+                <strong>Förder­hinweis 2026:</strong>
+                BAFA BEG-EM 15-20 % auf Verschattungs- und Beleuchtungs­steuerung (mit iSFP +5 %). KfW 261 falls Effizienz­haus-Sanierung.<br/>
+                <em>Energie-Effizienz-Experte zwingend für BAFA/KfW.</em>
+            </div>
+            <div class="bauherr-paket-section">
+                <h4>Was Sie bekommen</h4>
+                <ul>
+                    <li>KNX-TP1 wo möglich, sonst <strong>KNX-RF</strong> (Hybrid)</li>
+                    <li>4-6× Glas­taster (z.&nbsp;B. MDT GT II Smart) in zentralen Räumen</li>
+                    <li>RF-Wand­taster für nicht erreichbare Räume</li>
+                    <li>Dimm­aktor + Schalt­aktor + Jalousie­aktor im Schaltschrank</li>
+                    <li>Wetter­station Basic für Jalousie-Sonnen­schutz</li>
+                    <li>KNX-IP-Interface + lokale Tablet-Visu</li>
+                    <li>ETS6-Programmierung (ca. 20-30 Stunden)</li>
+                </ul>
+            </div>
+            <div class="bauherr-paket-section">
+                <h4>Damit können Sie</h4>
+                <ul class="bauherr-paket-features">
+                    <li>Lichtszenen per Glas­taster</li>
+                    <li>Jalousien-Automatik mit Wetter­station</li>
+                    <li>Anwesenheits­simulation</li>
+                    <li>Lokale Visu auf Tablet</li>
+                </ul>
+            </div>
+            <a href="/angebot?for=smart-home-knx" class="bauherr-paket-cta">Beratung für Einstieg-Paket →</a>
+        </article>
+
+        <article class="bauherr-paket bauherr-paket-featured">
+            <div class="bauherr-paket-tag">★ Empfohlen bei Heizungstausch · 6-8 Räume</div>
+            <h3>Komfort + Heizung</h3>
+            <div class="bauherr-paket-price">
+                <span class="bauherr-paket-price-amount">37.200 – 54.100 €</span>
+                <span class="bauherr-paket-price-label">brutto inkl. ETS · 6-8 Räume</span>
+            </div>
+            <div class="bauherr-paket-foerderung">
+                <strong>Förder­hinweis 2026:</strong>
+                Bei Wärme­pumpen-Tausch: <strong>KfW 458 bis 70 %</strong> auf WP + KNX-Umfeld­technik.<br/>
+                Plus BAFA BEG-EM 15-20 % auf Smart-Home-Steuerung.<br/>
+                <em>Netto kann sich der KNX-Anteil je nach Einkommens-Bonus halbieren.</em>
+            </div>
+            <div class="bauherr-paket-section">
+                <h4>Alles aus Einstieg, plus</h4>
+                <ul>
+                    <li>Heizungs­aktor 6-fach (z.&nbsp;B. Theben HMT 6 S — auch MDT/ABB)</li>
+                    <li>Stell­antriebe für alle Heiz­körper</li>
+                    <li>Raum­temperatur­regler in jedem Wohn­raum (Einzelraum-Regelung)</li>
+                    <li>Fenster-/Tür-Reed-Sensoren (Fenster offen = Heizung aus)</li>
+                    <li>SG-Ready-Gateway zur neuen Wärme­pumpe</li>
+                    <li>Wallbox-Vorbereitung: Leerrohr + Schaltschrank-Slot</li>
+                    <li>Logik­baustein für komplexe Szenen</li>
+                    <li>ETS-Programmierung (ca. 35-50 Stunden)</li>
+                </ul>
+            </div>
+            <div class="bauherr-paket-section">
+                <h4>Zusätzlich können Sie</h4>
+                <ul class="bauherr-paket-features">
+                    <li>Einzelraum-Heizungs­regelung (−20 bis −30 % Heiz­energie)</li>
+                    <li>DIN EN 15232 Klasse A erreichbar</li>
+                    <li>Wärme­pumpen-Optimierung für PV-Über­schuss</li>
+                    <li>Volle Vorbereitung für Stufe 3</li>
+                </ul>
+            </div>
+            <a href="/angebot?for=smart-home-knx" class="bauherr-paket-cta">Beratung für Komfort-Paket →</a>
+        </article>
+
+        <article class="bauherr-paket">
+            <div class="bauherr-paket-tag">Vollausbau · 8-12 Räume</div>
+            <h3>Premium-Modernisierung</h3>
+            <div class="bauherr-paket-price">
+                <span class="bauherr-paket-price-amount">59.150 – 92.950 €</span>
+                <span class="bauherr-paket-price-label">brutto inkl. ETS · 8-12 Räume</span>
+            </div>
+            <div class="bauherr-paket-foerderung">
+                <strong>Förder­hinweis 2026:</strong>
+                Bei Komplett­sanierung Effizienz­haus 55 EE / 40 EE: KfW 261 mit bis 45 % Tilgungs­zuschuss.<br/>
+                Plus KfW 458 für WP + Umfeld bis 70 %, plus BAFA BEG-EM.<br/>
+                <em>Optional § 35c EStG als Alternative.</em>
+            </div>
+            <div class="bauherr-paket-section">
+                <h4>Alles aus Komfort, plus</h4>
+                <ul>
+                    <li>PV-Wechselrichter aktiv eingebunden (Modbus TCP/Sunspec)</li>
+                    <li>Batterie­speicher mit Bridge an KNX</li>
+                    <li>11-kW-Wallbox mit KNX-OCPP-Gateway (z.&nbsp;B. ABB/Mennekes/Webasto)</li>
+                    <li>KNX-Energie­zähler 3-fach am Haus­anschluss</li>
+                    <li>KNX-Visu-Server (z.&nbsp;B. Gira X1 / MDT VisuControl) mit Energie-Monitoring</li>
+                    <li>BWM Außen für Sicherheit + Anwesenheits-Simulation</li>
+                    <li>Optional: Tür­kommunikation, Multi-Room-Audio</li>
+                    <li>Premium-ETS-Programmierung (ca. 55-75 Stunden)</li>
+                </ul>
+            </div>
+            <div class="bauherr-paket-section">
+                <h4>Zusätzlich können Sie</h4>
+                <ul class="bauherr-paket-features">
+                    <li>Volle Sektor­kopplung — PV-Über­schuss zu WP/Wallbox/Speicher</li>
+                    <li>500-800 €/Jahr Strom­kosten weniger</li>
+                    <li>§ 14a EnWG-Compliance automatisch erfüllt</li>
+                    <li>Eigen­verbrauchs­quote von 30 % auf 65-70 %</li>
+                </ul>
+            </div>
+            <a href="/angebot?for=smart-home-knx" class="bauherr-paket-cta">Beratung für Premium-Paket →</a>
+        </article>
+
+    </div>
+
+    <p style="margin-top:28px;font-size:13px;color:var(--muted);max-width:740px">Bandbreiten sind Brutto-Endkunden­preise, Stand Mai 2026. Sanierung im Bestand: <strong>20-30 % Puffer­aufschlag</strong> für Unbekanntes empfohlen. Förder­quoten werden nicht pauschal abgezogen, sondern mit Energie-Effizienz-Experte und Hausbank geprüft.</p>
+</section>
+
+<!-- ============== MINI-CASE-STUDY ============== -->
+<section class="bauherr-case fade-in">
+    <div class="container">
+        <div class="eyebrow">Beispiel-Projekt</div>
+        <h2 style="margin-bottom:8px">So sieht eine typische <em style="color:var(--red);font-style:normal">Modernisierung</em> aus.</h2>
+        <p style="color:var(--muted);max-width:680px;margin-bottom:36px">Realistisches Rechen­beispiel — Werte entsprechen 2026er Förder­sätzen.</p>
+
+        <div class="bauherr-case-grid">
+            <div class="bauherr-case-meta">
+                <div class="bauherr-case-meta-row"><span>Familie</span><strong>2 Erwachsene, Kinder ausgezogen</strong></div>
+                <div class="bauherr-case-meta-row"><span>Objekt</span><strong>EFH Bj. 1995, 145 m², Spessart-Region</strong></div>
+                <div class="bauherr-case-meta-row"><span>Anlass</span><strong>Heizungs­tausch (Gas → WP)</strong></div>
+                <div class="bauherr-case-meta-row"><span>Bauphase</span><strong>09/2026 bis 12/2026</strong></div>
+                <div class="bauherr-case-meta-row"><span>Gewähltes Paket</span><strong style="color:var(--red)">Komfort + Heizung</strong></div>
+            </div>
+
+            <div class="bauherr-case-story">
+                <h3>Was die Familie wollte</h3>
+                <p>„Die alte Gas­therme ist defekt, wir tauschen auf Wärme­pumpe. Wenn wir schon Schlitze schlagen lassen, wollen wir <strong>gleichzeitig die Elektrik modernisieren</strong> — neue Wand­schalter, Licht­szenen, Einzelraum-Heizung. Förderung soll mit­genommen werden."</p>
+
+                <h3 style="margin-top:24px">Was wir umgesetzt haben</h3>
+                <ul>
+                    <li>Hybrid-Bus: TP1 wo Schlitze sowieso geschlagen werden, KNX-RF in Räumen ohne Eingriff</li>
+                    <li>Heizungs­aktor 6-fach + Stell­antriebe in allen Heiz­körpern</li>
+                    <li>Raum­temperatur­regler in 6 Räumen, Fenster-Reeds in 4 Räumen</li>
+                    <li>SG-Ready-Gateway zur neuen Wärme­pumpe (Bivalenz mit PV-Vor­bereitung)</li>
+                    <li>4 Glas­taster in Wohn­räumen, einfache RF-Taster in Bad/Keller</li>
+                    <li>Wetter­station, Logik­baustein, lokale Visu</li>
+                </ul>
+
+                <h3 style="margin-top:24px">Rechnung</h3>
+                <div class="bauherr-case-rechnung">
+                    <div class="bauherr-case-rechnung-row"><span>Komfort-Paket Sanierung (Mitte Bandbreite, 7 Räume)</span><strong>45.650 €</strong></div>
+                    <div class="bauherr-case-rechnung-row"><span>BAFA BEG-EM 15 % auf Heizungs/Verschattungs-Anteil (~11.000 €)</span><strong style="color:#16a34a">−1.650 €</strong></div>
+                    <div class="bauherr-case-rechnung-row"><span>KfW 458 als WP-Umfeldmaßnahme (~30 % auf 13.000 €)</span><strong style="color:#16a34a">−3.900 €</strong></div>
+                    <div class="bauherr-case-rechnung-row bauherr-case-rechnung-total"><span><strong>Netto-Aufpreis KNX nach Förderung</strong></span><strong style="color:var(--red)">~ 40.100 €</strong></div>
+                </div>
+                <p style="font-size:13px;color:var(--muted);margin-top:14px">Förder­quoten sind <strong>indikativ</strong> und hängen von Einkommens-Bonus, iSFP-Status und individueller Situation ab — präzise Berechnung durch Energie-Effizienz-Experte.</p>
+
+                <h3 style="margin-top:24px">Ergebnis nach erstem Heizungs­winter</h3>
+                <p>Heiz­energie­verbrauch <strong>27 % geringer</strong> als das Vergleichs­jahr mit Gas-Therme (DIN EN 15232 Klasse A wirksam). Die Familie nutzt die Licht­szenen täglich, die Anwesenheits-Sim wird bei Wochenend-Reisen aktiviert. PV-Anlage ist für 2027 geplant — der KNX-Bus ist schon vorbereitet.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============== FAQ Sanierer ============== -->
+<section class="container fade-in" style="padding:72px 0">
+    <div class="eyebrow">Sanierer-FAQ</div>
+    <h2 style="margin-bottom:8px">Was Sanierer <em style="color:var(--red);font-style:normal">am häufigsten fragen.</em></h2>
+    <p style="color:var(--muted);max-width:680px;margin-bottom:36px">Telefon: <a href="tel:+4960509062874" style="font-weight:800;color:var(--red)">06050&nbsp;9062874</a>.</p>
+
+    <div class="knx-myth-list" style="max-width:920px">
+        <details class="knx-myth">
+            <summary>
+                <span class="knx-myth-mark" style="background:#0e1116">?</span>
+                <span>Muss ich Schlitze in die Wand schlagen lassen?</span>
+                <span class="knx-myth-arrow">›</span>
+            </summary>
+            <div class="knx-myth-body">
+                <p>Nur soweit nötig — und nur wo es ohnehin Bauarbeiten gibt (Heizungs­tausch, Boden öffnen für FBH-Sanierung, etc.). Räume die intakt bleiben sollen, statten wir mit <strong>KNX-RF (Funk)</strong> aus. Der Funk reicht meist durch Holzdecken; nur bei massiven Stahlbeton­decken brauchen wir einen RF-Repeater (~250&nbsp;€).</p>
+            </div>
+        </details>
+
+        <details class="knx-myth">
+            <summary>
+                <span class="knx-myth-mark" style="background:#0e1116">?</span>
+                <span>Wie passt KNX zu meiner alten Elektroinstallation?</span>
+                <span class="knx-myth-arrow">›</span>
+            </summary>
+            <div class="knx-myth-body">
+                <p>KNX läuft <strong>parallel</strong> zur bestehenden 230-V-Verkabelung. Wir erweitern den Schaltschrank um eine Hutschienen-Reihe für KNX-Aktoren und ziehen einen Bus dort­hin, wo wir KNX-Taster oder -Sensoren wollen. Alte Schalter und Steckdosen bleiben — sofern Sie sie behalten wollen. <strong>Zählerschrank wird in der Regel nicht angefasst</strong>, außer er ist sowieso fällig.</p>
+            </div>
+        </details>
+
+        <details class="knx-myth">
+            <summary>
+                <span class="knx-myth-mark" style="background:#0e1116">?</span>
+                <span>Welche Förderung gilt für mich?</span>
+                <span class="knx-myth-arrow">›</span>
+            </summary>
+            <div class="knx-myth-body">
+                <p>Drei Wege, kombinierbar mit gegen­seitiger Anrechnung:</p>
+                <ul>
+                    <li><strong>Wärme­pumpen-Tausch</strong>: KfW 458 fördert WP + KNX-Umfeld bis 70 % (Grund 30 % + 20 % Klimatempo + 5 % Effizienz + ggf. 30 % Einkommens-Bonus, Cap 30.000&nbsp;€).</li>
+                    <li><strong>Einzelmaßnahmen ohne WP</strong>: BAFA BEG-EM 15 % auf Heizungs/Verschattungs-Steuerung (+5 % mit iSFP), max. 30.000 € förderfähig/Jahr.</li>
+                    <li><strong>Komplett­sanierung Effizienz­haus</strong>: KfW 261 Tilgungs­zuschuss bis 45 %.</li>
+                </ul>
+                <p style="margin-top:8px">Energie-Effizienz-Experte (Anlauf­stelle <a href="https://www.energie-effizienz-experten.de" target="_blank" rel="noopener" style="color:var(--red);font-weight:700">energie-effizienz-experten.de</a>) ist für KfW/BAFA zwingend.</p>
+            </div>
+        </details>
+
+        <details class="knx-myth">
+            <summary>
+                <span class="knx-myth-mark" style="background:#0e1116">?</span>
+                <span>Was kostet KNX-RF (Funk) gegenüber Kabel?</span>
+                <span class="knx-myth-arrow">›</span>
+            </summary>
+            <div class="knx-myth-body">
+                <p>RF-Geräte (Taster, Sensoren) kosten typisch <strong>15-30 % mehr</strong> als Wired-Äquivalente. Dafür entfallen Schlitz- und Verputz-Arbeiten. Im Misch­verhältnis kommt Hybrid meist günstiger als reine Wired-Sanierung im Bestand. Faustregel im Bestand: <strong>+33 % gegenüber Neubau-Wired</strong>, <strong>+66 % für reine RF-Lösung</strong> mit vielen Batterie-Geräten.</p>
+            </div>
+        </details>
+
+        <details class="knx-myth">
+            <summary>
+                <span class="knx-myth-mark" style="background:#0e1116">?</span>
+                <span>Muss meine neue Wärme­pumpe KNX-fähig sein?</span>
+                <span class="knx-myth-arrow">›</span>
+            </summary>
+            <div class="knx-myth-body">
+                <p>Nicht direkt — sie braucht nur eine <strong>SG-Ready-Schnitt­stelle</strong> (zwei Relais­ausgänge, 4 Schalt­zustände). Das ist heute Standard bei nahezu allen WPs (z.&nbsp;B. Stiebel-Eltron, Viessmann, Vaillant, Bosch, Wolf, Daikin). KNX spricht mit der WP über ein <strong>SG-Ready-Gateway</strong> (260-450&nbsp;€). Bei Premium-WPs gibt es zusätzlich EEBus mit feinerer Modulations-Steuerung — auch das spricht KNX über Gateway.</p>
+            </div>
+        </details>
+
+        <details class="knx-myth">
+            <summary>
+                <span class="knx-myth-mark" style="background:#0e1116">?</span>
+                <span>Können wir später noch PV/Wallbox ergänzen?</span>
+                <span class="knx-myth-arrow">›</span>
+            </summary>
+            <div class="knx-myth-body">
+                <p>Ja — und das ist der Sinn der 3-Stufen-Strategie. Bei Stufe 2 (Komfort) bereiten wir den Schaltschrank vor: <strong>freie Plätze für PV-Modbus-Bridge und Wallbox-OCPP-Gateway</strong>, Leerrohr zur Garage. Wenn Sie 2028 die PV-Anlage installieren, kommt der Bridge dazu, ETS-Erweiterung dauert 4-6 Stunden — keine neue Bus-Verkabelung mehr nötig.</p>
+            </div>
+        </details>
+
+        <details class="knx-myth">
+            <summary>
+                <span class="knx-myth-mark" style="background:#0e1116">?</span>
+                <span>Bekomme ich Förderung für jede Stufe?</span>
+                <span class="knx-myth-arrow">›</span>
+            </summary>
+            <div class="knx-myth-body">
+                <p>Ja, mit folgenden Einschränkungen:</p>
+                <ul>
+                    <li><strong>Stufe 1 (Licht/Visu)</strong>: BAFA BEG-EM 15 % auf Verschattungs- und Beleuchtungs­steuerung. KfW 159 (Altersgerecht Umbauen) möglich bei barriere­armer Smart-Home-Integration.</li>
+                    <li><strong>Stufe 2 (Heizung+WP)</strong>: KfW 458 für WP + KNX-Umfeld bis 70 %, BAFA BEG-EM 15-20 % zusätzlich.</li>
+                    <li><strong>Stufe 3 (PV/Wallbox)</strong>: KfW 442 / 524 für PV mit Speicher (gelegentlich pausiert — aktueller Stand prüfen). § 14a EnWG-konforme Wallbox bringt reduzierte Netz­entgelte (kein Direkt­zuschuss aber laufender Vorteil).</li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</section>
+
+<!-- ============== CTA ============== -->
+<section class="bauherr-cta">
+    <div class="container">
+        <div class="bauherr-cta-inner">
+            <div>
+                <div class="eyebrow" style="color:rgba(255,255,255,0.7)">Bereit für die Bestandsaufnahme?</div>
+                <h2 style="color:#fff;margin-bottom:14px">Kostenfrei. Vor Ort. <em style="color:var(--red);font-style:normal">Unverbindlich.</em></h2>
+                <p style="color:rgba(255,255,255,0.8);font-size:1.0625rem;max-width:580px;line-height:1.55">Wir kommen zu Ihnen, schauen uns Bestand und Sanierungs­wünsche an, klären welche Stufe heute Sinn macht und liefern Ihnen eine <strong>Hybrid-Konzept-Skizze mit Förder-Indikation</strong> innerhalb 7 Werktagen.</p>
+            </div>
+            <div class="bauherr-cta-buttons">
+                <a href="/angebot?for=smart-home-knx" class="btn btn-primary" style="font-size:16px;padding:16px 28px">Kostenfreie Erstberatung →</a>
+                <a href="tel:+4960509062874" class="bauherr-cta-tel">06050 9062874</a>
+                <span style="color:rgba(255,255,255,0.6);font-size:13px">Mo-Fr 8-18 Uhr</span>
+            </div>
+        </div>
+    </div>
+</section>

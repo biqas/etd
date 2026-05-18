@@ -6,11 +6,59 @@
 @code {
     [Parameter] public string Slug { get; set; } = "";
     private ServiceItem? service;
+    private ServiceVisual? visual;
 
     protected override void OnParametersSet()
     {
         service = ServiceCatalog.FindBySlug(Slug);
+        visual = service is null ? null : ServiceVisuals.GetValueOrDefault(service.Slug);
     }
+
+    private static readonly Dictionary<string, ServiceVisual> ServiceVisuals = new()
+    {
+        ["elektroinstallation"] = new(
+            "Ausführung",
+            "Ordnung im Verteiler, Ruhe im Betrieb.",
+            "Gute Elektroinstallation fällt im Alltag nicht auf. In der Verteilung sieht man trotzdem, ob sauber geplant, beschriftet und montiert wurde.",
+            [
+                new("hero-cropped-IMG_20200508_120948.jpg", "Hager Sicherungsautomaten in einer Unterverteilung", "Unterverteilung"),
+                new("referenz-08.jpg", "Modernisierte Sicherungsverteilung", "Modernisierung"),
+                new("referenz-10.jpg", "Leuchteninstallation an einer Decke", "Beleuchtung"),
+            ]),
+
+        ["smart-home-knx"] = new(
+            "Designschalter",
+            "Smart Home darf technisch stark und optisch ruhig sein.",
+            "KNX bleibt im Hintergrund. Sichtbar sind nur die Bedienstellen, deshalb stimmen wir Schalterprogramme und Bedienpunkte sauber auf Raum und Nutzung ab.",
+            [
+                new("gira-schalter-standard-55.jpg", "Gira Standard 55 Schalter", "Gira Standard 55"),
+                new("gira-schalter-e2.jpg", "Gira E2 Schalter", "Gira E2"),
+                new("gira-schalter-e3.jpg", "Gira E3 Schalter", "Gira E3"),
+            ]),
+
+        ["sprechanlagen"] = new(
+            "Türkommunikation",
+            "Klingel, Sprache, Video und Zutritt aus einem System.",
+            "Von klassischer Audio-Sprechanlage bis moderner Videolösung: Wir planen die passende Türkommunikation für Bestand und Neubau.",
+            [
+                new("bosch-pio00016669.jpg", "Ritto Twinbus Türstation", "Ritto Twinbus"),
+                new("seano-tile-300x178.png", "Schalter- und Steckdosenprogramm", "Designprogramm"),
+            ]),
+
+        ["beleuchtung"] = new(
+            "Lichtbild",
+            "Gutes Licht entsteht aus Planung und sauberer Montage.",
+            "Beleuchtung muss zum Raum, zur Nutzung und zur späteren Wartung passen. Wir kümmern uns um Aufbau, Anschluss und die passende Schaltung.",
+            [
+                new("referenz-10.jpg", "Montierte Deckenleuchten", "Deckenleuchten"),
+                new("referenz-12.jpg", "Beleuchtung und Verkabelung in der Endmontage", "Endmontage"),
+                new("referenz-01.jpg", "Wohnrauminstallation mit Lichtplanung", "Wohnraum"),
+            ]),
+    };
+
+    private sealed record ServiceVisual(string Eyebrow, string Title, string Text, IReadOnlyList<ServiceVisualImage> Images);
+
+    private sealed record ServiceVisualImage(string File, string Alt, string Caption);
 }
 
 @if (service is null)
@@ -30,7 +78,7 @@ else
     <ServiceDetailHero Eyebrow="Leistung" Title="@service.Title" Sub="@service.LongDescription" Icon="@service.Icon" />
 
     <section class="container fade-in" style="padding:64px 0">
-        <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:48px;align-items:start">
+        <div class="service-detail-grid">
             <div>
                 <div class="eyebrow">Was Sie bekommen</div>
                 <h2 style="margin-bottom:18px">Inkl. <em style="color:var(--red);font-style:normal">aller Schritte</em>, ohne Wenn und Aber.</h2>
@@ -43,7 +91,7 @@ else
                     }
                 </ul>
             </div>
-            <aside class="card" style="position:sticky;top:88px">
+            <aside class="card service-detail-aside">
                 <div class="eyebrow">So geht's weiter</div>
                 <h3 style="margin-bottom:12px">Kostenfreies Angebot anfragen</h3>
                 <p style="color:var(--muted);font-size:14px;margin-bottom:18px">Beschreiben Sie uns Ihr Projekt — Sie hören innerhalb 24 h von uns.</p>
@@ -52,6 +100,28 @@ else
             </aside>
         </div>
     </section>
+
+    @if (visual is not null)
+    {
+        <section class="service-visual-band">
+            <div class="container service-visual-grid fade-in">
+                <div class="service-visual-copy">
+                    <div class="eyebrow">@visual.Eyebrow</div>
+                    <h2>@visual.Title</h2>
+                    <p>@visual.Text</p>
+                </div>
+                <div class="service-visual-images">
+                    @foreach (var image in visual.Images)
+                    {
+                        <figure class="service-visual-card">
+                            <img src="@($"/img/legacy/{image.File}")" alt="@image.Alt" loading="lazy" />
+                            <figcaption>@image.Caption</figcaption>
+                        </figure>
+                    }
+                </div>
+            </div>
+        </section>
+    }
 
     @if (service.Slug == "smart-home-knx")
     {

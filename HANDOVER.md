@@ -138,14 +138,14 @@ deploy/
 
 ## 4. Was ist OFFEN / pending
 
-### 🟡 1. Logo-Filament — verifizieren mit User
-Der User wollte den Glühdraht "wie ein gestrecktes M". Aktueller Stand (Commit `2a82f8a`):
-- `wwwroot/Components/Shared/BrandLogo.razor`
-- Icon-Variante Polygon: `15,22 19,8 22,16 26,8 29,22` (peaks at top, V-valley deep)
-- Plus Basis-Rect bei `y=30-33` und Stem-Rect bei `15,22 width=14 height=8`
-- Vom Repository nicht 100% bestätigt dass User happy ist — eventuell Feinjustierung nötig.
+### 🟢 1. Logo-Filament — neu umgesetzt, User-Finalabnahme noch sinnvoll
+Aktueller lokaler Stand nach dieser Runde:
+- `src/ETD.Web/Components/Shared/BrandLogo.razor`
+- Bulb ist jetzt als größerer Vektor nach Vorlagenform gebaut: runder Kopf, weißer M-Glühdraht mit mittlerem Stem, getrennte Sockel-Balken und untere Kappe.
+- Schneeflocke/Swoosh und Full-Logo-Variante wurden ebenfalls als SVG-Vektor überarbeitet.
+- `src/ETD.Web/wwwroot/favicon.svg` ist neu und nutzt dieselbe Vektorform, damit kein `favicon.svg`-404 mehr entsteht.
 
-**Zum Verifizieren:** Vergleich mit Referenzbild das User mehrfach geschickt hat (zuletzt mit Untertitel "like this idot:"). Bild zeigt: 2 spitze Pfeil-Peaks oben + V-Valley dazwischen + einheitlicher Stem + horizontale Basis-Bar.
+**Zum Verifizieren:** optisch mit dem zuletzt geschickten Referenzbild vergleichen. Form ist deutlich näher an der Vorlage, aber finale Logo-Abnahme sollte vom User kommen.
 
 ### 🔴 2. Sanierer-Subpage (NICHT gemacht — User hat es explizit verschoben)
 - Path: `/leistungen/smart-home-knx/sanierer`
@@ -156,23 +156,25 @@ Der User wollte den Glühdraht "wie ein gestrecktes M". Aktueller Stand (Commit 
 - Förderung-Schwerpunkt: KfW 458 (Wärmepumpe + KNX als Umfeldmaßnahme bis 70%) + BAFA BEG EM 15-20%
 - CSS-Klassen müssten neu sein (`.sanierer-...`) oder Bauherr-Klassen wiederverwenden + umbenennen
 
-### 🟡 3. Über-uns-Seite mit echten Bildern
-- Datei existiert: `src/ETD.Web/Components/Pages/UeberUns.razor` (aktueller Stand prüfen)
-- Verfügbare Assets in `wwwroot/img/legacy/`:
-  - `ueberuns-werkstatt-IMG_20250911.jpg` (823×1024) — Werkstatt-Foto Sept 2025
-  - `zert-innungsmitgliedschaft.jpg` (724×1024) — Innungs-Urkunde
-  - `zert-qb-christoph-desch.png` (724×1024) — Qualifikations-Zertifikat
-  - `zert-chemklimaschutzv.png` (724×1024) — ChemKlimaschutzV-Betriebszertifikat
-- Vorschlag: Werkstatt-Foto + 3 Zertifikate als Trust-Signal-Galerie
+### 🟢 3. Über-uns-Seite mit echten Bildern
+- Umgesetzt in `src/ETD.Web/Components/Pages/UeberUns.razor`.
+- Hauptbild nutzt `ueberuns-werkstatt-IMG_20250911.jpg`; wichtig: trotz Dateiname ist der Inhalt ein **Meisterbrief-Scan**, kein Werkstattfoto.
+- Drei Zertifikate werden als Trust-Galerie mit Links zur Vollansicht gezeigt:
+  - `zert-innungsmitgliedschaft.jpg`
+  - `zert-qb-christoph-desch.png`
+  - `zert-chemklimaschutzv.png`
 
-### 🟡 4. Home-Hero mit echtem Foto
-- Aktuell wird `hero-cropped-IMG_20200508_120948.jpg` (1500×1000) noch nicht eingesetzt
-- Könnte den abstrakten Hero auf `/` ersetzen
+### 🟢 4. Home-Hero mit echtem Foto
+- Umgesetzt in `src/ETD.Web/Components/Pages/Home.razor`.
+- Hero verwendet jetzt `hero-cropped-IMG_20200508_120948.jpg` (Hager-Unterverteilung) statt abstraktem Stock-/Generated-Bild.
+- Zusätzlich gibt es eine Home-Proof-Section mit Referenz-/Gira-Bildern aus `wwwroot/img/legacy/`.
 
-### 🟡 5. Gira-Schalter-Bilder und Bosch-Hausgeräte
-- 6 Gira-Schalterbilder (Standard 55, E2, E3 — Schalter + Steckdose je) — könnten auf KNX- oder Elektroinstallation-Seite gezeigt werden
-- 4 Bosch-Hausgeräte-Bilder — User hat keine separate Bosch-Service-Seite, eventuell auf Home oder weglassen
-- seano-Banner: alte Marke, vermutlich nicht mehr aktiv → ignorieren
+### 🟡 5. Gira-Schalter-Bilder und weitere Legacy-Bilder
+- Gira-Schalterbilder sind jetzt auf `/leistungen/smart-home-knx` als Service-Visual integriert.
+- Elektroinstallation zeigt echte Verteilungs-/Referenzbilder auf `/leistungen/elektroinstallation`.
+- Beleuchtung zeigt Referenzbilder auf `/leistungen/beleuchtung`.
+- Sprechanlagen nutzt vorhandene Produktbilder auf `/leistungen/sprechanlagen`; weitere Prüfung der genauen Produktzuordnung wäre sinnvoll.
+- seano-Banner bleibt wegen alter Marke/unklarer Aktualität weiter weggelassen.
 
 ### 🟢 6. Aufräumen (nicht dringend)
 - `Services/PriceEstimator.cs` ist Dead Code seit Wizard-Refactor — kann gelöscht werden
@@ -275,7 +277,7 @@ dotnet run --project src/ETD.Web --urls http://localhost:5050
 dotnet run --project src/ETD.AppHost
 
 # Tests
-dotnet test src/ETD.Web.Tests
+dotnet test tests/ETD.Web.Tests
 dotnet test tests/ETD.E2E
 
 # User-Secrets ansehen / setzen
@@ -318,11 +320,10 @@ Diese Zahlen stehen auf der KNX-Hauptseite + Bauherr-Subpage.
 Wenn ich übernehmen würde, in dieser Reihenfolge:
 
 1. **User fragen**: Was ist JETZT konkret unzufrieden? Logo? Anderes? Was ist die Top-Priorität?
-2. **Falls Logo immer noch nicht passt**: Referenzbild vom User holen und **Pixel-Vergleich** machen. Nicht raten. Eventuell SVG-Pfad direkt vom User holen lassen oder Vektor-Datei (Illustrator/Inkscape) anfordern und mit `svgo` minifizieren.
+2. **Logo final abnehmen lassen**: Neue SVG-Variante ist näher an der Vorlage, aber finale Abnahme sollte der User geben. Falls noch falsch: konkreten Aspekt abfragen (Form? Farbe? Größe? Proportion?).
 3. **Sanierer-Subpage bauen** (Pendant zu Bauherr, Struktur ist klar in `SmartHomeKnxBauherr.razor`)
-4. **Über-uns-Seite**: Werkstatt-Foto + 3 Zertifikat-Scans als Trust-Galerie
-5. **Home-Hero**: echtes Werkstatt-Foto einbinden
-6. **Aufräumen**: PriceEstimator.cs + ServiceParams.cs löschen
+4. **Legacy-Produktbilder fachlich prüfen**: Besonders `bosch-pio00016669.jpg`/Sprechanlagen-Zuordnung gegen alte Seite oder User bestätigen.
+5. **Aufräumen**: PriceEstimator.cs + ServiceParams.cs löschen
 
 ---
 

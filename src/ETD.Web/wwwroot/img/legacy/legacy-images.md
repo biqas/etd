@@ -79,7 +79,7 @@ Aus `?page_id=185` (vermutlich "Über uns / Qualifikationen").
 
 | Datei | Original-URL | Maße | Inhalt |
 |---|---|---|---|
-| `ueberuns-werkstatt-IMG_20250911.jpg` | `/wp-content/uploads/2025/09/IMG_20250911_164603-823x1024.jpg` | 823x1024 | Foto vom 11.09.2025 — vermutlich Werkstatt/Team-Bild |
+| `ueberuns-werkstatt-IMG_20250911.jpg` | `/wp-content/uploads/2025/09/IMG_20250911_164603-823x1024.jpg` | 823x1024 | Meisterbrief Christoph Desch (Dateiname der Quelle wirkt wie Foto, Inhalt ist aber ein Urkunden-Scan) |
 | `zert-innungsmitgliedschaft.jpg` | `/wp-content/uploads/2025/09/Innungsmitgliedschaft-2-724x1024.jpg` | 724x1024 | Innungsmitgliedschaft-Urkunde (Scan) |
 | `zert-qb-christoph-desch.png` | `/wp-content/uploads/2025/09/qb_test_1126643_christoph-desch_5835264-A1-724x1024.png` | 724x1024 | Qualifikations-/Test-Zertifikat Christoph Desch |
 | `zert-chemklimaschutzv.png` | `/wp-content/uploads/2025/09/Betriebszertifikat-§6-ChemKlimaschutzV-724x1024.png` | 724x1024 | Betriebszertifikat §6 ChemKlimaschutzV (Kältemittel/Klimaanlagen-Berechtigung) |

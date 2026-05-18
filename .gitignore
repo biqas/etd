@@ -8,3 +8,4 @@ obj/
 *.user
 aspirate-state.json
 src/ETD.AppHost/manifest.json
+output/

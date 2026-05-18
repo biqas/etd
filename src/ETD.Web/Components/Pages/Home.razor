@@ -16,8 +16,8 @@
     PrimaryCtaHref="/angebot"
     SecondaryCtaText="Leistungen ansehen"
     SecondaryCtaHref="/leistungen"
-    ImageSrc="img/hero/home-hero.webp"
-    ImageAlt="Elektriker bei der Arbeit an einer Unterverteilung">
+    ImageSrc="/img/legacy/hero-cropped-IMG_20200508_120948.jpg"
+    ImageAlt="Hager Sicherungsautomaten in einer Unterverteilung">
     <TrustStrip><TrustBar /></TrustStrip>
 </HeroFullBleed>
 
@@ -31,6 +31,29 @@
         {
             <ServiceCard Icon="@s.Icon" Title="@s.Title" Description="@s.ShortDescription" Href="@($"/angebot?for={s.Slug}")" InfoHref="@($"/leistungen/{s.Slug}")" />
         }
+    </div>
+</section>
+
+<section class="home-proof fade-in">
+    <div class="container home-proof-grid">
+        <div>
+            <div class="eyebrow">Echte Anlagen</div>
+            <h2>Saubere Arbeit sieht man <em style="color:var(--red);font-style:normal">im Detail.</em></h2>
+            <p>Von der Unterverteilung bis zum sichtbaren Schalterprogramm: Wir planen die Technik so, dass sie zuverlässig läuft und im Alltag sauber aussieht.</p>
+            <ul class="home-proof-list">
+                <li>ordentliche Verteiler, klare Beschriftung und nachvollziehbare Dokumentation</li>
+                <li>Designschalter und Steckdosen passend zu Raum, Budget und Nutzung</li>
+                <li>Fotos aus echten Anlagen und bewährten Produktreihen</li>
+            </ul>
+            <a href="/referenzen" class="btn btn-ghost">Referenzen ansehen →</a>
+        </div>
+        <div class="home-proof-collage" aria-label="Auswahl echter ETD-Projekt- und Produktbilder">
+            <img class="home-proof-main" src="/img/legacy/referenz-01.jpg" alt="Saubere Elektroinstallation in einem Wohnraum" loading="lazy" />
+            <div class="home-proof-stack">
+                <img src="/img/legacy/gira-schalter-e2.jpg" alt="Gira E2 Designschalter" loading="lazy" />
+                <img src="/img/legacy/referenz-08.jpg" alt="Modernisierte Unterverteilung" loading="lazy" />
+            </div>
+        </div>
     </div>
 </section>
 

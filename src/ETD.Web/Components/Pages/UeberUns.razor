@@ -5,22 +5,45 @@
 
 <ServiceDetailHero Eyebrow="Über uns" Title="Christoph Desch · Meister­betrieb." Sub="Seit Jahren als zuverlässiger Partner für Privat- und Gewerbekunden in der Region Main-Kinzig-Kreis." />
 
-<section class="container fade-in" style="padding:64px 0">
-    <div style="display:grid;grid-template-columns:1fr 2fr;gap:48px;align-items:start">
-        <div class="card" style="text-align:center">
-            <div style="width:140px;height:140px;background:var(--red);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:48px;font-weight:900;box-shadow:var(--shadow-red)">CD</div>
-            <h3>me. Christoph Desch</h3>
-            <p style="color:var(--muted);font-size:14px;margin-top:6px">Inhaber, Elektrotechniker­meister</p>
-        </div>
-        <div>
+<section class="about-section fade-in">
+    <div class="container about-grid">
+        <figure class="about-photo-card">
+            <img src="/img/legacy/ueberuns-werkstatt-IMG_20250911.jpg" alt="Meisterbrief von Christoph Desch" loading="lazy" />
+            <figcaption>
+                <strong>Meisterbrief Christoph Desch</strong>
+                <span>Elektrotechniker-Handwerk, Handwerkskammer Frankfurt-Rhein-Main</span>
+            </figcaption>
+        </figure>
+
+        <div class="about-copy">
             <div class="eyebrow">Qualifikationen</div>
-            <h2 style="margin-bottom:18px">Zertifikate und <em style="color:var(--red);font-style:normal">Mitgliedschaften.</em></h2>
-            <ul style="list-style:none;padding:0;font-size:1.0625rem">
-                <li style="padding:12px 0 12px 28px;position:relative;border-top:1px solid var(--line)"><span style="position:absolute;left:0;top:14px;color:var(--red);font-weight:800">✓</span>Elektrotechniker­meister (HWK)</li>
-                <li style="padding:12px 0 12px 28px;position:relative;border-top:1px solid var(--line)"><span style="position:absolute;left:0;top:14px;color:var(--red);font-weight:800">✓</span>Innungsmitglied</li>
-                <li style="padding:12px 0 12px 28px;position:relative;border-top:1px solid var(--line)"><span style="position:absolute;left:0;top:14px;color:var(--red);font-weight:800">✓</span>Sachkundezertifikat A1 (Kältetechnik)</li>
-                <li style="padding:12px 0 12px 28px;position:relative;border-top:1px solid var(--line)"><span style="position:absolute;left:0;top:14px;color:var(--red);font-weight:800">✓</span>Betriebszertifizierung gemäß §6 ChemKlimaschutzV</li>
+            <h2>Zertifikate und <em style="color:var(--red);font-style:normal">Mitgliedschaften.</em></h2>
+            <p>ETD verbindet klassisches Elektrohandwerk mit Kälte- und Klimatechnik. Für Kunden heißt das: ein Ansprechpartner für Planung, Installation, Inbetriebnahme und saubere Dokumentation.</p>
+            <ul class="about-qual-list">
+                <li>Elektrotechniker­meister (HWK)</li>
+                <li>Innungsmitglied</li>
+                <li>Sachkundezertifikat A1 für Kältetechnik</li>
+                <li>Betriebszertifizierung gemäß §6 ChemKlimaschutzV</li>
             </ul>
+
+            <div class="about-cert-grid" aria-label="Zertifikate und Nachweise">
+                @foreach (var cert in Certificates)
+                {
+                    <a class="about-cert-card" href="@($"/img/legacy/{cert.File}")" target="_blank" rel="noopener">
+                        <img src="@($"/img/legacy/{cert.File}")" alt="@cert.Alt" loading="lazy" />
+                        <span>@cert.Label</span>
+                    </a>
+                }
+            </div>
         </div>
     </div>
 </section>
+
+@code {
+    private static readonly (string File, string Label, string Alt)[] Certificates =
+    [
+        ("zert-innungsmitgliedschaft.jpg", "Innungsmitgliedschaft", "Scan der Innungsmitgliedschaft von Elektrotechnik Desch"),
+        ("zert-qb-christoph-desch.png", "Sachkunde A1", "Qualifikationsnachweis Sachkunde A1 Christoph Desch"),
+        ("zert-chemklimaschutzv.png", "ChemKlimaschutzV", "Betriebszertifikat nach §6 ChemKlimaschutzV"),
+    ];
+}

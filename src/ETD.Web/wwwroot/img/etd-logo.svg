@@ -3,37 +3,35 @@
   <desc id="desc">Glühbirne (Elektrotechnik) und Schneeflocke (Kälte-/Klimatechnik).</desc>
   <g aria-hidden="true">
 
-    <!-- ============ BULB (left) — wie ursprünglich ============ -->
-    <g transform="translate(17 41) scale(0.5)">
+    <!-- ============ BULB (left) — etwas schlanker ============ -->
+    <g transform="translate(28 41) scale(0.42)">
       <g fill="#710B0E">
-        <path d="M92 12 C41 12 0 53 0 104 C0 136 16 165 43 182 L43 211 H141 L141 182 C168 165 184 136 184 104 C184 53 143 12 92 12 Z"/>
-        <rect x="42" y="222" width="100" height="11"/>
-        <rect x="42" y="199" width="100" height="12"/>
-        <rect x="42" y="176" width="100" height="12"/>
-        <path d="M61 234 H123 V239 C123 239 116 240 92 240 C68 240 61 239 61 239 Z"/>
+        <!-- Bulb body: schmaler/eleganter als zuvor -->
+        <path d="M92 12 C49 12 14 50 14 104 C14 134 28 162 50 180 L50 211 H134 V180 C156 162 170 134 170 104 C170 50 135 12 92 12 Z"/>
+        <!-- Schraubsockel-Streifen (schmaler) -->
+        <rect x="50" y="222" width="84" height="10"/>
+        <rect x="50" y="199" width="84" height="11"/>
+        <rect x="50" y="176" width="84" height="11"/>
+        <!-- Bodenkontakt -->
+        <path d="M65 234 H119 V239 C119 239 113 240 92 240 C71 240 65 239 65 239 Z"/>
       </g>
+      <!-- Weißer Glühdraht: M-Form + Stem -->
       <g fill="none" stroke="#FFFFFF" stroke-linecap="square" stroke-linejoin="miter">
-        <path d="M38 105 L66 78 L92 104 L118 78 L146 105" stroke-width="16"/>
-        <path d="M92 104 L92 168" stroke-width="18"/>
+        <path d="M42 105 L68 78 L92 104 L116 78 L142 105" stroke-width="15"/>
+        <path d="M92 104 L92 168" stroke-width="17"/>
       </g>
     </g>
 
-    <!-- ============ SNOWFLAKE (right) — Lottie 6-arm + V-tips ============ -->
-    <g transform="translate(228 90)" stroke="#075F9F" stroke-linecap="round" fill="none">
-      <g stroke-width="8">
-        <line x1="0" y1="-58" x2="0" y2="58"/>
-        <line x1="-50" y1="-29" x2="50" y2="29"/>
-        <line x1="-50" y1="29" x2="50" y2="-29"/>
+    <!-- ============ SNOWFLAKE (right) — Lucide-Style aus der Klima-Karte ============ -->
+    <g transform="translate(228 90) scale(5)" stroke="#075F9F" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <g transform="translate(-12 -12)">
+        <path d="M2 12h20"/>
+        <path d="M12 2v20"/>
+        <path d="m20 16-4-4 4-4"/>
+        <path d="m4 8 4 4-4 4"/>
+        <path d="m16 4-4 4-4-4"/>
+        <path d="m8 20 4-4 4 4"/>
       </g>
-      <g stroke-width="6">
-        <path d="M0 -58 L-10 -48 M0 -58 L10 -48"/>
-        <path d="M0 58 L-10 48 M0 58 L10 48"/>
-        <path d="M-50 -29 L-40 -33 M-50 -29 L-40 -25"/>
-        <path d="M50 29 L40 33 M50 29 L40 25"/>
-        <path d="M-50 29 L-40 25 M-50 29 L-40 33"/>
-        <path d="M50 -29 L40 -25 M50 -29 L40 -33"/>
-      </g>
-      <circle cx="0" cy="0" r="5" fill="#075F9F" stroke="none"/>
     </g>
 
   </g>

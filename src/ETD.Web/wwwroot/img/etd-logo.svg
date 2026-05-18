@@ -1,50 +1,30 @@
 <svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
   <title id="title">ETD Bildmarke</title>
-  <desc id="desc">Glühbirne als Elektrotechnik-Symbol und Schneeflocke als Kälte-/Klimatechnik-Symbol — Lottie-Stil.</desc>
+  <desc id="desc">Glühbirne (Elektrotechnik) und Schneeflocke (Kälte-/Klimatechnik).</desc>
   <g aria-hidden="true">
 
-    <!-- ============ BULB (left) — Lottie-Style ============ -->
-    <g transform="translate(8 12)">
-      <!-- Soft drop shadow -->
-      <ellipse cx="68" cy="160" rx="38" ry="3" fill="#0e1116" opacity="0.10"/>
-
-      <!-- Red bulb body -->
+    <!-- ============ BULB (left) — wie ursprünglich ============ -->
+    <g transform="translate(17 41) scale(0.5)">
       <g fill="#710B0E">
-        <!-- Bulb top -->
-        <path d="M68 6 C36 6 12 30 12 62 C12 82 22 100 38 110 L38 122 H98 V110 C114 100 124 82 124 62 C124 30 100 6 68 6 Z"/>
-        <!-- Socket (rounded rect) -->
-        <rect x="38" y="121" width="60" height="22" rx="3"/>
-        <!-- Bottom contact -->
-        <path d="M50 143 H86 V150 C86 150 80 152 68 152 C56 152 50 150 50 150 Z"/>
+        <path d="M92 12 C41 12 0 53 0 104 C0 136 16 165 43 182 L43 211 H141 L141 182 C168 165 184 136 184 104 C184 53 143 12 92 12 Z"/>
+        <rect x="42" y="222" width="100" height="11"/>
+        <rect x="42" y="199" width="100" height="12"/>
+        <rect x="42" y="176" width="100" height="12"/>
+        <path d="M61 234 H123 V239 C123 239 116 240 92 240 C68 240 61 239 61 239 Z"/>
       </g>
-
-      <!-- White filament (M-Form + Stem + Cross-Bar) — Lottie clean -->
-      <g fill="#fff" stroke="#fff" stroke-linejoin="round" stroke-linecap="round">
-        <polygon points="32,76 50,28 68,58 86,28 104,76"/>
-        <rect x="50" y="76" width="36" height="22"/>
-        <rect x="32" y="98" width="72" height="9" rx="3"/>
+      <g fill="none" stroke="#FFFFFF" stroke-linecap="square" stroke-linejoin="miter">
+        <path d="M38 105 L66 78 L92 104 L118 78 L146 105" stroke-width="16"/>
+        <path d="M92 104 L92 168" stroke-width="18"/>
       </g>
-
-      <!-- White thread bars on socket -->
-      <g fill="#fff">
-        <rect x="38" y="124" width="60" height="3" rx="1.5"/>
-        <rect x="38" y="131" width="60" height="3" rx="1.5"/>
-        <rect x="38" y="138" width="60" height="3" rx="1.5"/>
-      </g>
-
-      <!-- Subtle highlight on bulb glass -->
-      <ellipse cx="42" cy="38" rx="8" ry="5" fill="#fff" opacity="0.22" transform="rotate(-25 42 38)"/>
     </g>
 
     <!-- ============ SNOWFLAKE (right) — Lottie 6-arm + V-tips ============ -->
     <g transform="translate(228 90)" stroke="#075F9F" stroke-linecap="round" fill="none">
-      <!-- 3 main axes (6 arms) -->
       <g stroke-width="8">
         <line x1="0" y1="-58" x2="0" y2="58"/>
         <line x1="-50" y1="-29" x2="50" y2="29"/>
         <line x1="-50" y1="29" x2="50" y2="-29"/>
       </g>
-      <!-- V-tips at each arm end -->
       <g stroke-width="6">
         <path d="M0 -58 L-10 -48 M0 -58 L10 -48"/>
         <path d="M0 58 L-10 48 M0 58 L10 48"/>
@@ -53,7 +33,6 @@
         <path d="M-50 29 L-40 25 M-50 29 L-40 33"/>
         <path d="M50 -29 L40 -25 M50 -29 L40 -33"/>
       </g>
-      <!-- Center hub -->
       <circle cx="0" cy="0" r="5" fill="#075F9F" stroke="none"/>
     </g>
 

@@ -29,9 +29,9 @@ public static class ServiceCatalog
             HasPriceEstimator: true),
 
         new("klimatechnik", "Klima- und Kältetechnik", "snowflake",
-            "Klimaanlagen Privat & Gewerbe — eingetragener Meisterbetrieb im Kälte-Anlagenbauer-Handwerk.",
-            "Wir installieren und warten Klimaanlagen für Wohn- und Geschäftsräume. Eingetragen in der Handwerksrolle der HWK Wiesbaden im Kälte-Anlagenbauer-Handwerk, mit Sachkundezertifikat A1 und Betriebszertifizierung gemäß §6 ChemKlimaschutzV — alles aus einer Hand statt zwei Gewerken.",
-            new[] { "Eingetragen Handwerksrolle HWK Wiesbaden — Kälte-Anlagenbauer", "Multi-Split & VRF-Systeme", "Wohnraum- und Gewerbekühlung", "Wartung & jährliche Dichtheitsprüfung (Pflicht ab 5 t CO₂-Äquivalent)", "Inbetriebnahme & Anmeldung beim Umweltbundesamt" }),
+            "Klimaanlagen Privat & Gewerbe — eingetragen in der Handwerksrolle für Kälte-Anlagenbauer.",
+            "Wir installieren und warten Klimaanlagen für Wohn- und Geschäftsräume. Für das Kälte-Anlagenbauer-Handwerk in der Handwerksrolle der HWK Wiesbaden eingetragen, mit Sachkundezertifikat A1 und Betriebszertifizierung gemäß §6 ChemKlimaschutzV — alles aus einer Hand statt zwei Gewerken.",
+            new[] { "Eingetragen in der Handwerksrolle HWK Wiesbaden — Kälte-Anlagenbauer", "Multi-Split & VRF-Systeme", "Wohnraum- und Gewerbekühlung", "Wartung & jährliche Dichtheitsprüfung (Pflicht ab 5 t CO₂-Äquivalent)", "Inbetriebnahme & Anmeldung beim Umweltbundesamt" }),
 
         new("e-check", "E-Check / DGUV V3", "shield-check",
             "Gesetzlich vorgeschriebene Prüfung ortsfester und ortsveränderlicher Anlagen.",

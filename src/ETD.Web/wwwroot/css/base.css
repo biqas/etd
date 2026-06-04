@@ -21,13 +21,24 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
 h3 { font-size: 1.25rem; }
 .eyebrow { font-size: 12px; font-weight: 700; color: var(--red); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 14px; }
 
-.fade-in {
+/* fade-in: content is visible by default. JS is allowed to opt-in to a subtle
+   slide-up on viewport-entry, but the page is never blank without JS or while
+   the IntersectionObserver hasn't fired. */
+.fade-in { opacity: 1; transform: none; }
+.fade-in.fade-in-armed {
     opacity: 0;
-    transform: translateY(14px);
-    animation: fadeInAuto 500ms var(--ease-out) 100ms forwards;
+    transform: translateY(12px);
+    transition: opacity 350ms var(--ease-out), transform 350ms var(--ease-out);
+    will-change: opacity, transform;
 }
-.fade-in.in { opacity: 1; transform: translateY(0); animation: none; }
-@keyframes fadeInAuto { to { opacity: 1; transform: translateY(0); } }
+.fade-in.fade-in-armed.in {
+    opacity: 1;
+    transform: translateY(0);
+}
+/* Pause all SMIL animations inside an SVG that's currently off-screen. */
+svg[data-anim-paused="true"] * { animation-play-state: paused !important; }
 @media (prefers-reduced-motion: reduce) {
-    .fade-in { opacity: 1; transform: none; animation: none; }
+    .fade-in.fade-in-armed { opacity: 1; transform: none; transition: none; }
+    svg * { animation: none !important; }
+    svg animate, svg animateTransform, svg animateMotion { display: none !important; }
 }

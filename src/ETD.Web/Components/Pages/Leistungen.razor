@@ -43,8 +43,9 @@
                             }
                         </ul>
                     </div>
-                    <div>
+                    <div style="display:flex;flex-direction:column;gap:8px">
                         <a href="@($"/angebot?for={s.Slug}")" class="btn btn-primary">Anfragen →</a>
+                        <a href="@($"/leistungen/{s.Slug}")" class="btn btn-ghost" style="font-size:13px">Mehr Infos →</a>
                     </div>
                 </div>
             </article>

@@ -62,9 +62,9 @@ public static class ServiceCatalog
             IsTopTier: false),
 
         new("sprechanlagen", "Türsprechanlagen", "phone",
-            "Video-Türsprechanlagen, Ritto Twinbus, Briefkastenanlagen.",
-            "Wir verbauen klassische Audio- und moderne Video-Sprechanlagen — auch nachrüstbar im Bestand.",
-            new[] { "Ritto Twinbus", "Video-Türsprechanlagen", "Briefkastenanlagen", "Smartphone-Integration" },
+            "Audio- und Video-Türsprechanlagen, herstellerunabhängig.",
+            "Wir verbauen klassische Audio- und moderne Video-Sprechanlagen — auch nachrüstbar im Bestand. Herstellerunabhängig.",
+            new[] { "Audio- & Video-Türsprechanlagen (z. B. Ritto Twinbus, Siedle, Gira)", "Briefkastenanlagen", "Smartphone-Integration", "Nachrüstung im Bestand" },
             IsTopTier: false),
     };
 

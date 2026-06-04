@@ -29,19 +29,19 @@
             <InputText id="timeframe-raw" type="hidden" @bind-Value="currentModel.TimeframeRaw" />
             <div class="chips" style="flex-wrap:wrap" id="timeframe-chips">
                 <label class="chip">
-                    <input type="radio" data-timeframe="asap" value="asap" checked="@(currentModel.Timeframe == "asap")" />
+                    <input type="radio" name="timeframe-pick" data-timeframe="asap" value="asap" checked="@(currentModel.Timeframe == "asap")" />
                     So bald wie möglich
                 </label>
                 <label class="chip">
-                    <input type="radio" data-timeframe="2w" value="2w" checked="@(currentModel.Timeframe == "2w")" />
+                    <input type="radio" name="timeframe-pick" data-timeframe="2w" value="2w" checked="@(currentModel.Timeframe == "2w")" />
                     Innerhalb 2 Wochen
                 </label>
                 <label class="chip">
-                    <input type="radio" data-timeframe="4w" value="4w" checked="@(currentModel.Timeframe == "4w")" />
+                    <input type="radio" name="timeframe-pick" data-timeframe="4w" value="4w" checked="@(currentModel.Timeframe == "4w")" />
                     Innerhalb 4 Wochen
                 </label>
                 <label class="chip">
-                    <input type="radio" data-timeframe="flex" value="flex" checked="@(currentModel.Timeframe == "flex")" />
+                    <input type="radio" name="timeframe-pick" data-timeframe="flex" value="flex" checked="@(currentModel.Timeframe == "flex")" />
                     Flexibel
                 </label>
             </div>
@@ -127,7 +127,13 @@
             Nav.NavigateTo($"/angebot/kontakt?s={Uri.EscapeDataString(Protector.Protect(currentModel!))}");
     }
 
-    private void HandleBack() => Nav.NavigateTo("/angebot/preisrahmen");
+    private void HandleBack()
+    {
+        if (currentModel is not null)
+            Nav.NavigateTo($"/angebot/preisrahmen?s={Uri.EscapeDataString(Protector.Protect(currentModel))}");
+        else
+            Nav.NavigateTo("/angebot/preisrahmen");
+    }
 }
 
 <script>

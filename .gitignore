@@ -9,3 +9,5 @@ obj/
 aspirate-state.json
 src/ETD.AppHost/manifest.json
 output/
+.DS_Store
+src/.DS_Store

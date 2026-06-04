@@ -174,5 +174,11 @@
         }
     }
 
-    private void HandleBack() => Nav.NavigateTo("/angebot/zeit-ort");
+    private void HandleBack()
+    {
+        if (currentModel is not null)
+            Nav.NavigateTo($"/angebot/zeit-ort?s={Uri.EscapeDataString(Protector.Protect(currentModel))}");
+        else
+            Nav.NavigateTo("/angebot/zeit-ort");
+    }
 }

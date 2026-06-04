@@ -18,14 +18,14 @@
     @* Step 1 only validates Services — use OnSubmit to avoid full-model validation *@
     <EditForm Model="currentModel" OnSubmit="HandleSubmit" FormName="step1" Enhance>
 
-        <div class="service-tiles" id="service-tiles">
+        <div class="service-tiles" id="service-tiles" role="group" aria-label="Welche Leistungen brauchen Sie?">
             @foreach (var s in ServiceCatalog.All)
             {
-                <label class="tile">
+                var isChecked = currentModel.Services?.Contains(s.Slug) == true;
+                <label class="tile" role="checkbox" aria-checked="@(isChecked ? "true" : "false")" tabindex="0">
                     @* Visual-only checkbox; the real selection is tracked via the
                        hidden InputText below, which Blazor's form binder can bind. *@
-                    <input type="checkbox" data-service="@s.Slug" value="@s.Slug"
-                           checked="@(currentModel.Services?.Contains(s.Slug) == true)" />
+                    <input type="checkbox" data-service="@s.Slug" value="@s.Slug" checked="@isChecked" />
                     <span class="tile-icon"><ServiceIcon Name="@s.Icon" Size="16" /></span>
                     <span>@s.Title</span>
                 </label>
@@ -52,7 +52,7 @@
         </div>
 
         <label style="margin-top:24px">Weitere Hinweise (optional)</label>
-        <InputTextArea @bind-Value="currentModel.Notes" placeholder="Was sollen wir noch wissen? (Termin, Anzahl Räume, Sondersituationen ...)" />
+        <InputTextArea @bind-Value="currentModel.Notes" maxlength="500" placeholder="Was sollen wir noch wissen? (Termin, Anzahl Räume, Sondersituationen ...)" />
 
         <div class="nav-btns">
             <button type="submit" class="btn btn-primary">Weiter →</button>
@@ -77,10 +77,25 @@
     // Optional pre-selected service from the URL (?for=slug). When set we auto-skip Step 1.
     [SupplyParameterFromQuery(Name = "for")] private string? PrefilledService { get; set; }
 
+    // Optional state token from HandleBack on later wizard steps (?s=...)
+    [SupplyParameterFromQuery(Name = "s")] private string? StateToken { get; set; }
+
+    // Optional persona + paket discriminators from Bauherr/Sanierer CTAs
+    [SupplyParameterFromQuery(Name = "persona")] private string? PersonaHint { get; set; }
+    [SupplyParameterFromQuery(Name = "paket")] private string? PaketHint { get; set; }
+
     private string? servicesError;
 
     protected override void OnParametersSet()
     {
+        // Rehydrate from state token if returning via "← Zurück" from step 2.
+        // Only when the form binder didn't already populate the model (GET case).
+        if (_model.Services.Count == 0 && string.IsNullOrEmpty(_model.Plz) && !string.IsNullOrWhiteSpace(StateToken))
+        {
+            var prev = Protector.Unprotect(StateToken);
+            if (prev is not null) _model = prev;
+        }
+
         // Guard against the form binder writing null into list properties on POST.
         _model.Services ??= new List<string>();
         if (string.IsNullOrEmpty(_model.Audience)) _model.Audience = "privat";
@@ -91,6 +106,14 @@
             _model.Services = _model.ServicesRaw
                 .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
                 .ToList();
+        }
+
+        // If persona/paket hints came via querystring, prepend them to Notes so the owner-mail carries the context.
+        if ((!string.IsNullOrWhiteSpace(PersonaHint) || !string.IsNullOrWhiteSpace(PaketHint))
+            && (_model.Notes is null || !_model.Notes.Contains("[Auswahl:")))
+        {
+            var hint = $"[Auswahl: persona={PersonaHint ?? "?"}, paket={PaketHint ?? "?"}] ";
+            _model.Notes = hint + (_model.Notes ?? string.Empty);
         }
 
         // Fast-track: a tile click passed ?for=slug → skip step 1 entirely.

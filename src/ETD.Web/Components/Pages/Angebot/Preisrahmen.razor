@@ -101,7 +101,19 @@
         Nav.NavigateTo($"/angebot/zeit-ort?s={Uri.EscapeDataString(Protector.Protect(currentModel))}");
     }
 
-    private void HandleBack() => Nav.NavigateTo("/angebot");
+    private void HandleBack()
+    {
+        // Persist current state back into raw before backing out so /angebot can rehydrate it
+        if (currentModel is not null)
+        {
+            currentModel.SelectedFeaturesRaw = string.Join('|', currentModel.SelectedFeatures ?? new List<string>());
+            Nav.NavigateTo($"/angebot?s={Uri.EscapeDataString(Protector.Protect(currentModel))}");
+        }
+        else
+        {
+            Nav.NavigateTo("/angebot");
+        }
+    }
 }
 
 <script>

@@ -123,8 +123,17 @@
 .nav-links a { color: var(--ink-2); padding: 6px 0; }
 .nav-links a:hover, .nav-links a[aria-current="page"] { color: var(--red); }
 .nav-mobile-cta { display: none; }
-.site-header .phone-cta { background: var(--red); color: #fff; padding: 8px 14px; border-radius: var(--radius-btn); font-size: 13px; font-weight: 700; white-space: nowrap; }
-.site-header .phone-cta:hover { background: var(--red-dark); color: #fff; }
+.nav-links a.nav-emergency { color: var(--red); font-weight: 800; }
+.nav-links a.nav-emergency::before { content: "● "; color: var(--red); }
+.cta-pill { display: inline-flex; align-items: center; background: var(--red); color: #fff; padding: 8px 16px; border-radius: var(--radius-btn); font-size: 13px; font-weight: 800; white-space: nowrap; }
+.cta-pill:hover { background: var(--red-dark); color: #fff; }
+.site-header .phone-cta { background: transparent; color: var(--ink); border: 1px solid var(--line); padding: 8px 14px; border-radius: var(--radius-btn); font-size: 13px; font-weight: 700; white-space: nowrap; }
+.site-header .phone-cta:hover { border-color: var(--red); color: var(--red); background: transparent; }
+@media (max-width: 768px) {
+    .cta-pill { display: none; }
+    .nav-links a.nav-emergency { color: var(--red); }
+    .nav-links a.nav-emergency::before { content: ""; }
+}
 
 /* Burger toggle (hidden on desktop, shown ≤768px) */
 .nav-toggle-checkbox { position: absolute; opacity: 0; pointer-events: none; }
@@ -183,7 +192,7 @@
         gap: 0;
         padding: 8px 0;
         max-height: 0;
-        overflow: hidden;
+        overflow-y: auto;
         visibility: hidden;
         transition: max-height 250ms var(--ease-out), visibility 0s linear 250ms;
         box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
@@ -245,14 +254,21 @@
 .wizard label { display: block; font-size: 13px; font-weight: 700; color: var(--ink-2); margin-bottom: 6px; margin-top: 16px; }
 .wizard .service-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; }
 .wizard .tile { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #fff; border: 1px solid var(--line); border-radius: 8px; cursor: pointer; -webkit-user-select: none; user-select: none; font-size: 13px; font-weight: 600; }
-.wizard .tile input { display: none; }
+/* Visually hidden but still keyboard-focusable (a11y) instead of display:none.
+   Native focus ring on input → outline on parent label via :focus-within. */
+.wizard .tile input,
+.wizard .chip input {
+    position: absolute; opacity: 0; width: 1px; height: 1px;
+    pointer-events: none; clip: rect(0 0 0 0); overflow: hidden;
+}
 .wizard .tile:has(input:checked) { background: var(--red-soft); border-color: var(--red); }
+.wizard .tile:focus-within { outline: 2px solid var(--red); outline-offset: 2px; }
 .wizard .tile-icon { width: 24px; height: 24px; background: var(--red-soft); color: var(--red); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
 .wizard .tile:has(input:checked) .tile-icon { background: var(--red); color: #fff; }
-.wizard .chips { display: flex; gap: 8px; }
+.wizard .chips { display: flex; gap: 8px; flex-wrap: wrap; }
 .wizard .chip { padding: 8px 16px; border: 1px solid var(--line); background: #fff; border-radius: 999px; font-size: 13px; cursor: pointer; }
 .wizard .chip:has(input:checked) { background: var(--red); color: #fff; border-color: var(--red); }
-.wizard .chip input { display: none; }
+.wizard .chip:focus-within { outline: 2px solid var(--red); outline-offset: 2px; }
 /* Style ALL wizard inputs except sliders/checkboxes/radios/hidden — Blazor's
    InputText sometimes omits the explicit type attribute, so [type=text] alone
    wouldn't catch it. We allow-list types we DO want and exclude the rest. */
@@ -1572,6 +1588,11 @@ input[type=range].range::-moz-range-thumb {
     margin-top: 8px;
     padding-top: 12px;
     font-size: 15px;
+}
+.bauherr-case-grid > * { min-width: 0; }
+@media (max-width: 480px) {
+    .bauherr-case-rechnung-row { flex-wrap: wrap; }
+    .bauherr-case-rechnung-row strong { white-space: normal; }
 }
 
 /* Bauherr CTA */

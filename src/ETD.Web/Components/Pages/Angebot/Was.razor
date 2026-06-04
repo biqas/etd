@@ -88,17 +88,25 @@
 
     protected override void OnParametersSet()
     {
+        // Guard FIRST: the form binder may write a new QuoteRequest instance where
+        // Services is null (List<string> isn't auto-instantiated by binder), and
+        // even on GET the model is freshly-constructed. We must never call
+        // `.Count` / `.Contains` before this guard.
+        _model.Services ??= new List<string>();
+        if (string.IsNullOrEmpty(_model.Audience)) _model.Audience = "privat";
+
         // Rehydrate from state token if returning via "← Zurück" from step 2.
         // Only when the form binder didn't already populate the model (GET case).
         if (_model.Services.Count == 0 && string.IsNullOrEmpty(_model.Plz) && !string.IsNullOrWhiteSpace(StateToken))
         {
             var prev = Protector.Unprotect(StateToken);
-            if (prev is not null) _model = prev;
+            if (prev is not null)
+            {
+                _model = prev;
+                _model.Services ??= new List<string>();
+                if (string.IsNullOrEmpty(_model.Audience)) _model.Audience = "privat";
+            }
         }
-
-        // Guard against the form binder writing null into list properties on POST.
-        _model.Services ??= new List<string>();
-        if (string.IsNullOrEmpty(_model.Audience)) _model.Audience = "privat";
 
         // ServicesRaw is the bound hidden field. Translate it into the typed Services list.
         if (!string.IsNullOrWhiteSpace(_model.ServicesRaw))

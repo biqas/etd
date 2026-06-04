@@ -6,25 +6,31 @@ metadata:
   labels:
     app: etd-web
 spec:
-  minReadySeconds: 60
-  replicas: 2
+  minReadySeconds: 30
+  replicas: 1
   selector:
     matchLabels:
       app: etd-web
   strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 0
+    # Recreate (not RollingUpdate) because the PersistentVolumeClaim for
+    # /var/keys is ReadWriteOnce and can only be mounted by one pod at a time.
+    type: Recreate
   template:
     metadata:
       labels:
         app: etd-web
     spec:
+      # APP_UID=1654 in the .NET chiseled image. Without fsGroup the mounted PVC
+      # at /var/keys is root-owned, so DataProtection can't write key XML and any
+      # antiforgery-protected POST 500s.
+      securityContext:
+        fsGroup: 1654
       containers:
       - name: etd-web
         image: ghcr.io/biqas/etd/etd-web:latest
-        imagePullPolicy: IfNotPresent
+        # Always pull because we re-publish the floating ":latest" tag from local builds.
+        # Without this, the node caches the previous digest and never sees new code.
+        imagePullPolicy: Always
         ports:
         - name: http
           containerPort: 8080
@@ -81,4 +87,22 @@ spec:
           limits:
             cpu: "500m"
             memory: "512Mi"
+        volumeMounts:
+        - name: dp-keys
+          mountPath: /var/keys
+      volumes:
+      - name: dp-keys
+        persistentVolumeClaim:
+          claimName: etd-web-dp-keys
       terminationGracePeriodSeconds: 180
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: etd-web-dp-keys
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 64Mi

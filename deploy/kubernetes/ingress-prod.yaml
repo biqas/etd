@@ -1,0 +1,70 @@
+---
+# Traefik middleware: 301-Redirect www.elektrotechnikdesch.de → elektrotechnikdesch.de
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: etd-www-to-apex
+  namespace: etd-dev
+spec:
+  redirectRegex:
+    regex: "^https?://www\\.elektrotechnikdesch\\.de/(.*)"
+    replacement: "https://elektrotechnikdesch.de/${1}"
+    permanent: true
+---
+# Production-Ingress für elektrotechnikdesch.de (apex)
+# Kein BasicAuth (öffentliche Seite).
+# cert-manager fordert das Let's-Encrypt-Zertifikat an, sobald
+# der A-Record auf die Cluster-IP (74.220.27.209) zeigt.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: etd-web-prod
+  namespace: etd-dev
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    cert-manager.io/cluster-issuer: letsencrypt-production
+spec:
+  tls:
+    - hosts:
+        - elektrotechnikdesch.de
+      secretName: elektrotechnikdesch-de-tls
+  rules:
+    - host: elektrotechnikdesch.de
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: etd-web
+                port:
+                  number: 8080
+---
+# Production-Ingress für www.elektrotechnikdesch.de
+# Eigener Ingress, damit das Redirect-Middleware NUR auf www greift,
+# nicht auf die apex-Domain.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: etd-web-prod-www
+  namespace: etd-dev
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    traefik.ingress.kubernetes.io/router.middlewares: etd-dev-etd-www-to-apex@kubernetescrd
+spec:
+  tls:
+    - hosts:
+        - www.elektrotechnikdesch.de
+      secretName: www-elektrotechnikdesch-de-tls
+  rules:
+    - host: www.elektrotechnikdesch.de
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: etd-web
+                port:
+                  number: 8080

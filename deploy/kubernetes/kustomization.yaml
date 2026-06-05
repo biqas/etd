@@ -4,7 +4,8 @@ resources:
 - namespace.yaml
 - etd-web
 - basicauth.yaml
-- ingress.yaml
+- ingress.yaml         # etd.it-blue.net (Dev, BasicAuth)
+- ingress-prod.yaml    # elektrotechnikdesch.de + www (Prod, kein BasicAuth) — wartet auf DNS-Cutover
 
 generatorOptions:
   disableNameSuffixHash: true

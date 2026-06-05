@@ -1757,8 +1757,10 @@ input[type=range].range::-moz-range-thumb {
     align-items: start;
 }
 .kontakt-actions { margin-top: 32px; display: grid; gap: 12px; }
-.kontakt-map .card { width: 100%; }
-.kontakt-map img { width: 100%; height: auto; max-width: 100%; display: block; }
+.kontakt-map .card { width: 100%; padding: 0; overflow: hidden; }
+.kontakt-map-card a { display: block; line-height: 0; }
+.kontakt-map-svg { width: 100%; height: auto; display: block; }
+.kontakt-map-cap { padding: 14px 16px; font-size: 13px; color: var(--muted); text-align: center; border-top: 1px solid var(--line); }
 @media (max-width: 820px) {
     .kontakt-grid { grid-template-columns: 1fr; gap: 32px; }
 }

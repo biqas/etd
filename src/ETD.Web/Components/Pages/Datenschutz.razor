@@ -5,7 +5,7 @@
 <section class="container fade-in" style="padding:64px 0;max-width:760px">
     <div class="eyebrow">Datenschutz</div>
     <h1>Datenschutzerklärung</h1>
-    <p style="color:var(--muted);margin-top:8px">Stand: @DateTime.UtcNow.ToString("MMMM yyyy", new System.Globalization.CultureInfo("de-DE"))</p>
+    <p style="color:var(--muted);margin-top:8px">Stand: @GermanMonth(DateTime.UtcNow)</p>
 
     <h2 style="margin-top:32px">1. Verantwortlicher</h2>
     <p style="margin-top:12px">
@@ -36,3 +36,12 @@
     <h2 style="margin-top:24px">8. Ihre Rechte</h2>
     <p style="margin-top:12px">Sie haben jederzeit das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch (Art. 21) gemäß DSGVO sowie das Recht auf Beschwerde bei einer Aufsichtsbehörde (Art. 77). Wenden Sie sich an die oben genannten Kontaktdaten.</p>
 </section>
+
+@code {
+    // CultureInfo("de-DE") wirft in InvariantGlobalization-Builds — wir formatieren selbst.
+    private static readonly string[] DeMonths = {
+        "Januar","Februar","März","April","Mai","Juni",
+        "Juli","August","September","Oktober","November","Dezember"
+    };
+    private static string GermanMonth(DateTime d) => $"{DeMonths[d.Month - 1]} {d.Year}";
+}

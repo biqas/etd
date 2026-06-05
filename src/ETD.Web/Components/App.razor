@@ -8,7 +8,14 @@
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <HeadOutlet />
 </head>
-<body>
+@* data-enhance-nav="false" auf <body> kaskadiert auf jeden Link & jede Form.
+   Wir sind pure Static-SSR (kein interactiver Rendermode), und enhanced
+   navigation bricht zuverlässig auf BasicAuth-geschützten Hosts, weil
+   fetch() URLs mit user:pass@ ablehnt:
+   "TypeError: Request cannot be constructed from a URL that includes credentials"
+   Full-Page-Loads für jeden Klick — alle Seiten sind unter 100 KB, das fällt
+   nicht auf. *@
+<body data-enhance-nav="false">
     <Routes />
     <script src="js/animations.js"></script>
     <script src="_framework/blazor.web.js"></script>

@@ -2,6 +2,7 @@
 @using ETD.Web.Models
 @using ETD.Web.Services
 @using ETD.Web.Components.Shared
+@inject IHttpContextAccessor HttpCtx
 
 @code {
     [Parameter] public string Slug { get; set; } = "";
@@ -12,6 +13,11 @@
     {
         service = ServiceCatalog.FindBySlug(Slug);
         visual = service is null ? null : ServiceVisuals.GetValueOrDefault(service.Slug);
+
+        if (service is null && HttpCtx.HttpContext is { } ctx && !ctx.Response.HasStarted)
+        {
+            ctx.Response.StatusCode = 404;
+        }
     }
 
     private static readonly Dictionary<string, ServiceVisual> ServiceVisuals = new()

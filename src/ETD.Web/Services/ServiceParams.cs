@@ -14,7 +14,7 @@ public static class ServiceParams
         "wallbox",              // kW + Distanz
         "klimatechnik",         // Räume + Multi-Split
         "sicherheit",           // Komponenten-Auswahl
-        // e-check, sat, beleuchtung, netzwerk, sprechanlagen → just go to step 3 (Zeit/Ort)
+        // sat, beleuchtung, netzwerk, sprechanlagen → just go to step 3 (Zeit/Ort)
     };
 
     public static bool HasParamsFor(string slug) => WithParams.Contains(slug);

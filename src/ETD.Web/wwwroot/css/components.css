@@ -1772,6 +1772,20 @@ input[type=range].range::-moz-range-thumb {
 .kontakt-map .card { width: 100%; padding: 0; overflow: hidden; }
 .kontakt-map-card a { display: block; line-height: 0; }
 .kontakt-map-svg { width: 100%; height: auto; display: block; }
+
+/* Datenschutz: PDF im <object> inline anzeigen */
+.datenschutz-pdf {
+    display: block;
+    width: 100%;
+    height: 80vh;
+    min-height: 600px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: #f5f5f5;
+}
+@media (max-width: 768px) {
+    .datenschutz-pdf { height: 70vh; min-height: 480px; }
+}
 .kontakt-map-cap { padding: 14px 16px; font-size: 13px; color: var(--muted); text-align: center; border-top: 1px solid var(--line); }
 @media (max-width: 820px) {
     .kontakt-grid { grid-template-columns: 1fr; gap: 32px; }

@@ -1,47 +1,42 @@
 @page "/datenschutz"
 
 <PageTitle>Datenschutzerklärung — ETD</PageTitle>
+<HeadContent>
+    <meta name="description" content="Datenschutzerklärung von Elektrotechnik Desch — als PDF zum Lesen und Download." />
+</HeadContent>
 
-<section class="container fade-in" style="padding-block:64px;max-width:760px">
+<section class="container fade-in" style="padding-block:64px;max-width:880px">
     <div class="eyebrow">Datenschutz</div>
     <h1>Datenschutzerklärung</h1>
-    <p style="color:var(--muted);margin-top:8px">Stand: @GermanMonth(DateTime.UtcNow)</p>
-
-    <h2 style="margin-top:32px">1. Verantwortlicher</h2>
-    <p style="margin-top:12px">
-        Elektrotechnik Desch<br/>
-        me. Christoph Desch<br/>
-        Von-Cancrin-Straße 22, 63599 Biebergemünd<br/>
-        E-Mail: <a href="mailto:mail@ElektroTechnikDesch.de">mail@ElektroTechnikDesch.de</a>
+    <p style="color:var(--muted);margin-top:8px;font-size:1.0625rem">
+        Die vollständige Datenschutzerklärung steht hier als PDF zum Lesen und Download.
     </p>
 
-    <h2 style="margin-top:24px">2. Hosting</h2>
-    <p style="margin-top:12px">Diese Website wird in einem Rechenzentrum in Frankfurt am Main, Deutschland betrieben. Eine Datenübertragung außerhalb der Europäischen Union findet nicht statt. Auftragsverarbeiter im Sinne des Art. 28 DSGVO sind ausschließlich Anbieter mit Sitz und Verarbeitung in der EU; entsprechende Verträge zur Auftragsverarbeitung liegen vor.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:24px;margin-bottom:32px">
+        <a href="/dl/Datenschutzerklärung.pdf"
+           class="btn btn-primary"
+           download="Datenschutzerklaerung-Elektrotechnik-Desch.pdf">
+            PDF herunterladen ↓
+        </a>
+        <a href="/dl/Datenschutzerklärung.pdf"
+           class="btn btn-ghost"
+           target="_blank" rel="noopener">
+            In neuem Tab öffnen ↗
+        </a>
+    </div>
 
-    <h2 style="margin-top:24px">3. Server-Logfiles</h2>
-    <p style="margin-top:12px">Der Server erfasst beim Aufruf automatisch HTTP-Zugriffsdaten (Datum, Pfad, Statuscode, User-Agent, gekürzte IP-Adresse). Die IP-Adresse wird vor Speicherung auf <code>/24</code> gekürzt; ein Personenbezug ist daher nicht herstellbar. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an IT-Sicherheit).</p>
+    <object data="/dl/Datenschutzerklärung.pdf#view=FitH"
+            type="application/pdf"
+            class="datenschutz-pdf"
+            aria-label="Datenschutzerklärung PDF">
+        <p>
+            Ihr Browser kann das PDF nicht direkt anzeigen.
+            <a href="/dl/Datenschutzerklärung.pdf">Bitte hier zum Download klicken.</a>
+        </p>
+    </object>
 
-    <h2 style="margin-top:24px">4. Angebotsanfrage / Kontaktformular</h2>
-    <p style="margin-top:12px">Wenn Sie eine Angebotsanfrage oder eine Nachricht an uns senden, werden die Inhalte zur Bearbeitung Ihres Anliegens per E-Mail an <code>mail@ElektroTechnikDesch.de</code> versandt. Eine Speicherung in einer Datenbank findet nicht statt. Die Übertragung erfolgt verschlüsselt (TLS). Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Vertragsanbahnung) bzw. lit. f (berechtigtes Interesse an Kommunikation).</p>
-
-    <h2 style="margin-top:24px">5. Cookies und lokale Speicherung</h2>
-    <p style="margin-top:12px">Wir setzen keine Tracking- oder Werbecookies ein. Für den Angebots-Wizard speichern wir Zwischenstände ausschließlich im <strong>localStorage</strong> Ihres Browsers (Schlüssel <code>etd.wizard.v1</code>). Diese Daten werden nicht an unseren Server übertragen und können jederzeit durch das Löschen Ihrer Browserdaten entfernt werden. Da dies funktional unverzichtbar ist, ist eine Einwilligung nach § 25 Abs. 2 Nr. 2 TTDSG nicht erforderlich.</p>
-
-    <h2 style="margin-top:24px">6. Schriften</h2>
-    <p style="margin-top:12px">Wir verwenden die Schriftart „Inter" (SIL OFL), die direkt vom Server dieser Website ausgeliefert wird. Es findet keine Verbindung zu Google Fonts oder anderen Drittanbieter-CDNs statt.</p>
-
-    <h2 style="margin-top:24px">7. Karte</h2>
-    <p style="margin-top:12px">Auf der Kontaktseite zeigen wir ein statisches Kartenbild. Beim Klick auf das Bild öffnen Sie OpenStreetMap in einem neuen Tab — erst dann findet eine Datenübertragung an Dritte statt.</p>
-
-    <h2 style="margin-top:24px">8. Ihre Rechte</h2>
-    <p style="margin-top:12px">Sie haben jederzeit das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch (Art. 21) gemäß DSGVO sowie das Recht auf Beschwerde bei einer Aufsichtsbehörde (Art. 77). Wenden Sie sich an die oben genannten Kontaktdaten.</p>
+    <p style="color:var(--muted);font-size:14px;margin-top:20px">
+        Bei Fragen zur Datenverarbeitung erreichen Sie uns unter
+        <a href="mailto:mail@ElektroTechnikDesch.de">mail@ElektroTechnikDesch.de</a>.
+    </p>
 </section>
-
-@code {
-    // CultureInfo("de-DE") wirft in InvariantGlobalization-Builds — wir formatieren selbst.
-    private static readonly string[] DeMonths = {
-        "Januar","Februar","März","April","Mai","Juni",
-        "Juli","August","September","Oktober","November","Dezember"
-    };
-    private static string GermanMonth(DateTime d) => $"{DeMonths[d.Month - 1]} {d.Year}";
-}

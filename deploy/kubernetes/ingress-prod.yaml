@@ -68,3 +68,42 @@ spec:
                 name: etd-web
                 port:
                   number: 8080
+---
+# dl.elektrotechnikdesch.de — Subdomain für Datei-Downloads (Email-Footer).
+# Alle Pfade werden auf /dl/<pfad> auf dem etd-web Backend gemappt,
+# damit alte Email-Links wie http://dl.elektrotechnikdesch.de/Datenschutzerklärung.pdf
+# weiter funktionieren ohne dass Christoph seine Email-Signatur ändern muss.
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: etd-dl-prefix
+  namespace: etd-dev
+spec:
+  addPrefix:
+    prefix: /dl
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: etd-web-prod-dl
+  namespace: etd-dev
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    traefik.ingress.kubernetes.io/router.middlewares: etd-dev-etd-dl-prefix@kubernetescrd
+spec:
+  tls:
+    - hosts:
+        - dl.elektrotechnikdesch.de
+      secretName: dl-elektrotechnikdesch-de-tls
+  rules:
+    - host: dl.elektrotechnikdesch.de
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: etd-web
+                port:
+                  number: 8080

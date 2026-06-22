@@ -10,12 +10,19 @@ die neue Website umzuhängen. Es muss **nur der A-Record** geändert werden
 DNS-Verwaltung bei seinem Hoster (vermutlich Strato — aktueller A-Record
 `elektrotechnikdesch.de → 81.169.145.88` zeigt auf Strato-IP-Bereich).
 
-## Was geändert wird — zwei A-Records
+## Was geändert wird — drei A-Records
 
 | Record-Typ | Name                              | Bisher          | Neu                  |
 |------------|-----------------------------------|-----------------|----------------------|
 | A          | `elektrotechnikdesch.de` (`@`)    | 81.169.145.88   | **74.220.27.209**    |
 | A          | `www.elektrotechnikdesch.de`      | 81.169.145.88   | **74.220.27.209**    |
+| A          | `dl.elektrotechnikdesch.de`       | (Strato)        | **74.220.27.209**    |
+
+Der `dl.`-Record sorgt dafür, dass alte Download-Links aus der
+Email-Signatur weiter funktionieren — z.B.
+`http://dl.elektrotechnikdesch.de/Datenschutzerklärung.pdf` wird auf
+dem Cluster auf `/dl/Datenschutzerklärung.pdf` umgeleitet (intern via
+Traefik AddPrefix-Middleware).
 
 **TTL:** falls möglich vorher auf 300 s (5 min) reduzieren — sonst kann
 die Umstellung bis zu 24 h dauern.
